@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jenkins.plugins.slack.SlackNotifier_-DescriptorImpl plugin="slack@1.8.1">
+  <teamDomain>mevoco</teamDomain>
+  <token>tg6HmzkWPSCkLwhBt9Z9L4d8</token>
+  <room>#jenkins</room>
+  <buildServerUrl>http://192.168.200.1/mirror/</buildServerUrl>
+</jenkins.plugins.slack.SlackNotifier_-DescriptorImpl>

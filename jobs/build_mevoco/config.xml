@@ -1,0 +1,205 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>build mevoco</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <jenkins.plugins.slack.SlackNotifier_-SlackJobProperty plugin="slack@1.8.1">
+      <teamDomain></teamDomain>
+      <token></token>
+      <room></room>
+      <startNotification>false</startNotification>
+      <notifySuccess>true</notifySuccess>
+      <notifyAborted>true</notifyAborted>
+      <notifyNotBuilt>true</notifyNotBuilt>
+      <notifyUnstable>true</notifyUnstable>
+      <notifyFailure>true</notifyFailure>
+      <notifyBackToNormal>true</notifyBackToNormal>
+      <notifyRepeatedFailure>false</notifyRepeatedFailure>
+      <includeTestSummary>false</includeTestSummary>
+      <showCommitList>false</showCommitList>
+      <includeCustomMessage>false</includeCustomMessage>
+      <customMessage></customMessage>
+    </jenkins.plugins.slack.SlackNotifier_-SlackJobProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
+      <project>zstack</project>
+      <filter>zstack.tar</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
+      <project>zstack-utility</project>
+      <filter>zstack-utility.tar</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
+      <project>mevoco-ui</project>
+      <filter>mevoco-ui.tar</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
+      <project>premium</project>
+      <filter>premium.tar</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
+      <project>zstack-agent</project>
+      <filter>zstack-agent.tar</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.tasks.Shell>
+      <command>rm -rf zstack zstack-utility zstack-dashboard zstack-agent mevoco_ci
+mkdir -p mevoco_ci/${BUILD_NUMBER}
+mkdir -p zstack
+tar -x -C zstack -f zstack.tar
+cd zstack
+echo -n &quot;zstack: &quot; &gt; ../mevoco_ci/${BUILD_NUMBER}/versions.txt
+git log -1 --format=&quot;%H %ci %an: %s&quot; &gt;&gt; ../mevoco_ci/${BUILD_NUMBER}/versions.txt
+#git branch premium
+cd ..
+rm -rf zstack.tar
+mkdir -p zstack-agent
+tar -x -C zstack-agent -f zstack-agent.tar
+rm -rf zstack-agent.tar
+cd zstack-agent
+echo -n &quot;zstack-agent: &quot; &gt;&gt; ../mevoco_ci/${BUILD_NUMBER}/versions.txt
+git log -1 --format=&quot;%H %ci %an: %s&quot; &gt;&gt; ../mevoco_ci/${BUILD_NUMBER}/versions.txt
+cd ..
+mkdir -p zstack-utility
+tar -x -C zstack-utility -f zstack-utility.tar
+rm -rf zstack-utility.tar
+cd zstack-utility
+echo -n &quot;zstack-utlity: &quot; &gt;&gt; ../mevoco_ci/${BUILD_NUMBER}/versions.txt
+git log -1 --format=&quot;%H %ci %an: %s&quot; &gt;&gt; ../mevoco_ci/${BUILD_NUMBER}/versions.txt
+#git branch premium
+cd ..
+mkdir -p zstack-dashboard
+tar -x -C zstack-dashboard -f mevoco-ui.tar
+rm -rf mevoco-ui.tar
+cd zstack-dashboard
+echo -n &quot;mevoco-ui: &quot; &gt;&gt; ../mevoco_ci/${BUILD_NUMBER}/versions.txt
+git log -1 --format=&quot;%H %ci %an: %s&quot; &gt;&gt; ../mevoco_ci/${BUILD_NUMBER}/versions.txt
+cd ..
+mkdir -p zstack/premium
+tar -x -C zstack/premium -f premium.tar
+rm -rf premium.tar
+cd zstack/premium
+echo -n &quot;premium: &quot; &gt;&gt; ../../mevoco_ci/${BUILD_NUMBER}/versions.txt
+git log -1 --format=&quot;%H %ci %an: %s&quot; &gt;&gt; ../../mevoco_ci/${BUILD_NUMBER}/versions.txt
+cd ../..
+cp ${JENKINS_HOME}/apache-tomcat-7.0.35.zip .
+cd zstack
+#mvn -DskipTests clean install
+cd ..
+cp ${JENKINS_HOME}/apache-cassandra-2.2.3-bin.tar.gz .
+cp ${JENKINS_HOME}/kairosdb-1.1.1-1.tar.gz .
+cd zstack-utility/zstackbuild
+cp ${JENKINS_HOME}/centos7_repo.tar .
+tar xf centos7_repo.tar
+rm -rf centos7_repo.tar
+export GOROOT=/usr/lib/golang
+ORIGINAL_PRODUCT_VERSION=`cat build.properties|grep product.version|awk -F &apos;=&apos; &apos;{print $2}&apos;`
+TIME_STAMP=`date +&quot;%y%m%d&quot;`
+#ant -Dzstack_build_root=${WORKSPACE} -Dzstackdashboard.build_version=master offline-centos7
+ant -Dzstack_build_root=${WORKSPACE} -Dbuild_war_flag=premium -Dproduct.version=${ORIGINAL_PRODUCT_VERSION}-${TIME_STAMP}-${BUILD_NUMBER} -Dzstackdashboard.build_version=master -Dproduct.name=MEVOCO -Dproduct.bin.name=mevoco-installer all-in-one
+cd ../../
+MEVOCO_BIN=$(basename `ls zstack-utility/zstackbuild/target/*.bin`)
+cp zstack-utility/zstackbuild/target/*.bin mevoco_ci/${BUILD_NUMBER}/
+
+echo &quot;&lt;html&gt;&quot; &gt; mevoco_ci/${BUILD_NUMBER}/index.html
+echo &quot;&lt;head&gt;&quot; &gt;&gt; mevoco_ci/${BUILD_NUMBER}/index.html
+echo &quot;&lt;title&gt;mevoco build ${ORIGINAL_PRODUCT_VERSION}-${TIME_STAMP}-${BUILD_NUMBER}&lt;/title&quot; &gt;&gt; mevoco_ci/${BUILD_NUMBER}/index.html
+echo &quot;&lt;body&gt;&quot; &gt;&gt; mevoco_ci/${BUILD_NUMBER}/index.html
+echo &quot;&lt;table border=1&gt;&quot; &gt;&gt; mevoco_ci/${BUILD_NUMBER}/index.html
+echo &quot;&lt;tr&gt;&quot; &gt;&gt; mevoco_ci/${BUILD_NUMBER}/index.html
+echo &quot;    &lt;th&gt;Mevoco build&lt;/th&gt;&quot; &gt;&gt; mevoco_ci/${BUILD_NUMBER}/index.html
+echo &quot;    &lt;th&gt;&lt;a href=${MEVOCO_BIN}&gt;${MEVOCO_BIN}&lt;/a&gt;&lt;/th&gt;&quot; &gt;&gt; mevoco_ci/${BUILD_NUMBER}/index.html
+echo &quot;    &lt;th&gt;&lt;/th&gt;&quot; &gt;&gt; mevoco_ci/${BUILD_NUMBER}/index.html
+echo &quot;&lt;/tr&gt;&quot; &gt;&gt; mevoco_ci/${BUILD_NUMBER}/index.html
+
+for i in $(seq `wc -l mevoco_ci/${BUILD_NUMBER}/versions.txt|awk &apos;{print $1}&apos;`); do
+	COMPONENT=`sed -n &quot;${i}p&quot; mevoco_ci/${BUILD_NUMBER}/versions.txt | awk &apos;{print $1}&apos;`
+    COMMIT=`sed -n &quot;${i}p&quot; mevoco_ci/${BUILD_NUMBER}/versions.txt | awk &apos;{print $2}&apos;`
+    SUBJECT=`sed -n &quot;${i}p&quot; mevoco_ci/${BUILD_NUMBER}/versions.txt | awk &apos;{for (i=3; i&lt;NF; i++) printf(&quot;%s &quot;,$i);print $i}&apos;`
+	echo &quot;&lt;tr&gt;&quot; &gt;&gt; mevoco_ci/${BUILD_NUMBER}/index.html
+	echo &quot;    &lt;td&gt;${COMPONENT}&lt;/td&gt;&quot; &gt;&gt; mevoco_ci/${BUILD_NUMBER}/index.html
+	echo &quot;    &lt;td&gt;${COMMIT}&lt;/td&gt;&quot; &gt;&gt; mevoco_ci/${BUILD_NUMBER}/index.html
+	echo &quot;    &lt;td&gt;${SUBJECT}&lt;/td&gt;&quot; &gt;&gt; mevoco_ci/${BUILD_NUMBER}/index.html
+	echo &quot;&lt;/tr&gt;&quot; &gt;&gt; mevoco_ci/${BUILD_NUMBER}/index.html
+done
+echo &quot;&lt;/table&gt;&quot; &gt;&gt; mevoco_ci/${BUILD_NUMBER}/index.html
+echo &quot;&lt;/body&gt;&quot; &gt;&gt; mevoco_ci/${BUILD_NUMBER}/index.html
+echo &quot;&lt;/html&gt;&quot; &gt;&gt; mevoco_ci/${BUILD_NUMBER}/index.html
+
+rm -rf mevoco_ci/latest
+ln -s ${BUILD_NUMBER} mevoco_ci/latest
+ln -s ${MEVOCO_BIN} mevoco_ci/latest/mevoco-installer.bin</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <hudson.tasks.ArtifactArchiver>
+      <artifacts>mevoco_ci/latest/*</artifacts>
+      <allowEmptyArchive>false</allowEmptyArchive>
+      <onlyIfSuccessful>false</onlyIfSuccessful>
+      <fingerprint>false</fingerprint>
+      <defaultExcludes>true</defaultExcludes>
+      <caseSensitive>true</caseSensitive>
+    </hudson.tasks.ArtifactArchiver>
+    <jenkins.plugins.displayupstreamchanges.DisplayUpstreamChangesRecorder plugin="display-upstream-changes@0.1"/>
+    <be.certipost.hudson.plugin.SCPRepositoryPublisher plugin="scp@1.8">
+      <siteName>192.168.200.1</siteName>
+      <entries>
+        <be.certipost.hudson.plugin.Entry>
+          <filePath></filePath>
+          <sourceFile>mevoco_ci/*/*.bin</sourceFile>
+          <keepHierarchy>true</keepHierarchy>
+        </be.certipost.hudson.plugin.Entry>
+        <be.certipost.hudson.plugin.Entry>
+          <filePath></filePath>
+          <sourceFile>mevoco_ci/*/versions.txt</sourceFile>
+          <keepHierarchy>true</keepHierarchy>
+        </be.certipost.hudson.plugin.Entry>
+        <be.certipost.hudson.plugin.Entry>
+          <filePath></filePath>
+          <sourceFile>mevoco_ci/*/index.html</sourceFile>
+          <keepHierarchy>true</keepHierarchy>
+        </be.certipost.hudson.plugin.Entry>
+        <be.certipost.hudson.plugin.Entry>
+          <filePath></filePath>
+          <sourceFile>mevoco_ci/latest/*</sourceFile>
+          <keepHierarchy>true</keepHierarchy>
+        </be.certipost.hudson.plugin.Entry>
+      </entries>
+    </be.certipost.hudson.plugin.SCPRepositoryPublisher>
+    <jenkins.plugins.slack.SlackNotifier plugin="slack@1.8.1">
+      <teamDomain>mevoco</teamDomain>
+      <authToken>tg6HmzkWPSCkLwhBt9Z9L4d8</authToken>
+      <buildServerUrl>http://192.168.200.1/mirror/</buildServerUrl>
+      <room>#jenkins</room>
+    </jenkins.plugins.slack.SlackNotifier>
+  </publishers>
+  <buildWrappers/>
+</project>

@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jenkins.plugins.ssh2easy.gssh.GsshBuilderWrapper_-GsshDescriptorImpl plugin="ssh2easy@1.3">
+  <serverGroups>
+    <jenkins.plugins.ssh2easy.gssh.ServerGroup>
+      <groupName>mevoco_tests</groupName>
+      <port>22</port>
+      <username>root</username>
+      <password>password</password>
+    </jenkins.plugins.ssh2easy.gssh.ServerGroup>
+  </serverGroups>
+  <servers>
+    <jenkins.plugins.ssh2easy.gssh.Server>
+      <serverGroupName>mevoco_tests</serverGroupName>
+      <name>jenkins_nightly_testing</name>
+      <ip>192.168.200.120</ip>
+    </jenkins.plugins.ssh2easy.gssh.Server>
+  </servers>
+</jenkins.plugins.ssh2easy.gssh.GsshBuilderWrapper_-GsshDescriptorImpl>

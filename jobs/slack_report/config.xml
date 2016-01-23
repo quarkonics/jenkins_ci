@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>slack report</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <jenkins.plugins.slack.SlackNotifier_-SlackJobProperty plugin="slack@1.8.1">
+      <teamDomain></teamDomain>
+      <token></token>
+      <room></room>
+      <startNotification>false</startNotification>
+      <notifySuccess>false</notifySuccess>
+      <notifyAborted>false</notifyAborted>
+      <notifyNotBuilt>false</notifyNotBuilt>
+      <notifyUnstable>false</notifyUnstable>
+      <notifyFailure>false</notifyFailure>
+      <notifyBackToNormal>false</notifyBackToNormal>
+      <notifyRepeatedFailure>false</notifyRepeatedFailure>
+      <includeTestSummary>false</includeTestSummary>
+      <showCommitList>false</showCommitList>
+      <includeCustomMessage>false</includeCustomMessage>
+      <customMessage></customMessage>
+    </jenkins.plugins.slack.SlackNotifier_-SlackJobProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>rm -rf /tmp/build_mevoco_report.json
+echo &quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;build_mevoco - #${BUILD_NUMBER}(triggered by ${TRIGGER})\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;Success\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;00F300\&quot;}&quot; &gt;&gt; /tmp/build_mevoco_report.json
+for i in $(seq `wc -l mevoco_ci/${BUILD_NUMBER}/versions.txt|awk &apos;{print $1}&apos;`); do
+	COMPONENT=`sed -n &quot;${i}p&quot; mevoco_ci/${BUILD_NUMBER}/versions.txt | awk &apos;{print $1}&apos;`
+    SUBJECT=`sed -n &quot;${i}p&quot; mevoco_ci/${BUILD_NUMBER}/versions.txt | awk &apos;{for (i=2; i&lt;NF; i++) printf(&quot;%s &quot;,$i);print $i}&apos;`
+    echo &quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;${COMPONENT}\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;${SUBJECT}\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;00F300\&quot;},&quot;
+done
+echo &quot;{}&quot; &gt;&gt; /tmp/build_mevoco_report.json
+curl -X POST --data-urlencode &quot;payload={\&quot;username\&quot; : \&quot;jenkins\&quot;, \&quot;attachments\&quot; : [`cat /tmp/build_mevoco_report.json`]}&quot; https://hooks.slack.com/services/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</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

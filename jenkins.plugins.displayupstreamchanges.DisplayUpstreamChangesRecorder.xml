@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jenkins.plugins.displayupstreamchanges.DisplayUpstreamChangesDescriptor plugin="display-upstream-changes@0.1">
+  <enableSecurity>false</enableSecurity>
+</jenkins.plugins.displayupstreamchanges.DisplayUpstreamChangesDescriptor>
