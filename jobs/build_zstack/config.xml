@@ -121,7 +121,7 @@ ln -s ${ZSTACK_BIN} zstack_ci/latest/zstack-installer.bin</command>
   </builders>
   <publishers>
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>zstack_ci/latest/zstack-installer.bin</artifacts>
+      <artifacts>zstack_ci/latest/*</artifacts>
       <allowEmptyArchive>false</allowEmptyArchive>
       <onlyIfSuccessful>false</onlyIfSuccessful>
       <fingerprint>false</fingerprint>
@@ -149,12 +149,43 @@ ln -s ${ZSTACK_BIN} zstack_ci/latest/zstack-installer.bin</command>
         </be.certipost.hudson.plugin.Entry>
       </entries>
     </be.certipost.hudson.plugin.SCPRepositoryPublisher>
-    <jenkins.plugins.slack.SlackNotifier plugin="slack@1.8.1">
-      <teamDomain>mevoco</teamDomain>
-      <authToken>tg6HmzkWPSCkLwhBt9Z9L4d8</authToken>
-      <buildServerUrl>http://192.168.200.1/mirror/</buildServerUrl>
-      <room>#jenkins</room>
-    </jenkins.plugins.slack.SlackNotifier>
+    <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@2.30">
+      <configs>
+        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+          <configs>
+            <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+              <properties>OVERALL_ZSTACK_BUILD_RESULT=Success
+OVERALL_ZSTACK_BUILD_NUMBER=${BUILD_NUMBER}</properties>
+            </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+          </configs>
+          <projects>slack_report, </projects>
+          <condition>SUCCESS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+          <configs>
+            <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+              <properties>OVERALL_ZSTACK_BUILD_RESULT=Failure
+OVERALL_ZSTACK_BUILD_NUMBER=${BUILD_NUMBER}</properties>
+            </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+          </configs>
+          <projects>slack_report, </projects>
+          <condition>FAILED</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+          <configs>
+            <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+              <properties>OVERALL_ZSTACK_BUILD_RESULT=Unstable
+OVERALL_ZSTACK_BUILD_NUMBER=${BUILD_NUMBER}</properties>
+            </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+          </configs>
+          <projects>slack_report, </projects>
+          <condition>UNSTABLE</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+      </configs>
+    </hudson.plugins.parameterizedtrigger.BuildTrigger>
   </publishers>
   <buildWrappers/>
 </project>

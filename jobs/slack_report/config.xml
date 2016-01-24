@@ -30,16 +30,102 @@
   <triggers/>
   <concurrentBuild>false</concurrentBuild>
   <builders>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
+      <project>build_mevoco</project>
+      <filter>mevoco_ci/latest/versions.txt</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <optional>true</optional>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
+      <project>build_zstack</project>
+      <filter>zstack_ci/latest/versions.txt</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <optional>true</optional>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
     <hudson.tasks.Shell>
-      <command>rm -rf /tmp/build_mevoco_report.json
-echo &quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;build_mevoco - #${BUILD_NUMBER}(triggered by ${TRIGGER})\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;Success\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;00F300\&quot;}&quot; &gt;&gt; /tmp/build_mevoco_report.json
-for i in $(seq `wc -l mevoco_ci/${BUILD_NUMBER}/versions.txt|awk &apos;{print $1}&apos;`); do
-	COMPONENT=`sed -n &quot;${i}p&quot; mevoco_ci/${BUILD_NUMBER}/versions.txt | awk &apos;{print $1}&apos;`
-    SUBJECT=`sed -n &quot;${i}p&quot; mevoco_ci/${BUILD_NUMBER}/versions.txt | awk &apos;{for (i=2; i&lt;NF; i++) printf(&quot;%s &quot;,$i);print $i}&apos;`
-    echo &quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;${COMPONENT}\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;${SUBJECT}\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;00F300\&quot;},&quot;
-done
-echo &quot;{}&quot; &gt;&gt; /tmp/build_mevoco_report.json
-curl -X POST --data-urlencode &quot;payload={\&quot;username\&quot; : \&quot;jenkins\&quot;, \&quot;attachments\&quot; : [`cat /tmp/build_mevoco_report.json`]}&quot; https://hooks.slack.com/services/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</command>
+      <command>if [ &quot;${OVERALL_MEVOCO_BUILD_RESULT}&quot; != &quot;&quot; ]; then
+	rm -rf /tmp/build_mevoco_report.json
+	if [ &quot;${OVERALL_MEVOCO_BUILD_RESULT}&quot; = &quot;Success&quot; ]; then
+		COLOR=&quot;00FF00&quot;
+	elif [ &quot;${OVERALL_MEVOCO_BUILD_RESULT}&quot; = &quot;Failure&quot; ]; then
+		COLOR=&quot;FF0000&quot;
+	elif [ &quot;${OVERALL_MEVOCO_BUILD_RESULT}&quot; = &quot;Unstable&quot; ]; then
+		COLOR=&quot;FFFF00&quot;
+	fi
+	COMPONENTS=&quot;zstack zstack-utility zstack-agent mevoco-ui zstack-dashboard premium&quot;
+	rm -rf /tmp/slack_report_query
+	curl -u mevoco:zstack.org http://192.168.200.127:8080/job/build_mevoco/${OVERALL_MEVOCO_BUILD_NUMBER}/api/xml &gt; /tmp/slack_report_query
+	TRIGGERS=&quot;&quot;
+	for C in ${COMPONENTS}; do
+		NOT_FOUND=0
+		grep &quot;Started by upstream project \&quot;${C}\&quot; build number&quot; /tmp/slack_report_query || NOT_FOUND=1
+    	if [ ${NOT_FOUND} -eq 0 ]; then
+   	 		TRIGGERS=&quot;${TRIGGERS} ${C}&quot;
+    	fi
+	done
+    DURATION=`cat /tmp/slack_report_query | awk -F &quot;&lt;duration&gt;&quot; &apos;{print $2}&apos; | awk -F &quot;&lt;/duration&gt;&quot; &apos;{print $1}&apos;`
+    DURATION_MIN=`echo &quot;${DURATION}/60000&quot; | bc`
+    DURATION_SEC=`echo &quot;${DURATION}/1000%60&quot; | bc`
+	echo &quot;{\&quot;fallback\&quot;:\&quot;build_mevoco(triggered by ${TRIGGERS}) - #${OVERALL_MEVOCO_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/|Open&gt;) ${OVERALL_MEVOCO_BUILD_RESULT} after ${DURATION_MIN} min ${DURATION_MIN} sec\&quot;,\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;build_mevoco(triggered by ${TRIGGERS}) - #${OVERALL_MEVOCO_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/|Open&gt;)\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;${OVERALL_MEVOCO_BUILD_RESULT} after ${DURATION_MIN} min ${DURATION_MIN} sec\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;${COLOR}\&quot;},&quot; &gt;&gt; /tmp/build_mevoco_report.json
+	for i in $(seq `wc -l mevoco_ci/latest/versions.txt|awk &apos;{print $1}&apos;`); do
+		COMPONENT=`sed -n &quot;${i}p&quot; mevoco_ci/latest/versions.txt | awk &apos;{print $1}&apos; | awk -F &apos;:&apos; &apos;{print $1}&apos;`
+    	SUBJECT=`sed -n &quot;${i}p&quot; mevoco_ci/latest/versions.txt | awk &apos;{for (i=2; i&lt;NF; i++) printf(&quot;%s &quot;,$i);print $i}&apos;`
+    	NOT_FOUND=0
+    	grep &quot;Started by upstream project \&quot;${COMPONENT}\&quot; build number&quot; /tmp/slack_report_query || NOT_FOUND=1
+   	 	if [ ${NOT_FOUND} -eq 0 ]; then
+    		echo &quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;${COMPONENT}:\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;${SUBJECT}\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;${COLOR}\&quot;},&quot; &gt;&gt; /tmp/build_mevoco_report.json
+    	else
+    		echo &quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;${COMPONENT}:\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;${SUBJECT}\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;AAAAAA\&quot;},&quot; &gt;&gt; /tmp/build_mevoco_report.json
+    	fi
+	done
+	echo &quot;{}&quot; &gt;&gt; /tmp/build_mevoco_report.json
+	curl -X POST --data-urlencode &quot;payload={\&quot;username\&quot; : \&quot;jenkins\&quot;, \&quot;attachments\&quot; : [`cat /tmp/build_mevoco_report.json`]}&quot; https://hooks.slack.com/services/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
+fi
+
+if [ &quot;${OVERALL_ZSTACK_BUILD_RESULT}&quot; != &quot;&quot; ]; then
+	rm -rf /tmp/build_zstack_report.json
+	if [ &quot;${OVERALL_ZSTACK_BUILD_RESULT}&quot; = &quot;Success&quot; ]; then
+		COLOR=&quot;00FF00&quot;
+	elif [ &quot;${OVERALL_ZSTACK_BUILD_RESULT}&quot; = &quot;Failure&quot; ]; then
+		COLOR=&quot;FF0000&quot;
+	elif [ &quot;${OVERALL_ZSTACK_BUILD_RESULT}&quot; = &quot;Unstable&quot; ]; then
+		COLOR=&quot;FFFF00&quot;
+	fi
+	COMPONENTS=&quot;zstack zstack-utility zstack-agent mevoco-ui zstack-dashboard premium&quot;
+	rm -rf /tmp/slack_report_query
+	curl -u mevoco:zstack.org http://192.168.200.127:8080/job/build_zstack/${OVERALL_ZSTACK_BUILD_NUMBER}/api/xml &gt; /tmp/slack_report_query
+	TRIGGERS=&quot;&quot;
+	for C in ${COMPONENTS}; do
+		NOT_FOUND=0
+		grep &quot;Started by upstream project \&quot;${C}\&quot; build number&quot; /tmp/slack_report_query || NOT_FOUND=1
+    	if [ ${NOT_FOUND} -eq 0 ]; then
+   	 		TRIGGERS=&quot;${TRIGGERS} ${C}&quot;
+    	fi
+	done
+    DURATION=`cat /tmp/slack_report_query | awk -F &quot;&lt;duration&gt;&quot; &apos;{print $2}&apos; | awk -F &quot;&lt;/duration&gt;&quot; &apos;{print $1}&apos;`
+    DURATION_MIN=`echo &quot;${DURATION}/60000&quot; | bc`
+    DURATION_SEC=`echo &quot;${DURATION}/1000%60&quot; | bc`
+	echo &quot;{\&quot;fallback\&quot;:\&quot;build_zstack(triggered by ${TRIGGERS}) - #${OVERALL_ZSTACK_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/|Open&gt;) ${OVERALL_ZSTACK_BUILD_RESULT} after ${DURATION_MIN} min ${DURATION_MIN} sec\&quot;,\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;build_zstack(triggered by ${TRIGGERS}) - #${OVERALL_ZSTACK_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/|Open&gt;)\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;${OVERALL_ZSTACK_BUILD_RESULT} after ${DURATION_MIN} min ${DURATION_MIN} sec\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;${COLOR}\&quot;},&quot; &gt;&gt; /tmp/build_zstack_report.json
+	for i in $(seq `wc -l zstack_ci/latest/versions.txt|awk &apos;{print $1}&apos;`); do
+		COMPONENT=`sed -n &quot;${i}p&quot; zstack_ci/latest/versions.txt | awk &apos;{print $1}&apos; | awk -F &apos;:&apos; &apos;{print $1}&apos;`
+    	SUBJECT=`sed -n &quot;${i}p&quot; zstack_ci/latest/versions.txt | awk &apos;{for (i=2; i&lt;NF; i++) printf(&quot;%s &quot;,$i);print $i}&apos;`
+    	NOT_FOUND=0
+    	grep &quot;Started by upstream project \&quot;${COMPONENT}\&quot; build number&quot; /tmp/slack_report_query || NOT_FOUND=1
+   	 	if [ ${NOT_FOUND} -eq 0 ]; then
+    		echo &quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;${COMPONENT}:\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;${SUBJECT}\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;${COLOR}\&quot;},&quot; &gt;&gt; /tmp/build_zstack_report.json
+    	else
+    		echo &quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;${COMPONENT}:\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;${SUBJECT}\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;AAAAAA\&quot;},&quot; &gt;&gt; /tmp/build_zstack_report.json
+    	fi
+	done
+	echo &quot;{}&quot; &gt;&gt; /tmp/build_zstack_report.json
+	curl -X POST --data-urlencode &quot;payload={\&quot;username\&quot; : \&quot;jenkins\&quot;, \&quot;attachments\&quot; : [`cat /tmp/build_zstack_report.json`]}&quot; https://hooks.slack.com/services/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
+fi</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>

@@ -83,7 +83,7 @@
       <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
     </hudson.plugins.copyartifact.CopyArtifact>
     <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
-      <project>build_mevoco_para</project>
+      <project></project>
       <filter>mevoco_ci/latest/*</filter>
       <target></target>
       <excludes></excludes>
@@ -231,7 +231,7 @@ rm -rf /tmp/result.log
 rm -rf /tmp/report.json
 cat /tmp/result.log  | sed -n &apos;/--*$/{:1;N;/--*$/{p;b};N;b1}&apos; | grep -v &apos;\-\-&apos; | awk &apos;{if ($1~/:/) {tttt=$1;gsub(&quot;:&quot;,&quot;&quot;, tttt)} else {if ($2!=1) {printf(&quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;%s/%s\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;FAIL\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;F35A00\&quot;},&quot;, tttt, $1, $2, $3, $4, $5)} else {printf(&quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;%s/%s\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;PASS\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;00F300\&quot;},&quot;, tttt, $1, $2, $3, $4, $5)}}}&apos; &gt; /tmp/report.json
 echo &quot;{}&quot; &gt;&gt; /tmp/report.json
-curl -X POST --data-urlencode &quot;payload={\&quot;text\&quot; : \&quot;Test Result\&quot;, \&quot;username\&quot; : \&quot;jenkins\&quot;, \&quot;attachments\&quot; : [`cat /tmp/report.json`]}&quot; https://hooks.slack.com/services/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</shell>
+curl -X POST --data-urlencode &quot;payload={\&quot;text\&quot; : \&quot;Test Result\&quot;, \&quot;username\&quot; : \&quot;jenkins\&quot;, \&quot;attachments\&quot; : [`cat /tmp/report.json`]}&quot; https://hooks.slack.com/services/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</shell>
     </jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder>
   </builders>
   <publishers/>
