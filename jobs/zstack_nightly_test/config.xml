@@ -135,7 +135,8 @@ ant buildtestagent -Dzstack_build_root=${WORKSPACE}
 cp -r target/woodpecker/ woodpecker/
 #tar cf zstac-all-in-one.tar woodpecker/zstacktestagent.tar.bz woodpecker/conf/zstack.properties ../../zstack-all-in-one.tgz ../../install.sh 
 #echo &quot;Monitor.dbPushUrl = http://localhost:8080/api/v1/datapoints&quot; &gt;&gt; woodpecker/conf/zstack.properties
-tar cf zstack-all-in-one.tar woodpecker/zstacktestagent.tar.bz woodpecker/conf/zstack.properties ../../mevoco-installer.bin</command>
+tar cf zstack-all-in-one.tar woodpecker/zstacktestagent.tar.bz woodpecker/conf/zstack.properties ../../mevoco-installer.bin
+rm -rf /tmp/result_120.log</command>
     </hudson.tasks.Shell>
     <jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder plugin="ssh2easy@1.3">
       <disable>false</disable>
@@ -221,12 +222,24 @@ rm -rf /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt</shell>
       <ip>192.168.200.120</ip>
       <shell>cd /home/shuang2/zstack-woodpecker/dailytest/
 rm -rf /tmp/result.log
-./zstest.py -s basic | tee /tmp/result.log
-rm -rf /tmp/report.json
-cat /tmp/result.log  | sed -n &apos;/--*$/{:1;N;/--*$/{p;b};N;b1}&apos; | grep -v &apos;\-\-&apos; | awk &apos;{if ($1~/:/) {tttt=$1;gsub(&quot;:&quot;,&quot;&quot;, tttt)} else {if ($2!=1) {printf(&quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;%s/%s\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;FAIL\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;F35A00\&quot;},&quot;, tttt, $1, $2, $3, $4, $5)} else {printf(&quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;%s/%s\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;PASS\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;00F300\&quot;},&quot;, tttt, $1, $2, $3, $4, $5)}}}&apos; &gt; /tmp/report.json
-echo &quot;{}&quot; &gt;&gt; /tmp/report.json
-curl -X POST --data-urlencode &quot;payload={\&quot;text\&quot; : \&quot;Test Result\&quot;, \&quot;username\&quot; : \&quot;jenkins\&quot;, \&quot;attachments\&quot; : [`cat /tmp/report.json`]}&quot; https://hooks.slack.com/services/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</shell>
+./zstest.py -s basic | tee /tmp/result_120.log
+</shell>
     </jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpDownloadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <remoteFile>/tmp/result_120.log</remoteFile>
+      <localFolder>/tmp/</localFolder>
+      <fileName>result_120.log</fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpDownloadBuilder>
+    <hudson.tasks.Shell>
+      <command>rm -rf /tmp/report.json
+cat /tmp/result_120.log  | sed -n &apos;/--*$/{:1;N;/--*$/{p;b};N;b1}&apos; | grep -v &apos;\-\-&apos; | awk &apos;{if ($1~/:/) {tttt=$1;gsub(&quot;:&quot;,&quot;&quot;, tttt)} else {if ($2!=1) {printf(&quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;%s/%s\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;FAIL\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;F35A00\&quot;},&quot;, tttt, $1, $2, $3, $4, $5)} else {printf(&quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;%s/%s\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;PASS\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;00F300\&quot;},&quot;, tttt, $1, $2, $3, $4, $5)}}}&apos; &gt; /tmp/report.json
+echo &quot;{}&quot; &gt;&gt; /tmp/report.json
+curl -X POST --data-urlencode &quot;payload={\&quot;text\&quot; : \&quot;BAT result against build_mevoco - #${OVERALL_MEVOCO_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/|Open&gt;)\&quot;, \&quot;username\&quot; : \&quot;jenkins\&quot;, \&quot;attachments\&quot; : [`cat /tmp/report.json`]}&quot; https://hooks.slack.com/services/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</command>
+    </hudson.tasks.Shell>
   </builders>
   <publishers/>
   <buildWrappers/>

@@ -2,14 +2,6 @@
 <be.certipost.hudson.plugin.SCPRepositoryPublisher_-DescriptorImpl plugin="scp@1.8">
   <sites>
     <be.certipost.hudson.plugin.SCPSite>
-      <hostname>123.183.211.58</hostname>
-      <port>22</port>
-      <username>zstack</username>
-      <password>zstack.org</password>
-      <keyfile></keyfile>
-      <rootRepositoryPath>/home/zstack/</rootRepositoryPath>
-    </be.certipost.hudson.plugin.SCPSite>
-    <be.certipost.hudson.plugin.SCPSite>
       <hostname>192.168.200.1</hostname>
       <port>22</port>
       <username>mevoco</username>

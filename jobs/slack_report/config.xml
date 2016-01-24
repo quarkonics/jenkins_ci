@@ -50,6 +50,9 @@
     </hudson.plugins.copyartifact.CopyArtifact>
     <hudson.tasks.Shell>
       <command>if [ &quot;${OVERALL_MEVOCO_BUILD_RESULT}&quot; != &quot;&quot; ]; then
+	rm -rf mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/build_mevoco.log
+    mkdir -p mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}
+	curl -u mevoco:zstack.org http://192.168.200.127:8080/job/build_mevoco/${OVERALL_MEVOCO_BUILD_NUMBER}/consoleText &gt; mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/build_mevoco.log
 	rm -rf /tmp/build_mevoco_report.json
 	if [ &quot;${OVERALL_MEVOCO_BUILD_RESULT}&quot; = &quot;Success&quot; ]; then
 		COLOR=&quot;00FF00&quot;
@@ -72,7 +75,7 @@
     DURATION=`cat /tmp/slack_report_query | awk -F &quot;&lt;duration&gt;&quot; &apos;{print $2}&apos; | awk -F &quot;&lt;/duration&gt;&quot; &apos;{print $1}&apos;`
     DURATION_MIN=`echo &quot;${DURATION}/60000&quot; | bc`
     DURATION_SEC=`echo &quot;${DURATION}/1000%60&quot; | bc`
-	echo &quot;{\&quot;fallback\&quot;:\&quot;build_mevoco(triggered by ${TRIGGERS}) - #${OVERALL_MEVOCO_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/|Open&gt;) ${OVERALL_MEVOCO_BUILD_RESULT} after ${DURATION_MIN} min ${DURATION_MIN} sec\&quot;,\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;build_mevoco(triggered by ${TRIGGERS}) - #${OVERALL_MEVOCO_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/|Open&gt;)\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;${OVERALL_MEVOCO_BUILD_RESULT} after ${DURATION_MIN} min ${DURATION_MIN} sec\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;${COLOR}\&quot;},&quot; &gt;&gt; /tmp/build_mevoco_report.json
+	echo &quot;{\&quot;fallback\&quot;:\&quot;build_mevoco(triggered by ${TRIGGERS}) - #${OVERALL_MEVOCO_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/|Open&gt;) ${OVERALL_MEVOCO_BUILD_RESULT} after ${DURATION_MIN} min ${DURATION_MIN} sec (&lt;http://192.168.200.1/mirror/mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/build_mevoco.log|Log&gt;)\&quot;,\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;build_mevoco(triggered by ${TRIGGERS}) - #${OVERALL_MEVOCO_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/|Open&gt;)\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;${OVERALL_MEVOCO_BUILD_RESULT} after ${DURATION_MIN} min ${DURATION_MIN} sec (&lt;http://192.168.200.1/mirror/mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/build_mevoco.log|Log&gt;)\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;${COLOR}\&quot;},&quot; &gt;&gt; /tmp/build_mevoco_report.json
 	for i in $(seq `wc -l mevoco_ci/latest/versions.txt|awk &apos;{print $1}&apos;`); do
 		COMPONENT=`sed -n &quot;${i}p&quot; mevoco_ci/latest/versions.txt | awk &apos;{print $1}&apos; | awk -F &apos;:&apos; &apos;{print $1}&apos;`
     	SUBJECT=`sed -n &quot;${i}p&quot; mevoco_ci/latest/versions.txt | awk &apos;{for (i=2; i&lt;NF; i++) printf(&quot;%s &quot;,$i);print $i}&apos;`
@@ -89,6 +92,9 @@
 fi
 
 if [ &quot;${OVERALL_ZSTACK_BUILD_RESULT}&quot; != &quot;&quot; ]; then
+	rm -rf zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/build_zstack.log
+    mkdir -p zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}
+	curl -u mevoco:zstack.org http://192.168.200.127:8080/job/build_zstack/${OVERALL_ZSTACK_BUILD_NUMBER}/consoleText &gt; zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/build_zstack.log
 	rm -rf /tmp/build_zstack_report.json
 	if [ &quot;${OVERALL_ZSTACK_BUILD_RESULT}&quot; = &quot;Success&quot; ]; then
 		COLOR=&quot;00FF00&quot;
@@ -111,7 +117,7 @@ if [ &quot;${OVERALL_ZSTACK_BUILD_RESULT}&quot; != &quot;&quot; ]; then
     DURATION=`cat /tmp/slack_report_query | awk -F &quot;&lt;duration&gt;&quot; &apos;{print $2}&apos; | awk -F &quot;&lt;/duration&gt;&quot; &apos;{print $1}&apos;`
     DURATION_MIN=`echo &quot;${DURATION}/60000&quot; | bc`
     DURATION_SEC=`echo &quot;${DURATION}/1000%60&quot; | bc`
-	echo &quot;{\&quot;fallback\&quot;:\&quot;build_zstack(triggered by ${TRIGGERS}) - #${OVERALL_ZSTACK_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/|Open&gt;) ${OVERALL_ZSTACK_BUILD_RESULT} after ${DURATION_MIN} min ${DURATION_MIN} sec\&quot;,\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;build_zstack(triggered by ${TRIGGERS}) - #${OVERALL_ZSTACK_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/|Open&gt;)\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;${OVERALL_ZSTACK_BUILD_RESULT} after ${DURATION_MIN} min ${DURATION_MIN} sec\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;${COLOR}\&quot;},&quot; &gt;&gt; /tmp/build_zstack_report.json
+	echo &quot;{\&quot;fallback\&quot;:\&quot;build_zstack(triggered by ${TRIGGERS}) - #${OVERALL_ZSTACK_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/|Open&gt;) ${OVERALL_ZSTACK_BUILD_RESULT} after ${DURATION_MIN} min ${DURATION_MIN} sec (&lt;http://192.168.200.1/mirror/zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/build_zstack.log|Log&gt;)\&quot;,\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;build_zstack(triggered by ${TRIGGERS}) - #${OVERALL_ZSTACK_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/|Open&gt;)\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;${OVERALL_ZSTACK_BUILD_RESULT} after ${DURATION_MIN} min ${DURATION_MIN} sec (&lt;http://192.168.200.1/mirror/zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/build_zstack.log|Log&gt;)\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;${COLOR}\&quot;},&quot; &gt;&gt; /tmp/build_zstack_report.json
 	for i in $(seq `wc -l zstack_ci/latest/versions.txt|awk &apos;{print $1}&apos;`); do
 		COMPONENT=`sed -n &quot;${i}p&quot; zstack_ci/latest/versions.txt | awk &apos;{print $1}&apos; | awk -F &apos;:&apos; &apos;{print $1}&apos;`
     	SUBJECT=`sed -n &quot;${i}p&quot; zstack_ci/latest/versions.txt | awk &apos;{for (i=2; i&lt;NF; i++) printf(&quot;%s &quot;,$i);print $i}&apos;`
@@ -128,6 +134,22 @@ if [ &quot;${OVERALL_ZSTACK_BUILD_RESULT}&quot; != &quot;&quot; ]; then
 fi</command>
     </hudson.tasks.Shell>
   </builders>
-  <publishers/>
+  <publishers>
+    <be.certipost.hudson.plugin.SCPRepositoryPublisher plugin="scp@1.8">
+      <siteName>192.168.200.1</siteName>
+      <entries>
+        <be.certipost.hudson.plugin.Entry>
+          <filePath></filePath>
+          <sourceFile>mevoco_ci/*/*</sourceFile>
+          <keepHierarchy>true</keepHierarchy>
+        </be.certipost.hudson.plugin.Entry>
+        <be.certipost.hudson.plugin.Entry>
+          <filePath></filePath>
+          <sourceFile>zstack_ci/*/*</sourceFile>
+          <keepHierarchy>true</keepHierarchy>
+        </be.certipost.hudson.plugin.Entry>
+      </entries>
+    </be.certipost.hudson.plugin.SCPRepositoryPublisher>
+  </publishers>
   <buildWrappers/>
 </project>
