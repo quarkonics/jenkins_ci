@@ -109,6 +109,8 @@ rm -rf premium.tar
 cd zstack/premium
 echo -n &quot;premium: &quot; &gt;&gt; ../../mevoco_ci/${BUILD_NUMBER}/versions.txt
 git log -1 --format=&quot;%H %ci %an: %s&quot; &gt;&gt; ../../mevoco_ci/${BUILD_NUMBER}/versions.txt
+rm -rf /tmp/build_mevoco_versions.${BUILD_NUMBER}
+cp ../../mevoco_ci/${BUILD_NUMBER}/versions.txt /tmp/build_mevoco_versions.${BUILD_NUMBER}
 cd ../..
 cp ${JENKINS_HOME}/apache-tomcat-7.0.35.zip .
 cd zstack
@@ -121,10 +123,14 @@ cp ${JENKINS_HOME}/centos7_repo.tar .
 tar xf centos7_repo.tar
 rm -rf centos7_repo.tar
 export GOROOT=/usr/lib/golang
-ORIGINAL_PRODUCT_VERSION=`cat build.properties|grep product.version|awk -F &apos;=&apos; &apos;{print $2}&apos;`
-TIME_STAMP=`date +&quot;%y%m%d&quot;`
-#ant -Dzstack_build_root=${WORKSPACE} -Dzstackdashboard.build_version=master offline-centos7
-ant -Dzstack_build_root=${WORKSPACE} -Dbuild_war_flag=premium -Dproduct.version=${ORIGINAL_PRODUCT_VERSION}-${TIME_STAMP}-${BUILD_NUMBER} -Dzstackdashboard.build_version=master -Dproduct.name=MEVOCO -Dproduct.bin.name=mevoco-installer all-in-one
+if [ &quot;${PRODUCT_VERSION}&quot; != &quot;&quot; ]; then
+	ant -Dzstack_build_root=${WORKSPACE} -Dbuild_war_flag=premium -Dproduct.version=${PRODUCT_VERSION} -Dzstackdashboard.build_version=master -Dproduct.name=MEVOCO -Dproduct.bin.name=mevoco-installer all-in-one
+else
+	ORIGINAL_PRODUCT_VERSION=`cat build.properties|grep product.version|awk -F &apos;=&apos; &apos;{print $2}&apos;`
+	TIME_STAMP=`date +&quot;%y%m%d&quot;`
+	#ant -Dzstack_build_root=${WORKSPACE} -Dzstackdashboard.build_version=master offline-centos7
+	ant -Dzstack_build_root=${WORKSPACE} -Dbuild_war_flag=premium -Dproduct.version=${ORIGINAL_PRODUCT_VERSION}-${TIME_STAMP}-${BUILD_NUMBER} -Dzstackdashboard.build_version=master -Dproduct.name=MEVOCO -Dproduct.bin.name=mevoco-installer all-in-one
+fi
 cd ../../
 MEVOCO_BIN=$(basename `ls zstack-utility/zstackbuild/target/*.bin`)
 cp zstack-utility/zstackbuild/target/*.bin mevoco_ci/${BUILD_NUMBER}/
@@ -236,7 +242,7 @@ OVERALL_MEVOCO_BUILD_NUMBER=${BUILD_NUMBER}</properties>
 OVERALL_MEVOCO_BUILD_NUMBER=${BUILD_NUMBER}</properties>
             </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
           </configs>
-          <projects>zstack_nightly_test,</projects>
+          <projects>mevoco_nightly_test,</projects>
           <condition>SUCCESS</condition>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>

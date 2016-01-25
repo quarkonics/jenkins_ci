@@ -64,7 +64,11 @@
 	COMPONENTS=&quot;zstack zstack-utility zstack-agent mevoco-ui zstack-dashboard premium&quot;
 	rm -rf /tmp/slack_report_query
 	curl -u mevoco:zstack.org http://192.168.200.127:8080/job/build_mevoco/${OVERALL_MEVOCO_BUILD_NUMBER}/api/xml &gt; /tmp/slack_report_query
-	TRIGGERS=&quot;&quot;
+    if [ &quot;${PRODUCT_VERSION}&quot; != &quot;&quot; ]; then
+    	TRIGGERS=&quot;build_mevoco_release_candidate&quot;
+    else
+		TRIGGERS=&quot;&quot;
+    fi
 	for C in ${COMPONENTS}; do
 		NOT_FOUND=0
 		grep &quot;Started by upstream project \&quot;${C}\&quot; build number&quot; /tmp/slack_report_query || NOT_FOUND=1
@@ -76,9 +80,14 @@
     DURATION_MIN=`echo &quot;${DURATION}/60000&quot; | bc`
     DURATION_SEC=`echo &quot;${DURATION}/1000%60&quot; | bc`
 	echo &quot;{\&quot;fallback\&quot;:\&quot;build_mevoco(triggered by ${TRIGGERS}) - #${OVERALL_MEVOCO_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/|Open&gt;) ${OVERALL_MEVOCO_BUILD_RESULT} after ${DURATION_MIN} min ${DURATION_MIN} sec (&lt;http://192.168.200.1/mirror/mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/build_mevoco.log|Log&gt;)\&quot;,\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;build_mevoco(triggered by ${TRIGGERS}) - #${OVERALL_MEVOCO_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/|Open&gt;)\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;${OVERALL_MEVOCO_BUILD_RESULT} after ${DURATION_MIN} min ${DURATION_MIN} sec (&lt;http://192.168.200.1/mirror/mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/build_mevoco.log|Log&gt;)\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;${COLOR}\&quot;},&quot; &gt;&gt; /tmp/build_mevoco_report.json
-	for i in $(seq `wc -l mevoco_ci/latest/versions.txt|awk &apos;{print $1}&apos;`); do
-		COMPONENT=`sed -n &quot;${i}p&quot; mevoco_ci/latest/versions.txt | awk &apos;{print $1}&apos; | awk -F &apos;:&apos; &apos;{print $1}&apos;`
-    	SUBJECT=`sed -n &quot;${i}p&quot; mevoco_ci/latest/versions.txt | awk &apos;{for (i=2; i&lt;NF; i++) printf(&quot;%s &quot;,$i);print $i}&apos;`
+    if [ &quot;${OVERALL_MEVOCO_BUILD_RESULT}&quot; == &quot;Failure&quot; ]; then
+    	BUILD_VERSIONS_FILE=/tmp/build_mevoco_versions.${OVERALL_MEVOCO_BUILD_NUMBER}
+    else
+        BUILD_VERSIONS_FILE=mevoco_ci/latest/versions.txt
+    fi
+	for i in $(seq `wc -l ${BUILD_VERSIONS_FILE}|awk &apos;{print $1}&apos;`); do
+		COMPONENT=`sed -n &quot;${i}p&quot; ${BUILD_VERSIONS_FILE} | awk &apos;{print $1}&apos; | awk -F &apos;:&apos; &apos;{print $1}&apos;`
+    	SUBJECT=`sed -n &quot;${i}p&quot; ${BUILD_VERSIONS_FILE} | awk &apos;{for (i=2; i&lt;NF; i++) printf(&quot;%s &quot;,$i);print $i}&apos;`
     	NOT_FOUND=0
     	grep &quot;Started by upstream project \&quot;${COMPONENT}\&quot; build number&quot; /tmp/slack_report_query || NOT_FOUND=1
    	 	if [ ${NOT_FOUND} -eq 0 ]; then
@@ -106,7 +115,11 @@ if [ &quot;${OVERALL_ZSTACK_BUILD_RESULT}&quot; != &quot;&quot; ]; then
 	COMPONENTS=&quot;zstack zstack-utility zstack-agent mevoco-ui zstack-dashboard premium&quot;
 	rm -rf /tmp/slack_report_query
 	curl -u mevoco:zstack.org http://192.168.200.127:8080/job/build_zstack/${OVERALL_ZSTACK_BUILD_NUMBER}/api/xml &gt; /tmp/slack_report_query
-	TRIGGERS=&quot;&quot;
+    if [ &quot;${PRODUCT_VERSION}&quot; != &quot;&quot; ]; then
+    	TRIGGERS=&quot;build_zstack_release_candidate&quot;
+    else
+		TRIGGERS=&quot;&quot;
+    fi
 	for C in ${COMPONENTS}; do
 		NOT_FOUND=0
 		grep &quot;Started by upstream project \&quot;${C}\&quot; build number&quot; /tmp/slack_report_query || NOT_FOUND=1
@@ -118,9 +131,14 @@ if [ &quot;${OVERALL_ZSTACK_BUILD_RESULT}&quot; != &quot;&quot; ]; then
     DURATION_MIN=`echo &quot;${DURATION}/60000&quot; | bc`
     DURATION_SEC=`echo &quot;${DURATION}/1000%60&quot; | bc`
 	echo &quot;{\&quot;fallback\&quot;:\&quot;build_zstack(triggered by ${TRIGGERS}) - #${OVERALL_ZSTACK_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/|Open&gt;) ${OVERALL_ZSTACK_BUILD_RESULT} after ${DURATION_MIN} min ${DURATION_MIN} sec (&lt;http://192.168.200.1/mirror/zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/build_zstack.log|Log&gt;)\&quot;,\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;build_zstack(triggered by ${TRIGGERS}) - #${OVERALL_ZSTACK_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/|Open&gt;)\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;${OVERALL_ZSTACK_BUILD_RESULT} after ${DURATION_MIN} min ${DURATION_MIN} sec (&lt;http://192.168.200.1/mirror/zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/build_zstack.log|Log&gt;)\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;${COLOR}\&quot;},&quot; &gt;&gt; /tmp/build_zstack_report.json
-	for i in $(seq `wc -l zstack_ci/latest/versions.txt|awk &apos;{print $1}&apos;`); do
-		COMPONENT=`sed -n &quot;${i}p&quot; zstack_ci/latest/versions.txt | awk &apos;{print $1}&apos; | awk -F &apos;:&apos; &apos;{print $1}&apos;`
-    	SUBJECT=`sed -n &quot;${i}p&quot; zstack_ci/latest/versions.txt | awk &apos;{for (i=2; i&lt;NF; i++) printf(&quot;%s &quot;,$i);print $i}&apos;`
+    if [ &quot;${OVERALL_ZSTACK_BUILD_RESULT}&quot; == &quot;Failure&quot; ]; then
+    	BUILD_VERSIONS_FILE=/tmp/build_zstack_versions.${OVERALL_ZSTACK_BUILD_NUMBER}
+    else
+        BUILD_VERSIONS_FILE=zstack_ci/latest/versions.txt
+    fi
+	for i in $(seq `wc -l ${BUILD_VERSIONS_FILE}|awk &apos;{print $1}&apos;`); do
+		COMPONENT=`sed -n &quot;${i}p&quot; ${BUILD_VERSIONS_FILE} | awk &apos;{print $1}&apos; | awk -F &apos;:&apos; &apos;{print $1}&apos;`
+    	SUBJECT=`sed -n &quot;${i}p&quot; ${BUILD_VERSIONS_FILE} | awk &apos;{for (i=2; i&lt;NF; i++) printf(&quot;%s &quot;,$i);print $i}&apos;`
     	NOT_FOUND=0
     	grep &quot;Started by upstream project \&quot;${COMPONENT}\&quot; build number&quot; /tmp/slack_report_query || NOT_FOUND=1
    	 	if [ ${NOT_FOUND} -eq 0 ]; then

@@ -77,6 +77,8 @@ rm -rf zstack-dashboard.tar
 cd zstack-dashboard
 echo -n &quot;zstack-dashboard: &quot; &gt;&gt; ../zstack_ci/${BUILD_NUMBER}/versions.txt
 git log -1 --format=&quot;%H %ci %an: %s&quot; &gt;&gt; ../zstack_ci/${BUILD_NUMBER}/versions.txt
+rm -rf /tmp/build_mevoco_versions.${BUILD_NUMBER}
+cp ../zstack_ci/${BUILD_NUMBER}/versions.txt /tmp/build_zstack_versions.${BUILD_NUMBER}
 cd ..
 cp ${JENKINS_HOME}/apache-tomcat-7.0.35.zip apache-tomcat-7.0.35.zip
 cd zstack
