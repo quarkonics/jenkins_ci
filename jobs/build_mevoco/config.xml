@@ -96,10 +96,10 @@ echo -n &quot;zstack-utility: &quot; &gt;&gt; ../mevoco_ci/${BUILD_NUMBER}/versi
 git log -1 --format=&quot;%H %ci %an: %s&quot; &gt;&gt; ../mevoco_ci/${BUILD_NUMBER}/versions.txt
 #git branch premium
 cd ..
-mkdir -p zstack-dashboard
-tar -x -C zstack-dashboard -f mevoco-ui.tar
+mkdir -p mevoco-ui
+tar -x -C mevoco-ui -f mevoco-ui.tar
 rm -rf mevoco-ui.tar
-cd zstack-dashboard
+cd mevoco-ui
 echo -n &quot;mevoco-ui: &quot; &gt;&gt; ../mevoco_ci/${BUILD_NUMBER}/versions.txt
 git log -1 --format=&quot;%H %ci %an: %s&quot; &gt;&gt; ../mevoco_ci/${BUILD_NUMBER}/versions.txt
 cd ..
