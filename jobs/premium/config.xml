@@ -56,7 +56,11 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>tar cfp premium.tar .</command>
+      <command>tar cfp premium.tar .
+cd ${WORKSPACE}/../builds/
+DELETE_UNTIL=`echo ${BUILD_NUMBER}-5 | bc`
+rm -rf `seq ${DELETE_UNTIL}`
+cd ${WORKSPACE}/</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>

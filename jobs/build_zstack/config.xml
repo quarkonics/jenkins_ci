@@ -55,7 +55,12 @@
       <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
     </hudson.plugins.copyartifact.CopyArtifact>
     <hudson.tasks.Shell>
-      <command>rm -rf zstack zstack-utility zstack-dashboard zstack_ci
+      <command>rm -rf zstack zstack-utility zstack-dashboard zstack_ci overall_zstack_build_number.txt
+echo ${BUILD_NUMBER} &gt; overall_zstack_build_number.txt
+cd ${WORKSPACE}/../builds/
+DELETE_UNTIL=`echo ${BUILD_NUMBER}-5 | bc`
+rm -rf `seq ${DELETE_UNTIL}`
+cd ${WORKSPACE}/
 mkdir -p zstack_ci/${BUILD_NUMBER}
 mkdir -p zstack
 tar -x -C zstack -f zstack.tar
@@ -123,7 +128,7 @@ ln -s ${ZSTACK_BIN} zstack_ci/latest/zstack-installer.bin</command>
   </builders>
   <publishers>
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>zstack_ci/latest/*</artifacts>
+      <artifacts>zstack_ci/latest/*, overall_zstack_build_number.txt</artifacts>
       <allowEmptyArchive>false</allowEmptyArchive>
       <onlyIfSuccessful>false</onlyIfSuccessful>
       <fingerprint>false</fingerprint>
@@ -184,6 +189,17 @@ OVERALL_ZSTACK_BUILD_NUMBER=${BUILD_NUMBER}</properties>
           </configs>
           <projects>slack_report,</projects>
           <condition>UNSTABLE</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+          <configs>
+            <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+              <properties>OVERALL_ZSTACK_BUILD_RESULT=Success
+OVERALL_ZSTACK_BUILD_NUMBER=${BUILD_NUMBER}</properties>
+            </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+          </configs>
+          <projects>zstack_nightly_test,</projects>
+          <condition>SUCCESS</condition>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
       </configs>

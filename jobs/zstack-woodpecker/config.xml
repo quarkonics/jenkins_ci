@@ -59,18 +59,37 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>tar cfp zstack-woodpecker.tar .</command>
+      <command>tar cfp zstack-woodpecker.tar .
+cd ${WORKSPACE}/../builds/
+DELETE_UNTIL=`echo ${BUILD_NUMBER}-5 | bc`
+rm -rf `seq ${DELETE_UNTIL}`
+cd ${WORKSPACE}/
+git log -1 --format=&quot;%H %ci %an: %s&quot; &gt; zstack_woodpecker_version.txt</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>zstack-woodpecker.tar</artifacts>
+      <artifacts>zstack-woodpecker.tar, zstack_woodpecker_version.txt</artifacts>
       <allowEmptyArchive>false</allowEmptyArchive>
       <onlyIfSuccessful>false</onlyIfSuccessful>
       <fingerprint>false</fingerprint>
       <defaultExcludes>true</defaultExcludes>
       <caseSensitive>true</caseSensitive>
     </hudson.tasks.ArtifactArchiver>
+    <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@2.30">
+      <configs>
+        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+          <configs>
+            <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+              <properties>ZSTACK_WOODPECKER_BUILD_NUMBER=${BUILD_NUMBER}</properties>
+            </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+          </configs>
+          <projects>mevoco_nightly_test, zstack_nightly_test, </projects>
+          <condition>SUCCESS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+      </configs>
+    </hudson.plugins.parameterizedtrigger.BuildTrigger>
   </publishers>
   <buildWrappers/>
 </project>

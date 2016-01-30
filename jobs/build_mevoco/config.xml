@@ -71,7 +71,12 @@
       <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
     </hudson.plugins.copyartifact.CopyArtifact>
     <hudson.tasks.Shell>
-      <command>rm -rf zstack zstack-utility zstack-dashboard zstack-agent mevoco_ci
+      <command>rm -rf zstack zstack-utility zstack-dashboard zstack-agent mevoco_ci overall_mevoco_build_number.txt
+echo ${BUILD_NUMBER} &gt; overall_mevoco_build_number.txt
+cd ${WORKSPACE}/../builds/
+DELETE_UNTIL=`echo ${BUILD_NUMBER}-5 | bc`
+rm -rf `seq ${DELETE_UNTIL}`
+cd ${WORKSPACE}/
 mkdir -p mevoco_ci/${BUILD_NUMBER}
 mkdir -p zstack
 tar -x -C zstack -f zstack.tar
@@ -102,6 +107,8 @@ rm -rf mevoco-ui.tar
 cd mevoco-ui
 echo -n &quot;mevoco-ui: &quot; &gt;&gt; ../mevoco_ci/${BUILD_NUMBER}/versions.txt
 git log -1 --format=&quot;%H %ci %an: %s&quot; &gt;&gt; ../mevoco_ci/${BUILD_NUMBER}/versions.txt
+git branch -D master
+git branch master
 cd ..
 mkdir -p zstack/premium
 tar -x -C zstack/premium -f premium.tar
@@ -167,7 +174,7 @@ ln -s ${MEVOCO_BIN} mevoco_ci/latest/mevoco-installer.bin</command>
   </builders>
   <publishers>
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>mevoco_ci/latest/*</artifacts>
+      <artifacts>mevoco_ci/latest/*, overall_mevoco_build_number.txt</artifacts>
       <allowEmptyArchive>false</allowEmptyArchive>
       <onlyIfSuccessful>false</onlyIfSuccessful>
       <fingerprint>false</fingerprint>

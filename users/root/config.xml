@@ -8,7 +8,6 @@
     <com.cloudbees.plugins.credentials.UserCredentialsProvider_-UserCredentialsProperty plugin="credentials@1.24">
       <domainCredentialsMap class="hudson.util.CopyOnWriteMap$Hash"/>
     </com.cloudbees.plugins.credentials.UserCredentialsProvider_-UserCredentialsProperty>
-    <hudson.tasks.Mailer_-UserProperty plugin="mailer@1.16"/>
     <hudson.model.MyViewsProperty>
       <views>
         <hudson.model.AllView>
@@ -33,5 +32,8 @@
       </roles>
       <timestamp>1452612497026</timestamp>
     </jenkins.security.LastGrantedAuthoritiesProperty>
+    <hudson.tasks.Mailer_-UserProperty plugin="mailer@1.16">
+      <emailAddress>root@localhost.localdomain</emailAddress>
+    </hudson.tasks.Mailer_-UserProperty>
   </properties>
 </user>
