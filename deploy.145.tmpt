@@ -1,0 +1,207 @@
+zstackPkg = /home/shuang3/sanitytest/zstack-offline-installer-test.bin
+zstackInstallScript = /home/shuang3/sanitytest/install.sh
+#zstackInstallPath should be carefully set. The contents in this folder will be deleted permanently in testing. 
+zstackInstallPath = /usr/local/zstacktest
+zstackPropertiesPath = /home/shuang3/sanitytest/conf/zstack.properties
+zstackTestAgentPkgPath = /home/shuang3/sanitytest/zstacktestagent.tar.bz
+DBServer = 192.168.200.145
+
+DBAdminUser = root
+DBAdminPassword = 
+
+DBUserName = zstack
+DBPassword =
+
+DBPort = 3306
+rabbitmqServerIp = 192.168.200.145
+
+node1Name = 192.168.200.145
+node1Ip = 192.168.200.145
+
+node2Name = centos5
+node2DockerImage = 
+node2Ip = 192.168.200.145
+nodeUserName = root
+nodePassword = password
+
+node3Name = centos6
+node3DockerImage = 
+node3Ip = 192.168.200.145
+
+instanceOfferingName_s = small-vm
+instanceOfferingMemory_s = 128M
+instanceOfferingCpuNum_s = 1
+instanceOfferingCpuSpeed_s = 512
+
+virtualRouterOfferingName_s = virtual-router-vm
+virtualRouterOfferingMemory_s = 512M
+virtualRouterOfferingCpuNum_s = 2
+virtualRouterOfferingCpuSpeed_s = 512
+
+sftpBackupStorageName = sftp
+sftpBackupStorageUrl = /home/sftpBackupStorage
+sftpBackupStorageUsername = root
+sftpBackupStoragePassword = password
+sftpBackupStorageHostname = 192.168.200.145
+
+nfsPrimaryStorageName = nfs
+nfsPrimaryStorageUrl = 192.168.200.145:/home/nfs
+
+imageName_s = ttylinux
+rootImageFormat = raw
+rootMediaType = RootVolumeTemplate
+imageUrl_s = http://192.168.200.1/mirror/diskimages/f18_200m.img
+#imageUrl = http://zstack.yyk.net/image/centos.img
+imageUsername = root
+imagePassword = password
+
+imageName_net = image_for_sg_test
+imageUrl_net = http://192.168.200.1/mirror/diskimages/centos_400m_140527.img
+
+rootDiskOfferingName = root-disk
+rootDiskOfferingSize = 1G
+
+smallDiskOfferingName = smallDiskOffering
+smallDiskOfferingSize = 10M
+
+zoneName = zone1
+
+clusterName = cluster1
+clusterHypervisorType = KVM
+
+hostName = 192.168.200.145
+hostIp = 192.168.200.145
+#hostName = ubuntu
+#hostIp = 10.1.101.10
+#hostName = centos7
+#hostIp = 10.1.101.51
+hostUsername = root
+hostPassword = password
+
+#for all kinds of vlan. It could be same as public network and management network.
+l2NetworkPhysicalInterface = eth0
+
+l2PublicNetworkName = l2-public
+l2PublicNetworkInterface = eth0
+
+l2ManagementNetworkName = l2-management
+l2ManagementNetworkInterface = eth0
+
+l2NoVlanNetworkName1 = vlan10
+l2NoVlanNetworkInterface1 = eth0.10
+
+l2NoVlanNetworkName2 = vlan11
+l2NoVlanNetworkInterface2 = eth0.11
+
+l2VlanNetworkName1 = vlan-test-dns-dhcp-snat
+l2Vlan1 = 21
+
+l2VlanNetworkName2 = vlan-test-port-forwarding
+l2Vlan2 = 22
+
+l2VlanNetworkName3 = vlan-test-dns-dhcp
+l2Vlan3 = 23
+
+l2VlanNetworkName4 = vlan-test-small-ip-range
+l2Vlan4 = 24
+
+l2VlanNetworkName5 = vlan-test-dhcp-only
+l2Vlan5 = 25
+
+l2VlanNetworkName6 = vlan-test-load-balance
+l2Vlan6 = 26
+
+#L3 network names should be same, test case will rely on name. 
+l3ManagementNetworkName = management network
+l3PublicNetworkName = public network
+l3NoVlanNetworkName1 = l3_user_defined_vlan1
+l3NoVlanNetworkName2 = l3_user_defined_vlan2
+l3VlanNetworkName1 = l3VlanNetwork1
+l3VlanDNATNetworkName = l3VlanDNATNetwork
+l3VlanNetworkName3 = l3VlanNetwork3
+l3VlanNetworkName4 = l3VlanNetwork4
+l3VlanNetworkName5 = l3VlanNetwork5
+l3VlanNetworkName6 = l3VlanNetwork6-Load-Balance
+
+L3VlanNetworkDomainName1 = zstest-test1.org
+L3VlanNetworkDomainName2 = zstest-test2.org
+L3VlanNetworkDomainName3 = zstest-test3.org
+L3VlanNetworkDomainName4 = zstest-test4.org
+L3VlanNetworkDomainName5 = zstest-test5.org
+L3VlanNetworkDomainName6 = zstest-test6.org
+
+DNSServer = 192.168.200.1
+
+ipRangeManagementName = host IP range
+ipRangeManagementStartIp = 192.168.200.101
+ipRangeManagementEndIp = 192.168.200.150
+ipRangeManagementNetmask = 255.255.252.0
+ipRangeManagementGateway = 192.168.200.1
+
+ipRangeName = host IP range
+ipRangeStartIp = 192.168.200.101
+ipRangeEndIp = 192.168.200.150
+ipRangeNetmask = 255.255.252.0
+ipRangeGateway = 192.168.200.1
+
+noVlanIpRangeName1 = guest novlan range 1
+noVlanIpRangeStart1 = 192.168.201.2
+noVlanIpRangeEnd1 = 192.168.201.254
+noVlanIpRangeGateway1 = 192.168.200.1
+noVlanIpRangeNetmask1 = 255.255.252.0
+
+noVlanIpRangeName2 = guest novlan range 2
+noVlanIpRangeStart2 = 192.168.202.2
+noVlanIpRangeEnd2 = 192.168.202.254
+noVlanIpRangeGateway2 = 192.168.200.1
+noVlanIpRangeNetmask2 = 255.255.252.0
+
+vlanIpRangeName1 = guest vlan range for dns dhcp and snat
+vlanIpRangeStart1 = 10.11.0.2
+vlanIpRangeEnd1 = 10.11.127.255
+vlanIpRangeGateway1 = 10.11.0.1
+vlanIpRangeNetmask1 = 255.255.0.0
+
+vlanIpRangeName2 = guest vlan range for port forwarding
+vlanIpRangeStart2 = 10.12.0.2
+vlanIpRangeEnd2 = 10.12.127.255
+vlanIpRangeGateway2 = 10.12.0.1
+vlanIpRangeNetmask2 = 255.255.0.0
+
+vlanIpRangeName3 = guest vlan range for dns and dhcp
+vlanIpRangeStart3 = 10.13.0.2
+vlanIpRangeEnd3 = 10.13.127.255
+vlanIpRangeGateway3 = 10.13.0.1
+vlanIpRangeNetmask3 = 255.255.0.0
+
+vlanIpRangeName4 = guest vlan range for small ip range test
+vlanIpRangeStart4 = 10.14.0.2
+vlanIpRangeEnd4 = 10.14.0.4
+vlanIpRangeGateway4 = 10.14.0.1
+vlanIpRangeNetmask4 = 255.255.0.0
+
+vlanIpRangeName5 = guest vlan range for dhcp
+vlanIpRangeStart5 = 10.15.0.2
+vlanIpRangeEnd5 = 10.15.127.255
+vlanIpRangeGateway5 = 10.15.0.1
+vlanIpRangeNetmask5 = 255.255.0.0
+
+vlanIpRangeName6 = guest vlan range for dhcp
+vlanIpRangeStart6 = 10.16.0.2
+vlanIpRangeEnd6 = 10.16.127.255
+vlanIpRangeGateway6 = 10.16.0.1
+vlanIpRangeNetmask6 = 255.255.0.0
+
+virtualRouterImageName = vr
+#virtualRouterImageUrl = http://zstack.yyk.net/image/vr-centos.img
+#virtualRouterImageUrl = http://zstack.yyk.net/image/vr-centos_1.3g_14_2_27.img
+#virtualRouterImageUrl = http://zstack.yyk.net/image/vr-centos_500m_140228.img
+#virtualRouterImageUrl = http://zstack.yyk.net/image/vr-centos_600m_140313.img
+#virtualRouterImageUrl = http://zstack.yyk.net/image/vr-centos_700m_140603.img
+#virtualRouterImageUrl = http://zstack.yyk.net/image/debian-vr.img
+#virtualRouterImageUrl = http://zstack.yyk.net/image/zstack-vr.img
+virtualRouterImageUrl = http://192.168.200.1/mirror/diskimages/zstack-vr.qcow2
+#virtualRouterImageUrl = http://zstack.yyk.net/image/vr-centos_600m_140318.img
+#virtualRouterImageUrl = http://zstack.yyk.net/image/vr-centos_500m.img
+vrImageUsername = root
+vrImagePassword = password
