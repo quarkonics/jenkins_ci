@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <project>
   <actions/>
-  <description>zstack nightly test</description>
+  <description>mevoco nightly test</description>
   <keepDependencies>false</keepDependencies>
   <properties>
     <hudson.plugins.copyartifact.CopyArtifactPermissionProperty plugin="copyartifact@1.37">
@@ -11,6 +11,8 @@
         <string>zstack-dashboard</string>
         <string>zstack-woodpecker</string>
         <string>build_zstack</string>
+        <string>build_test_zstack</string>
+        <string>build_test_mevoco</string>
       </projectNameList>
     </hudson.plugins.copyartifact.CopyArtifactPermissionProperty>
     <jenkins.plugins.slack.SlackNotifier_-SlackJobProperty plugin="slack@1.8.1">
@@ -40,7 +42,7 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>rm -rf mevoco_ci zstack_ci</command>
+      <command>rm -rf zstack_ci mevoco_ci overall_mevoco_build_number.txt</command>
     </hudson.tasks.Shell>
     <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
       <project>zstack</project>
@@ -100,8 +102,8 @@
       <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
     </hudson.plugins.copyartifact.CopyArtifact>
     <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
-      <project>build_zstack</project>
-      <filter>overall_zstack_build_number.txt</filter>
+      <project>build_mevoco</project>
+      <filter>overall_mevoco_build_number.txt</filter>
       <target></target>
       <excludes></excludes>
       <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
@@ -109,28 +111,28 @@
     </hudson.plugins.copyartifact.CopyArtifact>
     <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
       <disable>false</disable>
-      <serverInfo>zstack_tests~~jenkins_nightly_testing2~~192.168.200.145</serverInfo>
-      <groupName>zstack_tests</groupName>
-      <ip>192.168.200.145</ip>
-      <localFilePath>/var/lib/jenkins/jobs/zstack_nightly_test/workspace/overall_zstack_build_number.txt</localFilePath>
-      <remoteLocation>/home/shuang3/</remoteLocation>
-      <fileName>overall_zstack_build_number.txt</fileName>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <localFilePath>/var/lib/jenkins/jobs/mevoco_nightly_test/workspace/overall_mevoco_build_number.txt</localFilePath>
+      <remoteLocation>/home/shuang2/</remoteLocation>
+      <fileName>overall_mevoco_build_number.txt</fileName>
     </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
     <jenkins.plugins.ssh2easy.gssh.GsshShellBuilder plugin="ssh2easy@1.3">
       <disable>false</disable>
-      <serverInfo>zstack_tests~~jenkins_nightly_testing2~~192.168.200.145</serverInfo>
-      <groupName>zstack_tests</groupName>
-      <ip>192.168.200.145</ip>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
       <shell>rm -rf /home/repo_for_test.txt
 sed -i &apos;/222.73.157.67.*$/d&apos; /etc/hosts
 ping -c 4 zstack.org
 if [ $? -ne 0 ]; then
-    curl -X POST --data-urlencode &apos;payload={&quot;username&quot; : &quot;jenkins&quot;,&quot;text&quot; : &quot;BAT test for build_zstack #`cat /home/shuang3/overall_zstack_build_number.txt`, not able to ping zstack.org on 192.168.200.145, work around added to /etc/hosts&quot;}&apos; https://hooks.slack.com/services/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
+    curl -X POST --data-urlencode &quot;payload={\&quot;username\&quot; : \&quot;jenkins\&quot;,\&quot;text\&quot; : \&quot;BAT test for build_mevoco #`cat /home/shuang2/overall_mevoco_build_number.txt`, not able to ping zstack.org on 192.168.200.120, work around added to /etc/hosts\&quot;}&quot; https://hooks.slack.com/services/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
     echo &quot;222.73.157.67 zstack.org&quot; &gt;&gt; /etc/hosts
 fi
 ping -c 4 zstack.org
 if [ $? -ne 0 ]; then
-    curl -X POST --data-urlencode &apos;payload={&quot;username&quot; : &quot;jenkins&quot;,&quot;text&quot; : &quot;BAT test for build_zstack #`cat /home/shuang3/overall_zstack_build_number.txt`, not able to ping zstack.org on 192.168.200.145, even with work around added to /etc/hosts, need check it manually&quot;}&apos; https://hooks.slack.com/services/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
+    curl -X POST --data-urlencode &quot;payload={\&quot;username\&quot; : \&quot;jenkins\&quot;,\&quot;text\&quot; : \&quot;BAT test for build_mevoco #`cat /home/shuang2/overall_mevoco_build_number.txt`, not able to ping zstack.org on 192.168.200.120, even with work around added to /etc/hosts, need check it manually\&quot;}&quot; https://hooks.slack.com/services/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
 fi
 
 yum-config-manager --disable alibase
@@ -144,50 +146,50 @@ if [ $? -ne 0 ]; then
     yum clean metadata
     yum --nogpgcheck install -y vim
     if [ $? -eq 0 ]; then
-        echo &quot;use 163base&quot;
+        echo &quot;Use 163base&quot;
         touch /home/repo_for_test.txt
-        curl -X POST --data-urlencode &quot;payload={\&quot;username\&quot; : \&quot;jenkins\&quot;,\&quot;text\&quot; : \&quot;BAT test for build_zstack #`cat /home/shuang3/overall_zstack_build_number.txt`, yum repo alibase not working on 192.168.200.145, switch to 163base for testing\&quot;}&quot; https://hooks.slack.com/services/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
+        curl -X POST --data-urlencode &apos;payload={&quot;username&quot; : &quot;jenkins&quot;,&quot;text&quot; : &quot;BAT test for build_mevoco #`cat /home/shuang2/overall_mevoco_build_number.txt`, yum repo alibase not working on 192.168.200.120, switch to 163base for testing&quot;}&apos; https://hooks.slack.com/services/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
     else
         echo &quot;no repo working&quot;
-        curl -X POST --data-urlencode &quot;payload={\&quot;username\&quot; : \&quot;jenkins\&quot;,\&quot;text\&quot; : \&quot;BAT test for build_zstack #`cat /home/shuang3/overall_zstack_build_number.txt`, both alibase and 163base repo not working on 192.168.200.145, need manual check\&quot;}&quot; https://hooks.slack.com/services/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
+        curl -X POST --data-urlencode &apos;payload={&quot;username&quot; : &quot;jenkins&quot;,&quot;text&quot; : &quot;BAT test for build_mevoco #`cat /home/shuang2/overall_mevoco_build_number.txt`, both alibase and 163base repo not working on 192.168.200.120, need manual check&quot;}&apos; https://hooks.slack.com/services/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
     fi
 fi</shell>
     </jenkins.plugins.ssh2easy.gssh.GsshShellBuilder>
     <hudson.tasks.Shell>
-      <command>if [ &quot;${OVERALL_ZSTACK_BUILD_NUMBER}&quot; == &quot;&quot; ]; then
-	OVERALL_ZSTACK_BUILD_NUMBER=`cat overall_zstack_build_number.txt`
-fi
-cp zstack_ci/latest/zstack-installer.bin .
-#cp mevoco_ci/latest/mevoco-installer.bin .
+      <command>#cp zstack_ci/latest/zstack-installer.bin .
+cp mevoco_ci/latest/mevoco-installer.bin .
 rm -rf zstack zstack-utility zstack-dashboard zstack_ci zstack-woodpecker
-mkdir -p zstack_ci/${BUILD_NUMBER}
+if [ &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot; == &quot;&quot; ]; then
+	OVERALL_MEVOCO_BUILD_NUMBER=`cat overall_mevoco_build_number.txt`
+fi
+mkdir -p mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}
 mkdir -p zstack
 tar -x -C zstack -f zstack.tar
 rm -rf zstack.tar
 cd zstack
-echo -n &quot;zstack: &quot; &gt; ../zstack_ci/${BUILD_NUMBER}/versions.txt
-git log -1 --format=&quot;%H %an: %s&quot; &gt;&gt; ../zstack_ci/${BUILD_NUMBER}/versions.txt
+echo -n &quot;zstack: &quot; &gt; ../mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/versions.txt
+git log -1 --format=&quot;%H %an: %s&quot; &gt;&gt; ../mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/versions.txt
 cd ..
 mkdir -p zstack-utility
 tar -x -C zstack-utility -f zstack-utility.tar
 #rm -rf zstack-utility.tar
 cd zstack-utility
-echo -n &quot;zstack-utility: &quot; &gt;&gt; ../zstack_ci/${BUILD_NUMBER}/versions.txt
-git log -1 --format=&quot;%H %an: %s&quot; &gt;&gt; ../zstack_ci/${BUILD_NUMBER}/versions.txt
+echo -n &quot;zstack-utility: &quot; &gt;&gt; ../mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/versions.txt
+git log -1 --format=&quot;%H %an: %s&quot; &gt;&gt; ../mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/versions.txt
 cd ..
 mkdir -p zstack-dashboard
 tar -x -C zstack-dashboard -f zstack-dashboard.tar
 rm -rf zstack-dashboard.tar
 cd zstack-dashboard
-echo -n &quot;zstack-dashboard: &quot; &gt;&gt; ../zstack_ci/${BUILD_NUMBER}/versions.txt
-git log -1 --format=&quot;%H %an: %s&quot; &gt;&gt; ../zstack_ci/${BUILD_NUMBER}/versions.txt
+echo -n &quot;zstack-dashboard: &quot; &gt;&gt; ../mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/versions.txt
+git log -1 --format=&quot;%H %an: %s&quot; &gt;&gt; ../mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/versions.txt
 cd ..
 mkdir -p zstack-woodpecker
 tar -x -C zstack-woodpecker -f zstack-woodpecker.tar
 #rm -rf zstack-woodpecker.tar
 cd zstack-woodpecker
-echo -n &quot;zstack-woodpecker: &quot; &gt;&gt; ../zstack_ci/${BUILD_NUMBER}/versions.txt
-git log -1 --format=&quot;%H %an: %s&quot; &gt;&gt; ../zstack_ci/${BUILD_NUMBER}/versions.txt
+echo -n &quot;zstack-woodpecker: &quot; &gt;&gt; ../mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/versions.txt
+git log -1 --format=&quot;%H %an: %s&quot; &gt;&gt; ../mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/versions.txt
 cd ..
 cp ${JENKINS_HOME}/apache-tomcat-7.0.35.zip apache-tomcat-7.0.35.zip
 cd zstack
@@ -201,50 +203,51 @@ ant buildtestagent -Dzstack_build_root=${WORKSPACE}
 cp -r target/woodpecker/ woodpecker/
 #tar cf zstac-all-in-one.tar woodpecker/zstacktestagent.tar.bz woodpecker/conf/zstack.properties ../../zstack-all-in-one.tgz ../../install.sh 
 #echo &quot;Monitor.dbPushUrl = http://localhost:8080/api/v1/datapoints&quot; &gt;&gt; woodpecker/conf/zstack.properties
-tar cf zstack-all-in-one.tar woodpecker/zstacktestagent.tar.bz woodpecker/conf/zstack.properties ../../zstack-installer.bin
-rm -rf /tmp/result_145.log</command>
+tar cf zstack-all-in-one.tar woodpecker/zstacktestagent.tar.bz woodpecker/conf/zstack.properties ../../mevoco-installer.bin
+rm -rf /tmp/result_120.log</command>
     </hudson.tasks.Shell>
     <jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder plugin="ssh2easy@1.3">
       <disable>false</disable>
-      <serverInfo>zstack_tests~~jenkins_nightly_testing2~~192.168.200.145</serverInfo>
-      <groupName>zstack_tests</groupName>
-      <ip>192.168.200.145</ip>
-      <shell>rm -rf /home/shuang3/
-mkdir -p /home/shuang3/</shell>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <shell>rm -rf /home/shuang2/
+mkdir -p /home/shuang2/
+</shell>
     </jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder>
     <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
       <disable>false</disable>
-      <serverInfo>zstack_tests~~jenkins_nightly_testing2~~192.168.200.145</serverInfo>
-      <groupName>zstack_tests</groupName>
-      <ip>192.168.200.145</ip>
-      <localFilePath>/var/lib/jenkins/jobs/zstack_nightly_test/workspace/zstack-utility/zstackbuild/zstack-all-in-one.tar</localFilePath>
-      <remoteLocation>/home/shuang3/</remoteLocation>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <localFilePath>/var/lib/jenkins/jobs/mevoco_nightly_test/workspace/zstack-utility/zstackbuild/zstack-all-in-one.tar</localFilePath>
+      <remoteLocation>/home/shuang2/</remoteLocation>
       <fileName>zstack-all-in-one.tar</fileName>
     </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
     <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
       <disable>false</disable>
-      <serverInfo>zstack_tests~~jenkins_nightly_testing2~~192.168.200.145</serverInfo>
-      <groupName>zstack_tests</groupName>
-      <ip>192.168.200.145</ip>
-      <localFilePath>/var/lib/jenkins/jobs/zstack_nightly_test/workspace/zstack-utility.tar</localFilePath>
-      <remoteLocation>/home/shuang3/</remoteLocation>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <localFilePath>/var/lib/jenkins/jobs/mevoco_nightly_test/workspace/zstack-utility.tar</localFilePath>
+      <remoteLocation>/home/shuang2/</remoteLocation>
       <fileName>zstack-utility.tar</fileName>
     </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
     <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
       <disable>false</disable>
-      <serverInfo>zstack_tests~~jenkins_nightly_testing2~~192.168.200.145</serverInfo>
-      <groupName>zstack_tests</groupName>
-      <ip>192.168.200.145</ip>
-      <localFilePath>/var/lib/jenkins/jobs/zstack_nightly_test/workspace/zstack-woodpecker.tar</localFilePath>
-      <remoteLocation>/home/shuang3/</remoteLocation>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <localFilePath>/var/lib/jenkins/jobs/mevoco_nightly_test/workspace/zstack-woodpecker.tar</localFilePath>
+      <remoteLocation>/home/shuang2/</remoteLocation>
       <fileName>zstack-woodpecker.tar</fileName>
     </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
     <jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder plugin="ssh2easy@1.3">
       <disable>false</disable>
-      <serverInfo>zstack_tests~~jenkins_nightly_testing2~~192.168.200.145</serverInfo>
-      <groupName>zstack_tests</groupName>
-      <ip>192.168.200.145</ip>
-      <shell>cd /home/shuang3/
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <shell>cd /home/shuang2/
 rm -rf zstack-woodpecker zstack-utility
 mkdir -p zstack-woodpecker
 tar -x -C zstack-woodpecker -f zstack-woodpecker.tar
@@ -254,23 +257,24 @@ tar -x -C zstack-utility -f zstack-utility.tar</shell>
     </jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder>
     <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
       <disable>false</disable>
-      <serverInfo>zstack_tests~~jenkins_nightly_testing2~~192.168.200.145</serverInfo>
-      <groupName>zstack_tests</groupName>
-      <ip>192.168.200.145</ip>
-      <localFilePath>/var/lib/jenkins/build_zstack.145.sh</localFilePath>
-      <remoteLocation>/home/shuang3/zstack-woodpecker/dailytest/</remoteLocation>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <localFilePath>/var/lib/jenkins/build_zstack.sh</localFilePath>
+      <remoteLocation>/home/shuang2/zstack-woodpecker/dailytest/</remoteLocation>
       <fileName>build_zstack.sh</fileName>
     </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
     <jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder plugin="ssh2easy@1.3">
       <disable>false</disable>
-      <serverInfo>zstack_tests~~jenkins_nightly_testing2~~192.168.200.145</serverInfo>
-      <groupName>zstack_tests</groupName>
-      <ip>192.168.200.145</ip>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
       <shell>if [ -f /home/repo_for_test.txt ]; then
-    sed -i &apos;s/aliyun/163/g&apos; /home/shuang3/zstack-woodpecker/zstackwoodpecker/zstackwoodpecker/setup_actions.py
+    echo &quot;fix zstack-woodpecker/zstackwoodpecker/zstackwoodpecker/setup_actions.py&quot;
+    sed -i &quot;s/aliyun/163/g&quot; /home/shuang2/zstack-woodpecker/zstackwoodpecker/zstackwoodpecker/setup_actions.py
 fi
-cd /home/shuang3/zstack-woodpecker/dailytest/
-chmod a+x /home/shuang3/zstack-woodpecker/dailytest/build_zstack.sh
+cd /home/shuang2/zstack-woodpecker/dailytest/
+chmod a+x /home/shuang2/zstack-woodpecker/dailytest/build_zstack.sh
 ./zstest.py -b
 cd ../tools/
 sh copy_test_config_to_local.sh
@@ -278,52 +282,53 @@ rm -rf /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt</shell>
     </jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder>
     <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
       <disable>false</disable>
-      <serverInfo>zstack_tests~~jenkins_nightly_testing2~~192.168.200.145</serverInfo>
-      <groupName>zstack_tests</groupName>
-      <ip>192.168.200.145</ip>
-      <localFilePath>/var/lib/jenkins/deploy.145.tmpt</localFilePath>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <localFilePath>/var/lib/jenkins/deploy.tmpt</localFilePath>
       <remoteLocation>/root/.zstackwoodpecker/integrationtest/vm/</remoteLocation>
       <fileName>deploy.tmpt</fileName>
     </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
     <jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder plugin="ssh2easy@1.3">
       <disable>false</disable>
-      <serverInfo>zstack_tests~~jenkins_nightly_testing2~~192.168.200.145</serverInfo>
-      <groupName>zstack_tests</groupName>
-      <ip>192.168.200.145</ip>
-      <shell>cd /home/shuang3/zstack-woodpecker/dailytest/
-rm -rf /tmp/result_145.log /tmp/log_145.tgz
-./zstest.py -s basic | tee /tmp/result_145.log
-tar czh config_xml/test-result/latest &gt; /tmp/log_145.tgz</shell>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <shell>cd /home/shuang2/zstack-woodpecker/dailytest/
+rm -rf /tmp/result_120.log /tmp/log_120.tgz
+./zstest.py -s basic | tee /tmp/result_120.log
+tar czh config_xml/test-result/latest &gt; /tmp/log_120.tgz
+</shell>
     </jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder>
     <jenkins.plugins.ssh2easy.gssh.GsshFtpDownloadBuilder plugin="ssh2easy@1.3">
       <disable>false</disable>
-      <serverInfo>zstack_tests~~jenkins_nightly_testing2~~192.168.200.145</serverInfo>
-      <groupName>zstack_tests</groupName>
-      <ip>192.168.200.145</ip>
-      <remoteFile>/tmp/result_145.log</remoteFile>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <remoteFile>/tmp/result_120.log</remoteFile>
       <localFolder>/tmp/</localFolder>
-      <fileName>result_145.log</fileName>
+      <fileName>result_120.log</fileName>
     </jenkins.plugins.ssh2easy.gssh.GsshFtpDownloadBuilder>
     <jenkins.plugins.ssh2easy.gssh.GsshFtpDownloadBuilder plugin="ssh2easy@1.3">
       <disable>false</disable>
-      <serverInfo>zstack_tests~~jenkins_nightly_testing2~~192.168.200.145</serverInfo>
-      <groupName>zstack_tests</groupName>
-      <ip>192.168.200.145</ip>
-      <remoteFile>/tmp/log_145.tgz</remoteFile>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <remoteFile>/tmp/log_120.tgz</remoteFile>
       <localFolder>/tmp/</localFolder>
-      <fileName>log_145.tgz</fileName>
+      <fileName>log_120.tgz</fileName>
     </jenkins.plugins.ssh2easy.gssh.GsshFtpDownloadBuilder>
     <hudson.tasks.Shell>
-      <command>rm -rf /tmp/report.145.json
-if [ &quot;${OVERALL_ZSTACK_BUILD_NUMBER}&quot; == &quot;&quot; ]; then
-	OVERALL_ZSTACK_BUILD_NUMBER=`cat overall_zstack_build_number.txt`
+      <command>rm -rf /tmp/report.json
+if [ &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot; == &quot;&quot; ]; then
+	OVERALL_MEVOCO_BUILD_NUMBER=`cat overall_mevoco_build_number.txt`
 fi
-echo &quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;zstack-woodpecker:\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;`cat zstack_woodpecker_version.txt`\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;${COLOR}\&quot;},&quot; &gt; /tmp/report.145.json
-cat /tmp/result_145.log  | sed -n &apos;/--*$/{:1;N;/--*$/{p;b};N;b1}&apos; | grep -v &apos;\-\-&apos; | awk &apos;{if ($1~/:/) {tttt=$1;gsub(&quot;:&quot;,&quot;&quot;, tttt)} else {if ($2!=1) {printf(&quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;%s/%s\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;FAIL\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;F35A00\&quot;},&quot;, tttt, $1, $2, $3, $4, $5)} else {printf(&quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;%s/%s\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;PASS\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;00F300\&quot;},&quot;, tttt, $1, $2, $3, $4, $5)}}}&apos; &gt;&gt; /tmp/report.145.json
-echo &quot;{}&quot; &gt;&gt; /tmp/report.145.json
-curl -X POST --data-urlencode &quot;payload={\&quot;text\&quot; : \&quot;BAT result(&lt;http://192.168.200.1/mirror/zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/log.tgz|Log&gt;) against build_zstack - #${OVERALL_ZSTACK_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/|Open&gt;)\&quot;, \&quot;username\&quot; : \&quot;jenkins\&quot;, \&quot;attachments\&quot; : [`cat /tmp/report.145.json`]}&quot; https://hooks.slack.com/services/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
-mkdir -p zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/
-cp /tmp/log_145.tgz zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/log.tgz</command>
+echo &quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;zstack-woodpecker:\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;`cat zstack_woodpecker_version.txt`\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;${COLOR}\&quot;},&quot; &gt; /tmp/report.json
+cat /tmp/result_120.log  | sed -n &apos;/--*$/{:1;N;/--*$/{p;b};N;b1}&apos; | grep -v &apos;\-\-&apos; | awk &apos;{if ($1~/:/) {tttt=$1;gsub(&quot;:&quot;,&quot;&quot;, tttt)} else {if ($2!=1) {printf(&quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;%s/%s\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;FAIL\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;F35A00\&quot;},&quot;, tttt, $1, $2, $3, $4, $5)} else {printf(&quot;{\&quot;fields\&quot;:[{\&quot;value\&quot;:\&quot;%s/%s\&quot;,\&quot;short\&quot;:true},{\&quot;value\&quot;:\&quot;PASS\&quot;,\&quot;short\&quot;:true}],\&quot;color\&quot;:\&quot;00F300\&quot;},&quot;, tttt, $1, $2, $3, $4, $5)}}}&apos; &gt;&gt; /tmp/report.json
+echo &quot;{}&quot; &gt;&gt; /tmp/report.json
+curl -X POST --data-urlencode &quot;payload={\&quot;text\&quot; : \&quot;BAT result(&lt;http://192.168.200.1/mirror/mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/log.tgz|Log&gt;) against build_mevoco - #${OVERALL_MEVOCO_BUILD_NUMBER}(&lt;http://192.168.200.1/mirror/mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/|Open&gt;)\&quot;, \&quot;username\&quot; : \&quot;jenkins\&quot;, \&quot;attachments\&quot; : [`cat /tmp/report.json`]}&quot; https://hooks.slack.com/services/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
+mkdir -p mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/
+cp /tmp/log_120.tgz mevoco_ci/${OVERALL_MEVOCO_BUILD_NUMBER}/log.tgz</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
@@ -332,7 +337,7 @@ cp /tmp/log_145.tgz zstack_ci/${OVERALL_ZSTACK_BUILD_NUMBER}/log.tgz</command>
       <entries>
         <be.certipost.hudson.plugin.Entry>
           <filePath></filePath>
-          <sourceFile>zstack_ci/*/*</sourceFile>
+          <sourceFile>mevoco_ci/*/*</sourceFile>
           <keepHierarchy>true</keepHierarchy>
         </be.certipost.hudson.plugin.Entry>
       </entries>
