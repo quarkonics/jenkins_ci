@@ -135,6 +135,23 @@ if [ $? -ne 0 ]; then
     curl -X POST --data-urlencode &quot;payload={\&quot;username\&quot; : \&quot;jenkins\&quot;,\&quot;text\&quot; : \&quot;BAT test for build_mevoco #`cat /home/shuang2/overall_mevoco_build_number.txt`, not able to ping zstack.org on 192.168.200.120, even with work around added to /etc/hosts, need check it manually\&quot;}&quot; https://hooks.slack.com/services/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
 fi
 
+yum-config-manager --disable aliepel
+yum-config-manager --enable epel
+yum clean metadata
+yum --nogpgcheck install -y mariadb mariadb-server
+if [ $? -ne 0 ]; then
+    yum-config-manager --enable aliepel
+    yum-config-manager --disable epel
+    yum clean metadata
+    yum --nogpgcheck install -y mariadb mariadb-server
+    if [ $? -eq 0 ]; then
+        echo &quot;Use aliepel&quot;
+        curl -X POST --data-urlencode &apos;payload={&quot;username&quot; : &quot;jenkins&quot;,&quot;text&quot; : &quot;BAT test for build_mevoco #`cat /home/shuang2/overall_mevoco_build_number.txt`, yum repo epel not working on 192.168.200.120, switch to aliepel for testing&quot;}&apos; https://hooks.slack.com/services/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
+    else
+        curl -X POST --data-urlencode &apos;payload={&quot;username&quot; : &quot;jenkins&quot;,&quot;text&quot; : &quot;BAT test for build_mevoco #`cat /home/shuang2/overall_mevoco_build_number.txt`, both epel and aliepel not working on 192.168.200.120, need manual check&quot;}&apos; https://hooks.slack.com/services/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
+    fi
+fi
+
 yum-config-manager --disable alibase
 yum-config-manager --disable 163base
 yum-config-manager --enable alibase
