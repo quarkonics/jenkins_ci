@@ -127,12 +127,12 @@
 sed -i &apos;/222.73.157.67.*$/d&apos; /etc/hosts
 ping -c 4 zstack.org
 if [ $? -ne 0 ]; then
-    curl -X POST --data-urlencode &quot;payload={\&quot;username\&quot; : \&quot;jenkins\&quot;,\&quot;text\&quot; : \&quot;BAT test for build_mevoco #`cat /home/shuang2/overall_mevoco_build_number.txt`, not able to ping zstack.org on 192.168.200.120, work around added to /etc/hosts\&quot;}&quot; https://hooks.slack.com/services/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
+    curl -X POST --data-urlencode &apos;payload={&quot;username&quot; : &quot;jenkins&quot;,&quot;text&quot; : &quot;BAT test for build_mevoco, not able to ping zstack.org on 192.168.200.120, work around added to /etc/hosts&quot;}&apos; https://hooks.slack.com/services/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
     echo &quot;222.73.157.67 zstack.org&quot; &gt;&gt; /etc/hosts
 fi
 ping -c 4 zstack.org
 if [ $? -ne 0 ]; then
-    curl -X POST --data-urlencode &quot;payload={\&quot;username\&quot; : \&quot;jenkins\&quot;,\&quot;text\&quot; : \&quot;BAT test for build_mevoco #`cat /home/shuang2/overall_mevoco_build_number.txt`, not able to ping zstack.org on 192.168.200.120, even with work around added to /etc/hosts, need check it manually\&quot;}&quot; https://hooks.slack.com/services/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
+    curl -X POST --data-urlencode &apos;payload={&quot;username&quot; : &quot;jenkins&quot;,&quot;text&quot; : &quot;BAT test for build_mevoco, not able to ping zstack.org on 192.168.200.120, even with work around added to /etc/hosts, need check it manually&quot;}&apos; https://hooks.slack.com/services/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
 fi
 
 yum-config-manager --disable aliepel
@@ -146,9 +146,9 @@ if [ $? -ne 0 ]; then
     yum --nogpgcheck install -y mariadb mariadb-server
     if [ $? -eq 0 ]; then
         echo &quot;Use aliepel&quot;
-        curl -X POST --data-urlencode &apos;payload={&quot;username&quot; : &quot;jenkins&quot;,&quot;text&quot; : &quot;BAT test for build_mevoco #`cat /home/shuang2/overall_mevoco_build_number.txt`, yum repo epel not working on 192.168.200.120, switch to aliepel for testing&quot;}&apos; https://hooks.slack.com/services/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
+        curl -X POST --data-urlencode &apos;payload={&quot;username&quot; : &quot;jenkins&quot;,&quot;text&quot; : &quot;BAT test for build_mevoco, yum repo epel not working on 192.168.200.120, switch to aliepel for testing&quot;}&apos; https://hooks.slack.com/services/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
     else
-        curl -X POST --data-urlencode &apos;payload={&quot;username&quot; : &quot;jenkins&quot;,&quot;text&quot; : &quot;BAT test for build_mevoco #`cat /home/shuang2/overall_mevoco_build_number.txt`, both epel and aliepel not working on 192.168.200.120, need manual check&quot;}&apos; https://hooks.slack.com/services/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
+        curl -X POST --data-urlencode &apos;payload={&quot;username&quot; : &quot;jenkins&quot;,&quot;text&quot; : &quot;BAT test for build_mevoco, both epel and aliepel not working on 192.168.200.120, need manual check&quot;}&apos; https://hooks.slack.com/services/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
     fi
 fi
 
@@ -165,10 +165,10 @@ if [ $? -ne 0 ]; then
     if [ $? -eq 0 ]; then
         echo &quot;Use 163base&quot;
         touch /home/repo_for_test.txt
-        curl -X POST --data-urlencode &apos;payload={&quot;username&quot; : &quot;jenkins&quot;,&quot;text&quot; : &quot;BAT test for build_mevoco #`cat /home/shuang2/overall_mevoco_build_number.txt`, yum repo alibase not working on 192.168.200.120, switch to 163base for testing&quot;}&apos; https://hooks.slack.com/services/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
+        curl -X POST --data-urlencode &apos;payload={&quot;username&quot; : &quot;jenkins&quot;,&quot;text&quot; : &quot;BAT test for build_mevoco, yum repo alibase not working on 192.168.200.120, switch to 163base for testing&quot;}&apos; https://hooks.slack.com/services/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
     else
         echo &quot;no repo working&quot;
-        curl -X POST --data-urlencode &apos;payload={&quot;username&quot; : &quot;jenkins&quot;,&quot;text&quot; : &quot;BAT test for build_mevoco #`cat /home/shuang2/overall_mevoco_build_number.txt`, both alibase and 163base repo not working on 192.168.200.120, need manual check&quot;}&apos; https://hooks.slack.com/services/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
+        curl -X POST --data-urlencode &apos;payload={&quot;username&quot; : &quot;jenkins&quot;,&quot;text&quot; : &quot;BAT test for build_mevoco, both alibase and 163base repo not working on 192.168.200.120, need manual check&quot;}&apos; https://hooks.slack.com/services/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
     fi
 fi</shell>
     </jenkins.plugins.ssh2easy.gssh.GsshShellBuilder>
