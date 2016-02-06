@@ -249,7 +249,7 @@ OVERALL_MEVOCO_BUILD_NUMBER=${BUILD_NUMBER}</properties>
 OVERALL_MEVOCO_BUILD_NUMBER=${BUILD_NUMBER}</properties>
             </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
           </configs>
-          <projects>mevoco_nightly_test,</projects>
+          <projects>mevoco_bat_test</projects>
           <condition>SUCCESS</condition>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>

@@ -165,7 +165,7 @@ ln -s ${ZSTACK_BIN} zstack_ci/latest/zstack-installer.bin</command>
 OVERALL_ZSTACK_BUILD_NUMBER=${BUILD_NUMBER}</properties>
             </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
           </configs>
-          <projects>slack_report,</projects>
+          <projects>slack_report</projects>
           <condition>SUCCESS</condition>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
@@ -176,7 +176,7 @@ OVERALL_ZSTACK_BUILD_NUMBER=${BUILD_NUMBER}</properties>
 OVERALL_ZSTACK_BUILD_NUMBER=${BUILD_NUMBER}</properties>
             </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
           </configs>
-          <projects>slack_report,</projects>
+          <projects>slack_report</projects>
           <condition>FAILED</condition>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
@@ -187,7 +187,7 @@ OVERALL_ZSTACK_BUILD_NUMBER=${BUILD_NUMBER}</properties>
 OVERALL_ZSTACK_BUILD_NUMBER=${BUILD_NUMBER}</properties>
             </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
           </configs>
-          <projects>slack_report,</projects>
+          <projects>slack_report</projects>
           <condition>UNSTABLE</condition>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
@@ -198,7 +198,7 @@ OVERALL_ZSTACK_BUILD_NUMBER=${BUILD_NUMBER}</properties>
 OVERALL_ZSTACK_BUILD_NUMBER=${BUILD_NUMBER}</properties>
             </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
           </configs>
-          <projects>zstack_nightly_test,</projects>
+          <projects>zstack_bat_test</projects>
           <condition>SUCCESS</condition>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>

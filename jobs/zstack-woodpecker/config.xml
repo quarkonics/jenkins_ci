@@ -84,7 +84,7 @@ git log -1 --format=&quot;%H %ci %an: %s&quot; &gt; zstack_woodpecker_version.tx
               <properties>ZSTACK_WOODPECKER_BUILD_NUMBER=${BUILD_NUMBER}</properties>
             </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
           </configs>
-          <projects>mevoco_nightly_test, zstack_nightly_test, </projects>
+          <projects>mevoco_bat_test,zstack_bat_test</projects>
           <condition>SUCCESS</condition>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>

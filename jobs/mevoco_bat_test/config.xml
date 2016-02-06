@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>mevoco bat test</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.plugins.copyartifact.CopyArtifactPermissionProperty plugin="copyartifact@1.37">
+      <projectNameList>
+        <string>zstack</string>
+        <string>zstack-utility</string>
+        <string>zstack-dashboard</string>
+        <string>zstack-woodpecker</string>
+        <string>build_zstack</string>
+      </projectNameList>
+    </hudson.plugins.copyartifact.CopyArtifactPermissionProperty>
+    <jenkins.plugins.slack.SlackNotifier_-SlackJobProperty plugin="slack@1.8.1">
+      <teamDomain></teamDomain>
+      <token></token>
+      <room></room>
+      <startNotification>false</startNotification>
+      <notifySuccess>false</notifySuccess>
+      <notifyAborted>false</notifyAborted>
+      <notifyNotBuilt>false</notifyNotBuilt>
+      <notifyUnstable>false</notifyUnstable>
+      <notifyFailure>false</notifyFailure>
+      <notifyBackToNormal>false</notifyBackToNormal>
+      <notifyRepeatedFailure>false</notifyRepeatedFailure>
+      <includeTestSummary>false</includeTestSummary>
+      <showCommitList>false</showCommitList>
+      <includeCustomMessage>false</includeCustomMessage>
+      <customMessage></customMessage>
+    </jenkins.plugins.slack.SlackNotifier_-SlackJobProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>rm -rf mevoco_ci zstack_ci
+mkdir -p ${WORKSPACE}/192.168.200.120/</command>
+    </hudson.tasks.Shell>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
+      <project>zstack</project>
+      <filter>zstack.tar</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
+      <project>zstack-utility</project>
+      <filter>zstack-utility.tar</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
+      <project>zstack-dashboard</project>
+      <filter>zstack-dashboard.tar</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
+      <project>zstack-woodpecker</project>
+      <filter>zstack-woodpecker.tar</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
+      <project>build_zstack</project>
+      <filter>zstack_ci/latest/*</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <optional>true</optional>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
+      <project>build_mevoco</project>
+      <filter>mevoco_ci/latest/*</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
+      <project>zstack-woodpecker</project>
+      <filter>zstack_woodpecker_version.txt</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
+      <project>build_mevoco</project>
+      <filter>overall_mevoco_build_number.txt</filter>
+      <target></target>
+      <excludes></excludes>
+      <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
+      <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
+    </hudson.plugins.copyartifact.CopyArtifact>
+    <hudson.tasks.Shell>
+      <command>if [ &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot; == &quot;&quot; ]; then
+	OVERALL_MEVOCO_BUILD_NUMBER=`cat overall_mevoco_build_number.txt`
+fi
+bash -ex ${JENKINS_HOME}/zstack_test_script/build.sh build_mevoco &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot; mevoco_ci/latest/mevoco-installer.bin</command>
+    </hudson.tasks.Shell>
+    <jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <shell>rm -rf /home/192.168.200.120/
+mkdir -p /home/192.168.200.120/</shell>
+    </jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <localFilePath>/var/lib/jenkins/jobs/mevoco_bat_test/workspace/overall_mevoco_build_number.txt</localFilePath>
+      <remoteLocation>/home/192.168.200.120/</remoteLocation>
+      <fileName>overall_mevoco_build_number.txt</fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <localFilePath>/var/lib/jenkins/zstack_test_script/run_test.sh</localFilePath>
+      <remoteLocation>/home/192.168.200.120/</remoteLocation>
+      <fileName>run_test.sh</fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <localFilePath>/var/lib/jenkins/jobs/zstack_bat_test/workspace/zstack-utility/zstackbuild/zstack-all-in-one.tar</localFilePath>
+      <remoteLocation>/home/192.168.200.120/</remoteLocation>
+      <fileName>zstack-all-in-one.tar</fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <localFilePath>/var/lib/jenkins/jobs/zstack_bat_test/workspace/zstack-utility.tar</localFilePath>
+      <remoteLocation>/home/192.168.200.120/</remoteLocation>
+      <fileName>zstack-utility.tar</fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <localFilePath>/var/lib/jenkins/jobs/zstack_bat_test/workspace/zstack-woodpecker.tar</localFilePath>
+      <remoteLocation>/home/192.168.200.120/</remoteLocation>
+      <fileName>zstack-woodpecker.tar</fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <localFilePath>/var/lib/jenkins/build_zstack.192.168.200.120.sh</localFilePath>
+      <remoteLocation>/home/192.168.200.120/</remoteLocation>
+      <fileName>build_zstack.192.168.200.120.sh</fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <localFilePath>/var/lib/jenkins/deploy.192.168.200.120.tmpt</localFilePath>
+      <remoteLocation>/home/192.168.200.120/</remoteLocation>
+      <fileName>deploy.192.168.200.120.tmpt</fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <localFilePath>/var/lib/jenkins/jobs/zstack_bat_test/workspace/zstack_woodpecker_version.txt</localFilePath>
+      <remoteLocation>/home/192.168.200.120/</remoteLocation>
+      <fileName>zstack_woodpecker_version.txt</fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <shell>if [ &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot; == &quot;&quot; ]; then
+	OVERALL_MEVOCO_BUILD_NUMBER=`cat /home/192.168.200.120/overall_mevoco_build_number.txt`
+fi
+bash -ex /home/192.168.200.120/run_test.sh 192.168.200.120 build_mevoco ${OVERALL_MEVOCO_BUILD_NUMBER}</shell>
+    </jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpDownloadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <remoteFile>/home/192.168.200.120/result_192.168.200.120.log</remoteFile>
+      <localFolder>/var/lib/jenkins/jobs/mevoco_bat_test/workspace/192.168.200.120/</localFolder>
+      <fileName>result_192.168.200.120.log</fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpDownloadBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpDownloadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.120</ip>
+      <remoteFile>/home/192.168.200.120/log_192.168.200.120.tgz</remoteFile>
+      <localFolder>/var/lib/jenkins/jobs/mevoco_bat_test/workspace/192.168.200.120/</localFolder>
+      <fileName>log_192.168.200.120.tgz</fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpDownloadBuilder>
+  </builders>
+  <publishers>
+    <be.certipost.hudson.plugin.SCPRepositoryPublisher plugin="scp@1.8">
+      <siteName>192.168.200.1</siteName>
+      <entries>
+        <be.certipost.hudson.plugin.Entry>
+          <filePath></filePath>
+          <sourceFile>zstack_ci/*/*</sourceFile>
+          <keepHierarchy>true</keepHierarchy>
+        </be.certipost.hudson.plugin.Entry>
+      </entries>
+    </be.certipost.hudson.plugin.SCPRepositoryPublisher>
+  </publishers>
+  <buildWrappers/>
+</project>

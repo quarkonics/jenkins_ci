@@ -25,5 +25,10 @@
       <name>jenkins_nightly_testing2</name>
       <ip>192.168.200.145</ip>
     </jenkins.plugins.ssh2easy.gssh.Server>
+    <jenkins.plugins.ssh2easy.gssh.Server>
+      <serverGroupName>zstack_tests</serverGroupName>
+      <name>jenkins_debug</name>
+      <ip>192.168.200.149</ip>
+    </jenkins.plugins.ssh2easy.gssh.Server>
   </servers>
 </jenkins.plugins.ssh2easy.gssh.GsshBuilderWrapper_-GsshDescriptorImpl>
