@@ -145,7 +145,7 @@ mkdir -p /home/192.168.200.120/</shell>
       <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
       <groupName>mevoco_tests</groupName>
       <ip>192.168.200.120</ip>
-      <localFilePath>/var/lib/jenkins/jobs/zstack_bat_test/workspace/zstack-utility/zstackbuild/zstack-all-in-one.tar</localFilePath>
+      <localFilePath>/var/lib/jenkins/jobs/mevoco_bat_test/workspace/zstack-utility/zstackbuild/zstack-all-in-one.tar</localFilePath>
       <remoteLocation>/home/192.168.200.120/</remoteLocation>
       <fileName>zstack-all-in-one.tar</fileName>
     </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
@@ -154,7 +154,7 @@ mkdir -p /home/192.168.200.120/</shell>
       <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
       <groupName>mevoco_tests</groupName>
       <ip>192.168.200.120</ip>
-      <localFilePath>/var/lib/jenkins/jobs/zstack_bat_test/workspace/zstack-utility.tar</localFilePath>
+      <localFilePath>/var/lib/jenkins/jobs/mevoco_bat_test/workspace/zstack-utility.tar</localFilePath>
       <remoteLocation>/home/192.168.200.120/</remoteLocation>
       <fileName>zstack-utility.tar</fileName>
     </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
@@ -163,7 +163,7 @@ mkdir -p /home/192.168.200.120/</shell>
       <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
       <groupName>mevoco_tests</groupName>
       <ip>192.168.200.120</ip>
-      <localFilePath>/var/lib/jenkins/jobs/zstack_bat_test/workspace/zstack-woodpecker.tar</localFilePath>
+      <localFilePath>/var/lib/jenkins/jobs/mevoco_bat_test/workspace/zstack-woodpecker.tar</localFilePath>
       <remoteLocation>/home/192.168.200.120/</remoteLocation>
       <fileName>zstack-woodpecker.tar</fileName>
     </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
@@ -190,7 +190,7 @@ mkdir -p /home/192.168.200.120/</shell>
       <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
       <groupName>mevoco_tests</groupName>
       <ip>192.168.200.120</ip>
-      <localFilePath>/var/lib/jenkins/jobs/zstack_bat_test/workspace/zstack_woodpecker_version.txt</localFilePath>
+      <localFilePath>/var/lib/jenkins/jobs/mevoco_bat_test/workspace/zstack_woodpecker_version.txt</localFilePath>
       <remoteLocation>/home/192.168.200.120/</remoteLocation>
       <fileName>zstack_woodpecker_version.txt</fileName>
     </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
