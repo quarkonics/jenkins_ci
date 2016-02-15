@@ -18,15 +18,15 @@ rabbitmqServerIp = 192.168.200.128
 node1Name = 192.168.200.128
 node1Ip = 192.168.200.128
 
-node2Name = 192.168.200.131
+node2Name = 192.168.200.128
 node2DockerImage = 
-node2Ip = 192.168.200.131
+node2Ip = 192.168.200.128
 nodeUserName = root
 nodePassword = password
 
-node3Name = 192.168.200.145
+node3Name = 192.168.200.131
 node3DockerImage = 
-node3Ip = 192.168.200.145
+node3Ip = 192.168.200.131
 
 instanceOfferingName_s = small-vm
 instanceOfferingMemory_s = 128M
@@ -87,29 +87,29 @@ l2PublicNetworkInterface = eth0
 l2ManagementNetworkName = l2-management
 l2ManagementNetworkInterface = eth0
 
-l2NoVlanNetworkName1 = vlan10
-l2NoVlanNetworkInterface1 = eth0.10
+l2NoVlanNetworkName1 = vlan12
+l2NoVlanNetworkInterface1 = eth0.12
 
-l2NoVlanNetworkName2 = vlan11
-l2NoVlanNetworkInterface2 = eth0.11
+l2NoVlanNetworkName2 = vlan13
+l2NoVlanNetworkInterface2 = eth0.13
 
 l2VlanNetworkName1 = vlan-test-dns-dhcp-snat
-l2Vlan1 = 21
+l2Vlan1 = 31
 
 l2VlanNetworkName2 = vlan-test-port-forwarding
-l2Vlan2 = 22
+l2Vlan2 = 32
 
 l2VlanNetworkName3 = vlan-test-dns-dhcp
-l2Vlan3 = 23
+l2Vlan3 = 33
 
 l2VlanNetworkName4 = vlan-test-small-ip-range
-l2Vlan4 = 24
+l2Vlan4 = 34
 
 l2VlanNetworkName5 = vlan-test-dhcp-only
-l2Vlan5 = 25
+l2Vlan5 = 35
 
 l2VlanNetworkName6 = vlan-test-load-balance
-l2Vlan6 = 26
+l2Vlan6 = 36
 
 #L3 network names should be same, test case will rely on name. 
 l3ManagementNetworkName = management network
@@ -133,14 +133,14 @@ L3VlanNetworkDomainName6 = zstest-test6.org
 DNSServer = 192.168.200.1
 
 ipRangeManagementName = host IP range
-ipRangeManagementStartIp = 192.168.201.101
-ipRangeManagementEndIp = 192.168.201.150
+ipRangeManagementStartIp = 192.168.201.81
+ipRangeManagementEndIp = 192.168.201.120
 ipRangeManagementNetmask = 255.255.252.0
 ipRangeManagementGateway = 192.168.200.1
 
 ipRangeName = host IP range
-ipRangeStartIp = 192.168.201.101
-ipRangeEndIp = 192.168.201.150
+ipRangeStartIp = 192.168.201.121
+ipRangeEndIp = 192.168.201.160
 ipRangeNetmask = 255.255.252.0
 ipRangeGateway = 192.168.200.1
 

@@ -190,9 +190,45 @@ mkdir -p /home/192.168.200.145/</shell>
       <serverInfo>zstack_tests~~jenkins_nightly_testing2~~192.168.200.145</serverInfo>
       <groupName>zstack_tests</groupName>
       <ip>192.168.200.145</ip>
+      <localFilePath>/var/lib/jenkins/deploy.xml</localFilePath>
+      <remoteLocation>/home/192.168.200.145/</remoteLocation>
+      <fileName></fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>zstack_tests~~jenkins_nightly_testing2~~192.168.200.145</serverInfo>
+      <groupName>zstack_tests</groupName>
+      <ip>192.168.200.145</ip>
+      <localFilePath>/var/lib/jenkins/deploy-local-ps.xml</localFilePath>
+      <remoteLocation>/home/192.168.200.145/</remoteLocation>
+      <fileName></fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>zstack_tests~~jenkins_nightly_testing2~~192.168.200.145</serverInfo>
+      <groupName>zstack_tests</groupName>
+      <ip>192.168.200.145</ip>
+      <localFilePath>/var/lib/jenkins/deploy-local-nfs.xml</localFilePath>
+      <remoteLocation>/home/192.168.200.145/</remoteLocation>
+      <fileName></fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>zstack_tests~~jenkins_nightly_testing2~~192.168.200.145</serverInfo>
+      <groupName>zstack_tests</groupName>
+      <ip>192.168.200.145</ip>
       <localFilePath>/var/lib/jenkins/jobs/zstack_bat_test/workspace/zstack_woodpecker_version.txt</localFilePath>
       <remoteLocation>/home/192.168.200.145/</remoteLocation>
       <fileName>zstack_woodpecker_version.txt</fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>zstack_tests~~jenkins_nightly_testing2~~192.168.200.145</serverInfo>
+      <groupName>zstack_tests</groupName>
+      <ip>192.168.200.145</ip>
+      <localFilePath>/var/lib/jenkins/zstack-internal-yum.repo</localFilePath>
+      <remoteLocation>/etc/yum.repos.d/</remoteLocation>
+      <fileName>zstack-internal-yum.repo</fileName>
     </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
     <jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder plugin="ssh2easy@1.3">
       <disable>false</disable>

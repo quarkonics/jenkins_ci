@@ -8,30 +8,36 @@ elif [ ${TEST_TARGET} == "build_mevoco" ]; then
 	CI_TARGET=mevoco_ci
 fi
 
-TESTSUITES="basic virtualrouter installation virtualrouter(localstorage) virtualrouter(local+nfs)"
-CENTOS_REPO="alibase 163base"
+TESTSUITES="basic virtualrouter virtualrouter(localstorage) virtualrouter(local+nfs) installation"
+CENTOS_REPO="alibase 163base internalbase"
 EPEL_REPO="epel aliepel"
 PASS_NUMBER=0
 TOTAL_NUMBER=0
 
 rm -rf /home/${IP}/report.${IP}.json
 rm -rf /home/${IP}/zstack-woodpecker/dailytest/config_xml/test-result/
+rm -rf /home/${IP}/config_xml/
+mkdir -p /home/${IP}/config_xml/
 rm -rf /home/${IP}/log_${IP}.tgz
 echo "{\"fields\":[{\"value\":\"zstack-woodpecker:\",\"short\":true},{\"value\":\"`cat /home/${IP}/zstack_woodpecker_version.txt`\",\"short\":true}],\"color\":\"${COLOR}\"}," >> /home/${IP}/report.${IP}.json
 for TS in ${TESTSUITES}; do
+	rm -rf /home/nfs/*
+	rm -rf /home/local-ps/*
+	rm -rf /home/sftpBackupStorage/*
 	rm -rf /home/${IP}/result_${IP}.summary
 	BASIC_TS=`echo ${TS} | awk -F '(' '{print $1}'`
 	BASIC_TS_CONF=`echo ${TS} | awk -F '(' '{print $2}' | awk -F ')' '{print $1}'`
-
 	TESTSUITE_DONE=0
 	for CR in ${CENTOS_REPO}; do
 		for ER in ${EPEL_REPO}; do
+			rsync -a /home/${IP}/zstack-woodpecker/dailytest/config_xml/ /home/${IP}/config_xml/ || echo "no log yet"
 			if [ ${TESTSUITE_DONE} -eq 1 ]; then
 				continue || echo continue
 			fi
 			echo "try use ${CR} ${ER} repo"
 			yum-config-manager --disable alibase > /dev/null
 			yum-config-manager --disable 163base > /dev/null
+			yum-config-manager --disable internalbase > /dev/null
 			yum-config-manager --disable epel > /dev/null
 			yum-config-manager --disable aliepel > /dev/null
 			yum-config-manager --enable ${CR} > /dev/null
@@ -40,14 +46,14 @@ for TS in ${TESTSUITES}; do
 			INSTALL_VIM=success
 			yum --nogpgcheck install -y vim || INSTALL_VIM=failure
 			if [ ${INSTALL_VIM} == "failure" ]; then
-				echo "{\"fields\":[{\"value\":\"fail to setup ${TS} with yum repo:\",\"short\":true},{\"value\":\"${CR} and ${ER}\",\"short\":true}],\"color\":\"${COLOR}\"}," >> /home/${IP}/report.${IP}.json
+				echo "{\"fields\":[{\"value\":\"fail to setup testsuite ${TS} with yum repo:\",\"short\":true},{\"value\":\"${CR} and ${ER}\",\"short\":true}],\"color\":\"${COLOR}\"}," >> /home/${IP}/report.${IP}.json
 				continue || echo continue
 			fi
 			yum clean metadata
 			INSTALL_MARIADB=success
 			yum --nogpgcheck install -y mariadb mariadb-server || INSTALL_MARIADB=failure
 			if [ ${INSTALL_MARIADB} == "failure" ]; then
-				echo "{\"fields\":[{\"value\":\"fail to setup ${TS} with yum repo:\",\"short\":true},{\"value\":\"${CR} and ${ER}\",\"short\":true}],\"color\":\"${COLOR}\"}," >> /home/${IP}/report.${IP}.json
+				echo "{\"fields\":[{\"value\":\"fail to setup testsuite ${TS} with yum repo:\",\"short\":true},{\"value\":\"${CR} and ${ER}\",\"short\":true}],\"color\":\"${COLOR}\"}," >> /home/${IP}/report.${IP}.json
 				continue || echo continue
 			fi
 			
@@ -70,13 +76,16 @@ for TS in ${TESTSUITES}; do
 			DEPLOY_ZSTACK=success
 			./zstest.py -b || DEPLOY_ZSTACK=failure
 			if [ ${DEPLOY_ZSTACK} == "failure" ]; then
-				echo "{\"fields\":[{\"value\":\"fail to setup ${TS} with yum repo:\",\"short\":true},{\"value\":\"${CR} and ${ER}\",\"short\":true}],\"color\":\"${COLOR}\"}," >> /home/${IP}/report.${IP}.json
+				echo "{\"fields\":[{\"value\":\"fail to setup testsuite ${TS} with yum repo:\",\"short\":true},{\"value\":\"${CR} and ${ER}\",\"short\":true}],\"color\":\"${COLOR}\"}," >> /home/${IP}/report.${IP}.json
 				continue || echo continue
 			fi
 			
 			cd ../tools/
 			sh copy_test_config_to_local.sh
 			scp /home/${IP}/deploy.${IP}.tmpt /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
+			scp /home/${IP}/deploy.xml /root/.zstackwoodpecker/integrationtest/vm/virtualrouter/deploy.xml
+			scp /home/${IP}/deploy-local-ps.xml /root/.zstackwoodpecker/integrationtest/vm/virtualrouter/deploy-local-ps.xml
+			scp /home/${IP}/deploy-local-nfs.xml /root/.zstackwoodpecker/integrationtest/vm/virtualrouter/deploy-local-nfs.xml
 			cd /home/${IP}/zstack-woodpecker/dailytest/
 			rm -rf /home/${IP}/result_${IP}.log /home/${IP}/log_${IP}.tgz
 			RUN_BASIC=success
@@ -93,10 +102,10 @@ for TS in ${TESTSUITES}; do
 			SUITE_SETUP=success
 			grep suite_setup /home/${IP}/result_${IP}.summary | grep PASS || SUITE_SETUP=failure
 			if [ ${SUITE_SETUP} == "failure" ]; then
-				echo "{\"fields\":[{\"value\":\"fail to setup ${TS} with yum repo:\",\"short\":true},{\"value\":\"${CR} and ${ER}\",\"short\":true}],\"color\":\"${COLOR}\"}," >> /home/${IP}/report.${IP}.json
+				echo "{\"fields\":[{\"value\":\"fail to setup testsuite ${TS} with yum repo:\",\"short\":true},{\"value\":\"${CR} and ${ER}\",\"short\":true}],\"color\":\"${COLOR}\"}," >> /home/${IP}/report.${IP}.json
 				continue || echo continue
 			else
-				echo "{\"fields\":[{\"value\":\"setup ${TS} with yum repo:\",\"short\":true},{\"value\":\"${CR} and ${ER}\",\"short\":true}],\"color\":\"${COLOR}\"}," >> /home/${IP}/report.${IP}.json
+				echo "{\"fields\":[{\"value\":\"setup testsuite ${TS} with yum repo:\",\"short\":true},{\"value\":\"${CR} and ${ER}\",\"short\":true}],\"color\":\"${COLOR}\"}," >> /home/${IP}/report.${IP}.json
 			fi
 	
 			TS_TOTAL_NUMBER=`cat /home/${IP}/result_${IP}.summary | wc -l`
@@ -108,9 +117,9 @@ for TS in ${TESTSUITES}; do
 			TESTSUITE_DONE=1
 		done
 	done
-	echo "{}" >> /home/${IP}/report.${IP}.json
-	curl -X POST --data-urlencode "payload={\"text\" : \"Nightly result(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/log.tgz|Log>) against ${TEST_TARGET} - #${OVERALL_BUILD_NUMBER}(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/|Open>)PASS/TOTAL=${PASS_NUMBER}/${TOTAL_NUMBER}\", \"username\" : \"jenkins\", \"attachments\" : [`cat /home/${IP}/report.${IP}.json`]}" https://hooks.slack.com/services/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
-	tar czh config_xml/test-result/latest > /home/${IP}/log_${IP}.tgz
+	curl -X POST --data-urlencode "payload={\"text\" : \"Nightly result(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/log.tgz|Log>) against ${TEST_TARGET} - #${OVERALL_BUILD_NUMBER}(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/|Open>)PASS/TOTAL=${PASS_NUMBER}/${TOTAL_NUMBER}\", \"username\" : \"jenkins\", \"attachments\" : [`cat /home/${IP}/report.${IP}.json`{}]}" https://hooks.slack.com/services/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
+	rsync -a /home/${IP}/zstack-woodpecker/dailytest/config_xml/ /home/${IP}/config_xml/
+	tar czh /home/${IP}/config_xml/test-result/latest > /home/${IP}/log_${IP}.tgz
 	mkdir -p zstack_ci/${OVERALL_BUILD_NUMBER}/
 	cp /home/${IP}/log_${IP}.tgz zstack_ci/${OVERALL_BUILD_NUMBER}/log.tgz
 done

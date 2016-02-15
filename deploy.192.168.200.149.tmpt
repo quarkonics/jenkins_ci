@@ -133,28 +133,28 @@ L3VlanNetworkDomainName6 = zstest-test6.org
 DNSServer = 192.168.200.1
 
 ipRangeManagementName = host IP range
-ipRangeManagementStartIp = 192.168.200.101
-ipRangeManagementEndIp = 192.168.200.150
+ipRangeManagementStartIp = 192.168.202.2
+ipRangeManagementEndIp = 192.168.202.40
 ipRangeManagementNetmask = 255.255.252.0
 ipRangeManagementGateway = 192.168.200.1
 
 ipRangeName = host IP range
-ipRangeStartIp = 192.168.200.101
-ipRangeEndIp = 192.168.200.150
+ipRangeStartIp = 192.168.202.41
+ipRangeEndIp = 192.168.202.80
 ipRangeNetmask = 255.255.252.0
 ipRangeGateway = 192.168.200.1
 
 noVlanIpRangeName1 = guest novlan range 1
-noVlanIpRangeStart1 = 192.168.201.2
-noVlanIpRangeEnd1 = 192.168.201.254
-noVlanIpRangeGateway1 = 192.168.200.1
-noVlanIpRangeNetmask1 = 255.255.252.0
+noVlanIpRangeStart1 = 10.250.0.2
+noVlanIpRangeEnd1 = 10.250.0.199
+noVlanIpRangeGateway1 = 10.250.0.1
+noVlanIpRangeNetmask1 = 255.255.0.0
 
 noVlanIpRangeName2 = guest novlan range 2
-noVlanIpRangeStart2 = 192.168.202.2
-noVlanIpRangeEnd2 = 192.168.202.254
-noVlanIpRangeGateway2 = 192.168.200.1
-noVlanIpRangeNetmask2 = 255.255.252.0
+noVlanIpRangeStart2 = 10.251.1.2
+noVlanIpRangeEnd2 = 10.251.1.199
+noVlanIpRangeGateway2 = 10.251.1.1
+noVlanIpRangeNetmask2 = 255.255.0.0
 
 vlanIpRangeName1 = guest vlan range for dns dhcp and snat
 vlanIpRangeStart1 = 10.11.0.2

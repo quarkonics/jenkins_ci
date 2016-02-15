@@ -133,14 +133,14 @@ L3VlanNetworkDomainName6 = zstest-test6.org
 DNSServer = 192.168.200.1
 
 ipRangeManagementName = host IP range
-ipRangeManagementStartIp = 192.168.201.101
-ipRangeManagementEndIp = 192.168.201.150
+ipRangeManagementStartIp = 192.168.202.81
+ipRangeManagementEndIp = 192.168.202.120
 ipRangeManagementNetmask = 255.255.252.0
 ipRangeManagementGateway = 192.168.200.1
 
 ipRangeName = host IP range
-ipRangeStartIp = 192.168.201.101
-ipRangeEndIp = 192.168.201.150
+ipRangeStartIp = 192.168.202.121
+ipRangeEndIp = 192.168.202.160
 ipRangeNetmask = 255.255.252.0
 ipRangeGateway = 192.168.200.1
 

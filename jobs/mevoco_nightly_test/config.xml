@@ -190,16 +190,54 @@ mkdir -p /home/192.168.200.128/</shell>
       <serverInfo>mevoco_tests~~jenkins_debug2~~192.168.200.128</serverInfo>
       <groupName>mevoco_tests</groupName>
       <ip>192.168.200.128</ip>
+      <localFilePath>/var/lib/jenkins/deploy.xml</localFilePath>
+      <remoteLocation>/home/192.168.200.128/</remoteLocation>
+      <fileName></fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>mevoco_tests~~jenkins_debug2~~192.168.200.128</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.128</ip>
+      <localFilePath>/var/lib/jenkins/deploy-local-ps.xml</localFilePath>
+      <remoteLocation>/home/192.168.200.128/</remoteLocation>
+      <fileName></fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>mevoco_tests~~jenkins_debug2~~192.168.200.128</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.128</ip>
+      <localFilePath>/var/lib/jenkins/deploy-local-nfs.xml</localFilePath>
+      <remoteLocation>/home/192.168.200.128/</remoteLocation>
+      <fileName></fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>mevoco_tests~~jenkins_debug2~~192.168.200.128</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.128</ip>
       <localFilePath>/var/lib/jenkins/jobs/mevoco_bat_test/workspace/zstack_woodpecker_version.txt</localFilePath>
       <remoteLocation>/home/192.168.200.128/</remoteLocation>
       <fileName>zstack_woodpecker_version.txt</fileName>
+    </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
+    <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
+      <disable>false</disable>
+      <serverInfo>mevoco_tests~~jenkins_debug2~~192.168.200.128</serverInfo>
+      <groupName>mevoco_tests</groupName>
+      <ip>192.168.200.128</ip>
+      <localFilePath>/var/lib/jenkins/zstack-internal-yum.repo</localFilePath>
+      <remoteLocation>/etc/yum.repos.d/</remoteLocation>
+      <fileName>zstack-internal-yum.repo</fileName>
     </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
     <jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder plugin="ssh2easy@1.3">
       <disable>false</disable>
       <serverInfo>mevoco_tests~~jenkins_debug2~~192.168.200.128</serverInfo>
       <groupName>mevoco_tests</groupName>
       <ip>192.168.200.128</ip>
-      <shell>if [ &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot; == &quot;&quot; ]; then
+      <shell>vconfig add eth0 12
+vconfig add eth0 13
+if [ &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot; == &quot;&quot; ]; then
 	OVERALL_MEVOCO_BUILD_NUMBER=`cat /home/192.168.200.128/overall_mevoco_build_number.txt`
 fi
 bash -ex /home/192.168.200.128/run_nightly_test.sh 192.168.200.128 build_mevoco ${OVERALL_MEVOCO_BUILD_NUMBER}</shell>
