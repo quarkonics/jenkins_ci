@@ -1,3 +1,4 @@
+set -x
 VM_NAME=$1
 if [ "${VM_NAME}" == "" ]; then
 	exit 1
@@ -8,10 +9,10 @@ VM_UUID=`${MEVOCO_CLI_CMD} QueryVmInstance name=${VM_NAME} fields=uuid | grep '"
 if [ "${VM_UUID}" == "" ]; then
 	exit 1
 fi
+VM_IP=`${MEVOCO_CLI_CMD} QueryVmInstance name=${VM_NAME} |grep '"ip":' | awk '{print $2}' | awk -F '"' '{print $2}'`
 
 ${MEVOCO_CLI_CMD} RebootVmInstance uuid=${VM_UUID}
 
-VM_IP=`${MEVOCO_CLI_CMD} QueryVmInstance name=jenkins_nightly_debug |grep '"ip":' | awk '{print $2}' | awk -F '"' '{print $2}'`
 
 ${MEVOCO_CLI_CMD} LogOut
 
