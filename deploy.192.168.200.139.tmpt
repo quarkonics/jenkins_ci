@@ -1,10 +1,10 @@
-zstackPkg = /home/192.168.200.120/sanitytest/zstack-offline-installer-test.bin
-zstackInstallScript = /home/192.168.200.120/sanitytest/install.sh
+zstackPkg = /home/192.168.200.139/sanitytest/zstack-offline-installer-test.bin
+zstackInstallScript = /home/192.168.200.139/sanitytest/install.sh
 #zstackInstallPath should be carefully set. The contents in this folder will be deleted permanently in testing. 
 zstackInstallPath = /usr/local/zstacktest
-zstackPropertiesPath = /home/192.168.200.120/sanitytest/conf/zstack.properties
-zstackTestAgentPkgPath = /home/192.168.200.120/sanitytest/zstacktestagent.tar.bz
-DBServer = 192.168.200.120
+zstackPropertiesPath = /home/192.168.200.139/sanitytest/conf/zstack.properties
+zstackTestAgentPkgPath = /home/192.168.200.139/sanitytest/zstacktestagent.tar.bz
+DBServer = 192.168.200.139
 
 DBAdminUser = root
 DBAdminPassword = 
@@ -13,20 +13,20 @@ DBUserName = zstack
 DBPassword =
 
 DBPort = 3306
-rabbitmqServerIp = 192.168.200.120
+rabbitmqServerIp = 192.168.200.139
 
-node1Name = 192.168.200.120
-node1Ip = 192.168.200.120
+node1Name = 192.168.200.139
+node1Ip = 192.168.200.139
 
 node2Name = centos5
 node2DockerImage = 
-node2Ip = 192.168.200.120
+node2Ip = 192.168.200.139
 nodeUserName = root
 nodePassword = password
 
 node3Name = centos6
 node3DockerImage = 
-node3Ip = 192.168.200.120
+node3Ip = 192.168.200.139
 
 instanceOfferingName_s = small-vm
 instanceOfferingMemory_s = 128M
@@ -42,10 +42,10 @@ sftpBackupStorageName = sftp
 sftpBackupStorageUrl = /home/sftpBackupStorage
 sftpBackupStorageUsername = root
 sftpBackupStoragePassword = password
-sftpBackupStorageHostname = 192.168.200.120
+sftpBackupStorageHostname = 192.168.200.139
 
 nfsPrimaryStorageName = nfs
-nfsPrimaryStorageUrl = 192.168.200.120:/home/nfs
+nfsPrimaryStorageUrl = 192.168.200.139:/home/nfs
 
 imageName_s = ttylinux
 rootImageFormat = raw
@@ -69,8 +69,8 @@ zoneName = zone1
 clusterName = cluster1
 clusterHypervisorType = KVM
 
-hostName = 192.168.200.120
-hostIp = 192.168.200.120
+hostName = 192.168.200.139
+hostIp = 192.168.200.139
 #hostName = ubuntu
 #hostIp = 10.1.101.10
 #hostName = centos7
@@ -133,14 +133,14 @@ L3VlanNetworkDomainName6 = zstest-test6.org
 DNSServer = 192.168.200.1
 
 ipRangeManagementName = host IP range
-ipRangeManagementStartIp = 192.168.201.2
-ipRangeManagementEndIp = 192.168.201.21
+ipRangeManagementStartIp = 192.168.201.42
+ipRangeManagementEndIp = 192.168.201.61
 ipRangeManagementNetmask = 255.255.252.0
 ipRangeManagementGateway = 192.168.200.1
 
 ipRangeName = host IP range
-ipRangeStartIp = 192.168.201.22
-ipRangeEndIp = 192.168.201.41
+ipRangeStartIp = 192.168.201.62
+ipRangeEndIp = 192.168.201.80
 ipRangeNetmask = 255.255.252.0
 ipRangeGateway = 192.168.200.1
 

@@ -2,14 +2,16 @@ IP=$1
 TEST_TARGET=$2
 OVERALL_BUILD_NUMBER=$3
 
-if [ ${TEST_TARGET} == "build_zstack" ]; then
+if [ ${TEST_TARGET} == "build_zstack" -o ${TEST_TARGET} == "zstack_ci" ]; then
 	CI_TARGET=zstack_ci
-elif [ ${TEST_TARGET} == "build_mevoco" ]; then
+elif [ ${TEST_TARGET} == "build_mevoco" -o ${TEST_TARGET} == "mevoco_ci" ]; then
 	CI_TARGET=mevoco_ci
+elif [ ${TEST_TARGET} == "build_mevoco_1.1" -o ${TEST_TARGET} == "mevoco_ci_1.1" ]; then
+	CI_TARGET=mevoco_ci_1.1
 fi
 
 CENTOS_REPO="alibase 163base"
-EPEL_REPO="epel aliepel"
+EPEL_REPO="aliepel epel"
 
 for CR in ${CENTOS_REPO}; do
 	for ER in ${EPEL_REPO}; do
@@ -81,8 +83,13 @@ for CR in ${CENTOS_REPO}; do
 		echo "{}" >> /home/${IP}/report.${IP}.json
 		curl -X POST --data-urlencode "payload={\"text\" : \"BAT result(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/log.tgz|Log>) against ${TEST_TARGET} - #${OVERALL_BUILD_NUMBER}(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/|Open>)PASS/TOTAL=${PASS_NUMBER}/${TOTAL_NUMBER}\", \"username\" : \"jenkins\", \"attachments\" : [`cat /home/${IP}/report.${IP}.json`]}" https://hooks.slack.com/services/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
 		#curl -X POST --data-urlencode "payload={\"text\" : \"BAT result(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/log.tgz|Log>) against ${TEST_TARGET} - #${OVERALL_BUILD_NUMBER}(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/|Open>)PASS/TOTAL=${PASS_NUMBER}/${TOTAL_NUMBER}\", \"username\" : \"jenkins\", \"attachments\" : [`cat /home/${IP}/report.${IP}.json`]}" https://hooks.slack.com/services/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
-		mkdir -p zstack_ci/${OVERALL_BUILD_NUMBER}/
-		cp /home/${IP}/log_${IP}.tgz zstack_ci/${OVERALL_BUILD_NUMBER}/log.tgz
-		exit 0
+		mkdir -p ${CI_TARGET}/${OVERALL_BUILD_NUMBER}/
+		cp /home/${IP}/log_${IP}.tgz ${CI_TARGET}/${OVERALL_BUILD_NUMBER}/log.tgz
+		scp -r ${CI_TARGET}/${OVERALL_BUILD_NUMBER} 192.168.200.1:/httpd/${CI_TARGET}/
+		if [ "${TOTAL_NUMBER}" == "${PASS_NUMBER}" -a "${TOTAL_NUMBER}" != "0" ]; then
+			exit 0
+		else
+			exit 1
+		fi
 	done
 done

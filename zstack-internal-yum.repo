@@ -1,0 +1,22 @@
+#internal base
+[internalbase]
+name=CentOS-$releasever - Base - 192.168.200.1
+failovermethod=priority
+baseurl=http://192.168.200.1/mirror/centos/$releasever/os/$basearch/
+gpgcheck=0
+enabled=0
+ 
+#released updates 
+[internalupdates]
+name=CentOS-$releasever - Updates - 192.168.200.1
+failovermethod=priority
+baseurl=http://192.168.200.1/mirror/centos/$releasever/updates/$basearch/
+enabled=0
+gpgcheck=0
+ 
+[internalextras]
+name=CentOS-$releasever - Extras - 192.168.200.1
+failovermethod=priority
+baseurl=http://192.168.200.1/mirror/centos/$releasever/extras/$basearch/
+enabled=0
+gpgcheck=0

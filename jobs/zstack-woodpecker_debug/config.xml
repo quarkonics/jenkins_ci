@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <project>
   <actions/>
-  <description>zstack</description>
+  <description>zstack woodpecker</description>
   <keepDependencies>false</keepDependencies>
   <properties>
     <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.15.0">
-      <projectUrl>https://github.com/zstackorg/zstack.git/</projectUrl>
+      <projectUrl>https://github.com/zstackorg/zstack-woodpecker.git/</projectUrl>
       <displayName></displayName>
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
     <jenkins.plugins.slack.SlackNotifier_-SlackJobProperty plugin="slack@1.8.1">
@@ -30,7 +30,7 @@
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <url>https://github.com/zstackorg/zstack.git</url>
+        <url>https://github.com/zstackorg/zstack-woodpecker.git</url>
         <credentialsId>3844e645-ee1b-429d-afc4-aa3ce9866ee2</credentialsId>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
@@ -59,46 +59,23 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>tar cfp zstack.tar .
+      <command>tar cfp zstack-woodpecker.tar .
 cd ${WORKSPACE}/../builds/
 DELETE_UNTIL=`echo ${BUILD_NUMBER}-5 | bc`
 rm -rf `seq ${DELETE_UNTIL}`
-cd ${WORKSPACE}/</command>
+cd ${WORKSPACE}/
+git log -1 --format=&quot;%H %ci %an: %s&quot; &gt; zstack_woodpecker_version.txt</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>zstack.tar</artifacts>
+      <artifacts>zstack-woodpecker.tar, zstack_woodpecker_version.txt</artifacts>
       <allowEmptyArchive>false</allowEmptyArchive>
       <onlyIfSuccessful>false</onlyIfSuccessful>
       <fingerprint>false</fingerprint>
       <defaultExcludes>true</defaultExcludes>
       <caseSensitive>true</caseSensitive>
     </hudson.tasks.ArtifactArchiver>
-    <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@2.30">
-      <configs>
-        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-          <configs>
-            <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
-              <properties>ZSTACK_BUILD_NUMBER=${BUILD_NUMBER}</properties>
-            </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
-          </configs>
-          <projects>build_zstack</projects>
-          <condition>SUCCESS</condition>
-          <triggerWithNoParameters>false</triggerWithNoParameters>
-        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-          <configs>
-            <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
-              <properties>ZSTACK_BUILD_NUMBER=${BUILD_NUMBER}</properties>
-            </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
-          </configs>
-          <projects>build_mevoco</projects>
-          <condition>SUCCESS</condition>
-          <triggerWithNoParameters>false</triggerWithNoParameters>
-        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-      </configs>
-    </hudson.plugins.parameterizedtrigger.BuildTrigger>
   </publishers>
   <buildWrappers/>
 </project>

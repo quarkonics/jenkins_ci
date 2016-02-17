@@ -20,14 +20,6 @@ echo -n "zstack-utility: " >> ../${TEST_TARGET}/${OVERALL_BUILD_NUMBER}/versions
 git log -1 --format="%H %an: %s" >> ../${TEST_TARGET}/${OVERALL_BUILD_NUMBER}/versions.txt
 git branch -f master
 cd ..
-mkdir -p zstack-dashboard
-tar -x -C zstack-dashboard -f zstack-dashboard.tar
-rm -rf zstack-dashboard.tar
-cd zstack-dashboard
-echo -n "zstack-dashboard: " >> ../${TEST_TARGET}/${OVERALL_BUILD_NUMBER}/versions.txt
-git log -1 --format="%H %an: %s" >> ../${TEST_TARGET}/${OVERALL_BUILD_NUMBER}/versions.txt
-git branch -f master
-cd ..
 mkdir -p zstack-woodpecker
 tar -x -C zstack-woodpecker -f zstack-woodpecker.tar
 #rm -rf zstack-woodpecker.tar

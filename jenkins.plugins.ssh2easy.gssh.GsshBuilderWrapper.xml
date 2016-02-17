@@ -13,6 +13,12 @@
       <username>root</username>
       <password>password</password>
     </jenkins.plugins.ssh2easy.gssh.ServerGroup>
+    <jenkins.plugins.ssh2easy.gssh.ServerGroup>
+      <groupName>mevoco_tests_1.1</groupName>
+      <port>22</port>
+      <username>root</username>
+      <password>password</password>
+    </jenkins.plugins.ssh2easy.gssh.ServerGroup>
   </serverGroups>
   <servers>
     <jenkins.plugins.ssh2easy.gssh.Server>
@@ -34,6 +40,11 @@
       <serverGroupName>mevoco_tests</serverGroupName>
       <name>jenkins_debug2</name>
       <ip>192.168.200.128</ip>
+    </jenkins.plugins.ssh2easy.gssh.Server>
+    <jenkins.plugins.ssh2easy.gssh.Server>
+      <serverGroupName>mevoco_tests_1.1</serverGroupName>
+      <name>jenkins_mevoco_bat_1.1</name>
+      <ip>192.168.200.139</ip>
     </jenkins.plugins.ssh2easy.gssh.Server>
   </servers>
 </jenkins.plugins.ssh2easy.gssh.GsshBuilderWrapper_-GsshDescriptorImpl>

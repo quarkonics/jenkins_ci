@@ -2,15 +2,15 @@ IP=$1
 TEST_TARGET=$2
 OVERALL_BUILD_NUMBER=$3
 
-if [ ${TEST_TARGET} == "build_zstack" ]; then
+if [ ${TEST_TARGET} == "build_zstack" -o ${TEST_TARGET} == "zstack_ci" ]; then
 	CI_TARGET=zstack_ci
-elif [ ${TEST_TARGET} == "build_mevoco" ]; then
+elif [ ${TEST_TARGET} == "build_mevoco" -o ${TEST_TARGET} == "mevoco_ci" ]; then
 	CI_TARGET=mevoco_ci
 fi
 
-TESTSUITES="basic virtualrouter virtualrouter(localstorage) virtualrouter(local+nfs) installation"
+TESTSUITES="basic virtualrouter virtualrouter(localstorage) virtualrouter(local+nfs)"
 CENTOS_REPO="alibase 163base internalbase"
-EPEL_REPO="epel aliepel"
+EPEL_REPO="aliepel epel"
 PASS_NUMBER=0
 TOTAL_NUMBER=0
 
@@ -113,13 +113,17 @@ for TS in ${TESTSUITES}; do
 			let PASS_NUMBER=${PASS_NUMBER}+${TS_PASS_NUMBER}
 			let TOTAL_NUMBER=${TOTAL_NUMBER}+${TS_TOTAL_NUMBER}
 			echo "{\"fields\":[{\"value\":\"${TS}:\",\"short\":true},{\"value\":\"PASS/TOTAL=${TS_PASS_NUMBER}/${TS_TOTAL_NUMBER}\",\"short\":true}],\"color\":\"${COLOR}\"}," >> /home/${IP}/report.${IP}.json
-			cat /home/${IP}/result_${IP}.log  | sed -n '/--*$/{:1;N;/--*$/{p;b};N;b1}' | grep -v '\-\-' | awk '{if ($1~/:/) {tttt=$1;gsub(":","", tttt)} else {if ($2!=1) {printf("{\"fields\":[{\"value\":\"%s/%s\",\"short\":true},{\"value\":\"FAIL\",\"short\":true}],\"color\":\"F35A00\"},", tttt, $1, $2, $3, $4, $5)}}}' >> /home/${IP}/report.${IP}.json
+#			cat /home/${IP}/result_${IP}.log  | sed -n '/--*$/{:1;N;/--*$/{p;b};N;b1}' | grep -v '\-\-' | awk '{if ($1~/:/) {tttt=$1;gsub(":","", tttt)} else {if ($2!=1) {printf("{\"fields\":[{\"value\":\"%s/%s\",\"short\":true},{\"value\":\"FAIL\",\"short\":true}],\"color\":\"F35A00\"},", tttt, $1, $2, $3, $4, $5)}}}' >> /home/${IP}/report.${IP}.json
+			cat /home/${IP}/result_${IP}.summary | awk '{printf("{\"fields\":[{\"value\":\"%s\",\"short\":true},{\"value\":\"%s\",\"short\":true}],\"color\":\"F35A00\"},", $1, $2)}' >> /home/${IP}/report.${IP}.json
 			TESTSUITE_DONE=1
 		done
 	done
-	curl -X POST --data-urlencode "payload={\"text\" : \"Nightly result(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/log.tgz|Log>) against ${TEST_TARGET} - #${OVERALL_BUILD_NUMBER}(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/|Open>)PASS/TOTAL=${PASS_NUMBER}/${TOTAL_NUMBER}\", \"username\" : \"jenkins\", \"attachments\" : [`cat /home/${IP}/report.${IP}.json`{}]}" https://hooks.slack.com/services/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
+#	curl -X POST --data-urlencode "payload={\"text\" : \"Nightly result(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/log.tgz|Log>) against ${TEST_TARGET} - #${OVERALL_BUILD_NUMBER}(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/|Open>)PASS/TOTAL=${PASS_NUMBER}/${TOTAL_NUMBER}\", \"username\" : \"jenkins\", \"attachments\" : [`cat /home/${IP}/report.${IP}.json`{}]}" https://hooks.slack.com/services/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
 	rsync -a /home/${IP}/zstack-woodpecker/dailytest/config_xml/ /home/${IP}/config_xml/
 	tar czh /home/${IP}/config_xml/test-result/latest > /home/${IP}/log_${IP}.tgz
-	mkdir -p zstack_ci/${OVERALL_BUILD_NUMBER}/
-	cp /home/${IP}/log_${IP}.tgz zstack_ci/${OVERALL_BUILD_NUMBER}/log.tgz
+	mkdir -p ${CI_TARGET}/${OVERALL_BUILD_NUMBER}/
+	cp /home/${IP}/log_${IP}.tgz ${CI_TARGET}/${OVERALL_BUILD_NUMBER}/nightly_log.tgz
+	scp -r ${CI_TARGET}/${OVERALL_BUILD_NUMBER} 192.168.200.1:/httpd/${CI_TARGET}/
 done
+#curl -X POST --data-urlencode "payload={\"text\" : \"Nightly result(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/log.tgz|Log>) against ${TEST_TARGET} - #${OVERALL_BUILD_NUMBER}(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/|Open>)PASS/TOTAL=${PASS_NUMBER}/${TOTAL_NUMBER}\", \"username\" : \"jenkins\", \"attachments\" : [`cat /home/${IP}/report.${IP}.json`{}]}" https://hooks.slack.com/services/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
+curl -X POST --data-urlencode "payload={\"text\" : \"Nightly result(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/log.tgz|Log>) against ${TEST_TARGET} - #${OVERALL_BUILD_NUMBER}(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/|Open>)PASS/TOTAL=${PASS_NUMBER}/${TOTAL_NUMBER}\", \"username\" : \"jenkins\", \"attachments\" : [`cat /home/${IP}/report.${IP}.json`{}]}" https://hooks.slack.com/services/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
