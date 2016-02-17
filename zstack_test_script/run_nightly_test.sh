@@ -2,6 +2,27 @@ IP=$1
 TEST_TARGET=$2
 OVERALL_BUILD_NUMBER=$3
 
+compare_result()
+{
+	E_TESTSUITE=$1
+	SUMMARYFILE=/home/${IP}/result_${IP}.summary
+	REFSUMMARYFILE=/home/${IP}/${E_TESTSUITE}.ref
+	for i in $(seq `wc -l ${SUMMARYFILE}|awk '{print $1}'`); do
+		TESTCASE=`sed -n "${i}p" ${SUMMARYFILE} | awk '{print $1}'`
+		CURRENT_RESULT=`sed -n "${i}p" ${SUMMARYFILE} | awk '{print $2}'`
+		REF_RESULT=`grep -w "${TESTCASE}" ${REFSUMMARYFILE} | head -1 | awk '{print $2}'`
+		if [ "${REF_RESULT}" == "" ]; then
+			REF_RESULT="N/A"
+		fi
+
+		if [ "${REF_RESULT}" == "${CURRENT_RESULT}" ]; then
+			continue
+		fi
+
+		echo "{\"fields\":[{\"value\":\"${TESTCASE}\",\"short\":true},{\"value\":\"${REF_RESULT}->${CURRENT_RESULT}\",\"short\":true}],\"color\":\"AAAAAA\"},"
+	done
+}
+
 if [ ${TEST_TARGET} == "build_zstack" -o ${TEST_TARGET} == "zstack_ci" ]; then
 	CI_TARGET=zstack_ci
 elif [ ${TEST_TARGET} == "build_mevoco" -o ${TEST_TARGET} == "mevoco_ci" ]; then
@@ -21,6 +42,7 @@ mkdir -p /home/${IP}/config_xml/
 rm -rf /home/${IP}/log_${IP}.tgz
 echo "{\"fields\":[{\"value\":\"zstack-woodpecker:\",\"short\":true},{\"value\":\"`cat /home/${IP}/zstack_woodpecker_version.txt`\",\"short\":true}],\"color\":\"${COLOR}\"}," >> /home/${IP}/report.${IP}.json
 for TS in ${TESTSUITES}; do
+	E_TS=`echo ${TS} | sed 's/(/_/' | sed 's/)//' | sed 's/+/_/'`
 	rm -rf /home/nfs/*
 	rm -rf /home/local-ps/*
 	rm -rf /home/sftpBackupStorage/*
@@ -114,7 +136,8 @@ for TS in ${TESTSUITES}; do
 			let TOTAL_NUMBER=${TOTAL_NUMBER}+${TS_TOTAL_NUMBER}
 			echo "{\"fields\":[{\"value\":\"${TS}:\",\"short\":true},{\"value\":\"PASS/TOTAL=${TS_PASS_NUMBER}/${TS_TOTAL_NUMBER}\",\"short\":true}],\"color\":\"${COLOR}\"}," >> /home/${IP}/report.${IP}.json
 #			cat /home/${IP}/result_${IP}.log  | sed -n '/--*$/{:1;N;/--*$/{p;b};N;b1}' | grep -v '\-\-' | awk '{if ($1~/:/) {tttt=$1;gsub(":","", tttt)} else {if ($2!=1) {printf("{\"fields\":[{\"value\":\"%s/%s\",\"short\":true},{\"value\":\"FAIL\",\"short\":true}],\"color\":\"F35A00\"},", tttt, $1, $2, $3, $4, $5)}}}' >> /home/${IP}/report.${IP}.json
-			cat /home/${IP}/result_${IP}.summary | grep -v PASS | awk '{printf("{\"fields\":[{\"value\":\"%s\",\"short\":true},{\"value\":\"%s\",\"short\":true}],\"color\":\"F35A00\"},", $1, $2)}' >> /home/${IP}/report.${IP}.json
+#			cat /home/${IP}/result_${IP}.summary | grep -v PASS | awk '{printf("{\"fields\":[{\"value\":\"%s\",\"short\":true},{\"value\":\"%s\",\"short\":true}],\"color\":\"F35A00\"},", $1, $2)}' >> /home/${IP}/report.${IP}.json
+			compare_result ${E_TS} >> /home/${IP}/report.${IP}.json
 			TESTSUITE_DONE=1
 		done
 	done
@@ -124,6 +147,8 @@ for TS in ${TESTSUITES}; do
 	mkdir -p ${CI_TARGET}/${OVERALL_BUILD_NUMBER}/
 	cp /home/${IP}/log_${IP}.tgz ${CI_TARGET}/${OVERALL_BUILD_NUMBER}/nightly_log.tgz
 	scp -r ${CI_TARGET}/${OVERALL_BUILD_NUMBER} 192.168.200.1:/httpd/${CI_TARGET}/
+	scp /home/${IP}/result_${IP}.summary 192.168.200.1:/httpd/${CI_TARGET}/${OVERALL_BUILD_NUMBER}
+	scp /home/${IP}/result_${IP}.summary 192.168.200.1:/httpd/${CI_TARGET}/${E_TS}.ref
 done
 #curl -X POST --data-urlencode "payload={\"text\" : \"Nightly result(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/log.tgz|Log>) against ${TEST_TARGET} - #${OVERALL_BUILD_NUMBER}(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/|Open>)PASS/TOTAL=${PASS_NUMBER}/${TOTAL_NUMBER}\", \"username\" : \"jenkins\", \"attachments\" : [`cat /home/${IP}/report.${IP}.json`{}]}" https://hooks.slack.com/services/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
 curl -X POST --data-urlencode "payload={\"text\" : \"Nightly result(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/log.tgz|Log>) against ${TEST_TARGET} - #${OVERALL_BUILD_NUMBER}(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/|Open>)PASS/TOTAL=${PASS_NUMBER}/${TOTAL_NUMBER}\", \"username\" : \"jenkins\", \"attachments\" : [`cat /home/${IP}/report.${IP}.json`{}]}" https://hooks.slack.com/services/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
