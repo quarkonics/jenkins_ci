@@ -33,7 +33,7 @@
     <hudson.tasks.Shell>
       <command>rm -rf mevoco_ci zstack_ci
 mkdir -p ${WORKSPACE}/192.168.200.128/
-sh ${JENKINS_HOME}/reboot.sh 192.168.200.128</command>
+sh ${JENKINS_HOME}/reboot.sh jenkins_mevoco_nightly</command>
     </hudson.tasks.Shell>
     <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
       <project>mevoco_ci</project>
