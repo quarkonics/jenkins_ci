@@ -114,7 +114,7 @@ for TS in ${TESTSUITES}; do
 			let TOTAL_NUMBER=${TOTAL_NUMBER}+${TS_TOTAL_NUMBER}
 			echo "{\"fields\":[{\"value\":\"${TS}:\",\"short\":true},{\"value\":\"PASS/TOTAL=${TS_PASS_NUMBER}/${TS_TOTAL_NUMBER}\",\"short\":true}],\"color\":\"${COLOR}\"}," >> /home/${IP}/report.${IP}.json
 #			cat /home/${IP}/result_${IP}.log  | sed -n '/--*$/{:1;N;/--*$/{p;b};N;b1}' | grep -v '\-\-' | awk '{if ($1~/:/) {tttt=$1;gsub(":","", tttt)} else {if ($2!=1) {printf("{\"fields\":[{\"value\":\"%s/%s\",\"short\":true},{\"value\":\"FAIL\",\"short\":true}],\"color\":\"F35A00\"},", tttt, $1, $2, $3, $4, $5)}}}' >> /home/${IP}/report.${IP}.json
-			cat /home/${IP}/result_${IP}.summary | awk '{printf("{\"fields\":[{\"value\":\"%s\",\"short\":true},{\"value\":\"%s\",\"short\":true}],\"color\":\"F35A00\"},", $1, $2)}' >> /home/${IP}/report.${IP}.json
+			cat /home/${IP}/result_${IP}.summary | grep -v PASS | awk '{printf("{\"fields\":[{\"value\":\"%s\",\"short\":true},{\"value\":\"%s\",\"short\":true}],\"color\":\"F35A00\"},", $1, $2)}' >> /home/${IP}/report.${IP}.json
 			TESTSUITE_DONE=1
 		done
 	done
