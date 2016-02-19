@@ -13,13 +13,14 @@ cd zstack
 tar cfp ../zstack.tar .
 echo -n "zstack: " > ../${BUILD_TYPE}/${BUILD_NUMBER}/versions.txt
 git log -1 --format="%H %ci %an: %s" >> ../${BUILD_TYPE}/${BUILD_NUMBER}/versions.txt
-#git branch premium
+git branch -f master
 cd ..
 
 if [ -d zstack-agent ]; then
 	cd zstack-agent
 	echo -n "zstack-agent: " >> ../${BUILD_TYPE}/${BUILD_NUMBER}/versions.txt
 	git log -1 --format="%H %ci %an: %s" >> ../${BUILD_TYPE}/${BUILD_NUMBER}/versions.txt
+	git branch -f master
 	cd ..
 fi
 
@@ -28,7 +29,7 @@ git clean -xdf
 tar cfp ../zstack-utility.tar .
 echo -n "zstack-utility: " >> ../${BUILD_TYPE}/${BUILD_NUMBER}/versions.txt
 git log -1 --format="%H %ci %an: %s" >> ../${BUILD_TYPE}/${BUILD_NUMBER}/versions.txt
-#git branch premium
+git branch -f master
 cd ..
 
 if [ -d mevoco-ui ]; then
@@ -52,6 +53,7 @@ if [ -d zstack/premium ]; then
 	cd zstack/premium
 	echo -n "premium: " >> ../../${BUILD_TYPE}/${BUILD_NUMBER}/versions.txt
 	git log -1 --format="%H %ci %an: %s" >> ../../${BUILD_TYPE}/${BUILD_NUMBER}/versions.txt
+	git branch -f master
 	cd ../..
 fi
 
@@ -78,9 +80,12 @@ export GOROOT=/usr/lib/golang
 ORIGINAL_PRODUCT_VERSION=`cat build.properties|grep product.version|awk -F '=' '{print $2}'`
 TIME_STAMP=`date +"%y%m%d"`
 #ant -Dzstack_build_root=${WORKSPACE} -Dzstackdashboard.build_version=master offline-centos7
-if [ "${BUILD_TYPE}" == "mevoco_ci" -o "${BUILD_TYPE}" == "mevoco_ci_1.1" ]; then
+if [ "${BUILD_TYPE}" == "mevoco_ci" -o "${BUILD_TYPE}" == "mevoco_ui_dev" ]; then
+	if [ "${BUILD_TYPE}" == "mevoco_ui_dev" ]; then
+		ORIGINAL_PRODUCT_VERSION="mevoco-ui-dev"
+	fi
 	ant -Dzstack_build_root=${WORKSPACE} -Dbuild_war_flag=premium -Dproduct.version=${ORIGINAL_PRODUCT_VERSION}-${TIME_STAMP}-${BUILD_NUMBER} -Dzstackdashboard.build_version=master -Dproduct.name=MEVOCO -Dproduct.bin.name=mevoco-installer all-in-one
-elif [ "${BUILD_TYPE}" == "zstack_ci" ]; then
+elif [ "${BUILD_TYPE}" == "zstack_ci" -o "${BUILD_TYPE}" == "zstack_1.1_ci" ]; then
 	ant -Dzstack_build_root=${WORKSPACE} -Dproduct.version=${ORIGINAL_PRODUCT_VERSION}-${TIME_STAMP}-${BUILD_NUMBER} all-in-one
 fi
 cd ../../
@@ -114,7 +119,7 @@ echo "</html>" >> ${BUILD_TYPE}/${BUILD_NUMBER}/index.html
 
 rm -rf ${BUILD_TYPE}/latest
 ln -s ${BUILD_NUMBER} ${BUILD_TYPE}/latest
-if [ "${BUILD_TYPE}" == "mevoco_ci" -o "${BUILD_TYPE}" == "mevoco_ci_1.1" ]; then
+if [ "${BUILD_TYPE}" == "mevoco_ci" -o "${BUILD_TYPE}" == "mevoco_ui_dev" ]; then
 	ln -s ${BIN_NAME} ${BUILD_TYPE}/latest/mevoco-installer.bin
 elif [ "${BUILD_TYPE}" == "zstack_ci" ]; then
 	ln -s ${BIN_NAME} ${BUILD_TYPE}/latest/zstack-installer.bin

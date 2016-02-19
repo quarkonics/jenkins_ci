@@ -6,8 +6,8 @@ if [ "${BUILD_TYPE}" == "mevoco_ci" ]; then
 	TEST_TYPE=mevoco_bat_test
 elif [ "${BUILD_TYPE}" == "zstack_ci" ]; then
 	TEST_TYPE=zstack_bat_test
-elif [ "${BUILD_TYPE}" == "mevoco_ci_1.1" ]; then
-	TEST_TYPE=mevoco_bat_1.1_test
+elif [ "${BUILD_TYPE}" == "mevoco_ui_dev" ]; then
+	TEST_TYPE=mevoco_ui_dev_bat_test
 fi
 rm -rf /home/${TARGET_IP}/
 mkdir -p /home/${TARGET_IP}/

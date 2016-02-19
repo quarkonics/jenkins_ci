@@ -6,8 +6,8 @@ if [ ${TEST_TARGET} == "build_zstack" -o ${TEST_TARGET} == "zstack_ci" ]; then
 	CI_TARGET=zstack_ci
 elif [ ${TEST_TARGET} == "build_mevoco" -o ${TEST_TARGET} == "mevoco_ci" ]; then
 	CI_TARGET=mevoco_ci
-elif [ ${TEST_TARGET} == "build_mevoco_1.1" -o ${TEST_TARGET} == "mevoco_ci_1.1" ]; then
-	CI_TARGET=mevoco_ci_1.1
+elif [ ${TEST_TARGET} == "build_mevoco_1.1" -o ${TEST_TARGET} == "mevoco_ui_dev" ]; then
+	CI_TARGET=mevoco_ui_dev
 fi
 
 CENTOS_REPO="alibase 163base"

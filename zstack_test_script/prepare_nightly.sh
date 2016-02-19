@@ -6,7 +6,7 @@ if [ "${BUILD_TYPE}" == "mevoco_ci" ]; then
 	TEST_TYPE=mevoco_nightly
 elif [ "${BUILD_TYPE}" == "zstack_ci" ]; then
 	TEST_TYPE=zstack_nightly
-elif [ "${BUILD_TYPE}" == "mevoco_ci_1.1" ]; then
+elif [ "${BUILD_TYPE}" == "mevoco_ui_dev" ]; then
 	TEST_TYPE=mevoco_nightly_1.1
 fi
 rm -rf /home/${TARGET_IP}/

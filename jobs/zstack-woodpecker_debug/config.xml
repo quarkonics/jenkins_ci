@@ -80,7 +80,7 @@ git log -1 --format=&quot;%H %ci %an: %s&quot; &gt; zstack_woodpecker_version.tx
       <configs>
         <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
           <configs class="empty-list"/>
-          <projects>zstack_bat_test, mevoco_bat_test, mevoco_bat_1.1_test, </projects>
+          <projects>zstack_bat_test,mevoco_bat_test,mevoco_ui_dev_bat_test</projects>
           <condition>SUCCESS</condition>
           <triggerWithNoParameters>true</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
