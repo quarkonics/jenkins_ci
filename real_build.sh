@@ -14,6 +14,9 @@ tar cfp ../zstack.tar .
 echo -n "zstack: " > ../${BUILD_TYPE}/${BUILD_NUMBER}/versions.txt
 git log -1 --format="%H %ci %an: %s" >> ../${BUILD_TYPE}/${BUILD_NUMBER}/versions.txt
 git branch -f master
+if [ "${BUILD_TYPE}" == "zstack_1.1_ci" ]; then
+	sed -i /\<module\>premium/d pom.xml
+fi
 cd ..
 
 if [ -d zstack-agent ]; then
