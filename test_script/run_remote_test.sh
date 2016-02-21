@@ -12,7 +12,7 @@ setup_no_password()
 BUILD_TYPE=$1
 OVERALL_BUILD_NUMBER=$2
 SESSION_UUID=$(zstack_login)
-VM_UUID=$(zstack_create_vm ${SESSION_UUID} jenkins_try_create_vm2)
+VM_UUID=$(zstack_create_vm ${SESSION_UUID} jenkins_bat_${BUILD_TYPE})
 VM_IP=$(zstack_query_vm ${SESSION_UUID} ${VM_UUID} '["inventories"][0]["vmNics"][0]["ip"]')
 
 START_TIME=${SECONDS}

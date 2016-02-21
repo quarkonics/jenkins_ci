@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <project>
   <actions/>
-  <description>mevoco bat test</description>
+  <description>mevoco bat test for mevoco ui dev</description>
   <keepDependencies>false</keepDependencies>
   <properties>
     <jenkins.plugins.slack.SlackNotifier_-SlackJobProperty plugin="slack@1.8.1">
@@ -31,11 +31,10 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>rm -rf mevoco_ci zstack_ci
-mkdir -p ${WORKSPACE}/192.168.200.120/</command>
+      <command>rm -rf mevoco_ci zstack_ci</command>
     </hudson.tasks.Shell>
     <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
-      <project>mevoco_ci</project>
+      <project>mevoco_ui_dev</project>
       <filter>zstack.tar</filter>
       <target></target>
       <excludes></excludes>
@@ -43,7 +42,7 @@ mkdir -p ${WORKSPACE}/192.168.200.120/</command>
       <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
     </hudson.plugins.copyartifact.CopyArtifact>
     <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
-      <project>mevoco_ci</project>
+      <project>mevoco_ui_dev</project>
       <filter>zstack-utility.tar</filter>
       <target></target>
       <excludes></excludes>
@@ -59,8 +58,8 @@ mkdir -p ${WORKSPACE}/192.168.200.120/</command>
       <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
     </hudson.plugins.copyartifact.CopyArtifact>
     <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
-      <project>mevoco_ci</project>
-      <filter>mevoco_ci/latest/*</filter>
+      <project>mevoco_ui_dev</project>
+      <filter>mevoco_ui_dev/latest/*</filter>
       <target></target>
       <excludes></excludes>
       <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
@@ -75,8 +74,8 @@ mkdir -p ${WORKSPACE}/192.168.200.120/</command>
       <doNotFingerprintArtifacts>false</doNotFingerprintArtifacts>
     </hudson.plugins.copyartifact.CopyArtifact>
     <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
-      <project>mevoco_ci</project>
-      <filter>mevoco_ci_build_number.txt</filter>
+      <project>mevoco_ui_dev</project>
+      <filter>mevoco_ui_dev_build_number.txt</filter>
       <target></target>
       <excludes></excludes>
       <selector class="hudson.plugins.copyartifact.StatusBuildSelector"/>
@@ -84,30 +83,11 @@ mkdir -p ${WORKSPACE}/192.168.200.120/</command>
     </hudson.plugins.copyartifact.CopyArtifact>
     <hudson.tasks.Shell>
       <command>if [ &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot; == &quot;&quot; ]; then
-	OVERALL_MEVOCO_BUILD_NUMBER=`cat mevoco_ci_build_number.txt`
+	OVERALL_MEVOCO_BUILD_NUMBER=`cat mevoco_ui_dev_build_number.txt`
 fi
-bash -ex ${JENKINS_HOME}/zstack_test_script/build.sh build_mevoco &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot; mevoco_ci/latest/mevoco-installer.bin</command>
+bash -ex ${JENKINS_HOME}/test_script/build.sh build_mevoco &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot; mevoco_ui_dev/latest/mevoco-installer.bin
+bash -ex ${JENKINS_HOME}/test_script/run_remote_test.sh mevoco_ui_dev &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot;</command>
     </hudson.tasks.Shell>
-    <jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder plugin="ssh2easy@1.3">
-      <disable>false</disable>
-      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
-      <groupName>mevoco_tests</groupName>
-      <ip>192.168.200.120</ip>
-      <localFilePath>/var/lib/jenkins/zstack_test_script/prepare.sh</localFilePath>
-      <remoteLocation>/home/192.168.200.120/</remoteLocation>
-      <fileName>prepare.sh</fileName>
-    </jenkins.plugins.ssh2easy.gssh.GsshFtpUploadBuilder>
-    <jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder plugin="ssh2easy@1.3">
-      <disable>false</disable>
-      <serverInfo>mevoco_tests~~jenkins_nightly_testing~~192.168.200.120</serverInfo>
-      <groupName>mevoco_tests</groupName>
-      <ip>192.168.200.120</ip>
-      <shell>bash -ex /home/192.168.200.120/prepare.sh mevoco_ci 192.168.200.120
-if [ &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot; == &quot;&quot; ]; then
-	OVERALL_MEVOCO_BUILD_NUMBER=`cat /home/192.168.200.120/mevoco_ci_build_number.txt`
-fi
-bash -ex /home/192.168.200.120/run_test.sh 192.168.200.120 mevoco_ci ${OVERALL_MEVOCO_BUILD_NUMBER}</shell>
-    </jenkins.plugins.ssh2easy.gssh.GsshCommandBuilder>
   </builders>
   <publishers/>
   <buildWrappers/>
