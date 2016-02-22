@@ -31,9 +31,7 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>rm -rf mevoco_ci zstack_ci
-mkdir -p ${WORKSPACE}/192.168.200.145/
-sh ${JENKINS_HOME}/reboot.sh jenkins_zstack_nightly</command>
+      <command>rm -rf mevoco_ci zstack_ci</command>
     </hudson.tasks.Shell>
     <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
       <project>zstack_ci</project>

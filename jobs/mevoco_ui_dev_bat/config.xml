@@ -86,7 +86,7 @@
 	OVERALL_MEVOCO_BUILD_NUMBER=`cat mevoco_ui_dev_build_number.txt`
 fi
 bash -ex ${JENKINS_HOME}/test_script/build.sh build_mevoco &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot; mevoco_ui_dev/latest/mevoco-installer.bin
-bash -ex ${JENKINS_HOME}/test_script/run_remote_test.sh mevoco_ui_dev &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot;</command>
+bash -ex ${JENKINS_HOME}/test_script/run_remote_test.sh mevoco_ui_dev bat &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot;</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>

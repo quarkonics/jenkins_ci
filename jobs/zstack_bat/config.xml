@@ -87,7 +87,7 @@
 	OVERALL_ZSTACK_BUILD_NUMBER=`cat zstack_ci_build_number.txt`
 fi
 bash -ex ${JENKINS_HOME}/test_script/build.sh build_zstack &quot;${OVERALL_ZSTACK_BUILD_NUMBER}&quot; zstack_ci/latest/zstack-installer.bin
-bash -ex ${JENKINS_HOME}/test_script/run_remote_test.sh zstack_ci &quot;${OVERALL_ZSTACK_BUILD_NUMBER}&quot;</command>
+bash -ex ${JENKINS_HOME}/test_script/run_remote_test.sh zstack_ci bat &quot;${OVERALL_ZSTACK_BUILD_NUMBER}&quot;</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>

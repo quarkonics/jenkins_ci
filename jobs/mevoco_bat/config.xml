@@ -31,8 +31,7 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>rm -rf mevoco_ci zstack_ci
-mkdir -p ${WORKSPACE}/192.168.200.120/</command>
+      <command>rm -rf mevoco_ci zstack_ci</command>
     </hudson.tasks.Shell>
     <hudson.plugins.copyartifact.CopyArtifact plugin="copyartifact@1.37">
       <project>mevoco_ci</project>
@@ -87,7 +86,7 @@ mkdir -p ${WORKSPACE}/192.168.200.120/</command>
 	OVERALL_MEVOCO_BUILD_NUMBER=`cat mevoco_ci_build_number.txt`
 fi
 bash -ex ${JENKINS_HOME}/test_script/build.sh build_mevoco &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot; mevoco_ci/latest/mevoco-installer.bin
-bash -ex ${JENKINS_HOME}/test_script/run_remote_test.sh mevoco_ci &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot;</command>
+bash -ex ${JENKINS_HOME}/test_script/run_remote_test.sh mevoco_ci bat &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot;</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>
