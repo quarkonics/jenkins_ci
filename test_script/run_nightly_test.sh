@@ -51,7 +51,7 @@ for TS in ${TESTSUITES}; do
 	rm -rf /home/local-ps/*
 	rm -rf /home/sftpBackupStorage/*
 	rm -rf /home/${IP}/result_${IP}.summary
-	BASIC_TS=`echo ${TS} | awk -F '(' '{print $1}'`
+	BASIC_TS=`echo ${TS} | awk -F '_' '{print $1}'`
 	BASIC_TS_CONF=`echo ${TS} | awk -F '_' '{print $2}'`
 	TESTSUITE_DONE=0
 	for CR in ${CENTOS_REPO}; do
