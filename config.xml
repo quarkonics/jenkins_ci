@@ -2,7 +2,7 @@
 <hudson>
   <disabledAdministrativeMonitors/>
   <version>1.644</version>
-  <numExecutors>5</numExecutors>
+  <numExecutors>8</numExecutors>
   <mode>NORMAL</mode>
   <useSecurity>true</useSecurity>
   <authorizationStrategy class="hudson.security.ProjectMatrixAuthorizationStrategy">
