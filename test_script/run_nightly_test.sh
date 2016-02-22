@@ -2,6 +2,7 @@ IP=$1
 TEST_TARGET=$2
 OVERALL_BUILD_NUMBER=$3
 IP_RANGE_NAME=$4
+TESTSUITES=$5
 
 compare_result()
 {
@@ -30,7 +31,9 @@ elif [ ${TEST_TARGET} == "build_mevoco" -o ${TEST_TARGET} == "mevoco_ci" ]; then
 	CI_TARGET=mevoco_ci
 fi
 
-TESTSUITES="basic virtualrouter virtualrouter(localstorage) virtualrouter(local+nfs)"
+if [ "${TESTSUITES}" == "" ]; then
+	TESTSUITES="basic virtualrouter virtualrouter_localstorage virtualrouter_local+nfs"
+fi
 CENTOS_REPO="alibase 163base internalbase"
 EPEL_REPO="aliepel epel"
 PASS_NUMBER=0
@@ -49,7 +52,7 @@ for TS in ${TESTSUITES}; do
 	rm -rf /home/sftpBackupStorage/*
 	rm -rf /home/${IP}/result_${IP}.summary
 	BASIC_TS=`echo ${TS} | awk -F '(' '{print $1}'`
-	BASIC_TS_CONF=`echo ${TS} | awk -F '(' '{print $2}' | awk -F ')' '{print $1}'`
+	BASIC_TS_CONF=`echo ${TS} | awk -F '_' '{print $2}'`
 	TESTSUITE_DONE=0
 	for CR in ${CENTOS_REPO}; do
 		for ER in ${EPEL_REPO}; do
@@ -118,7 +121,78 @@ for TS in ${TESTSUITES}; do
 				MANAGEMENT_IP_END="192.168.201.31"
 				IP_START="192.168.201.32"
 				IP_END="192.168.201.41"
+			elif [ "${IP_RANGE_NAME}" == "IP_RANGE3" ]; then
+				MANAGEMENT_IP_START="192.168.201.42"
+				MANAGEMENT_IP_END="192.168.201.51"
+				IP_START="192.168.201.52"
+				IP_END="192.168.201.61"
+			elif [ "${IP_RANGE_NAME}" == "IP_RANGE4" ]; then
+				MANAGEMENT_IP_START="192.168.201.62"
+				MANAGEMENT_IP_END="192.168.201.71"
+				IP_START="192.168.201.72"
+				IP_END="192.168.201.81"
+			elif [ "${IP_RANGE_NAME}" == "IP_RANGE5" ]; then
+				MANAGEMENT_IP_START="192.168.201.82"
+				MANAGEMENT_IP_END="192.168.201.91"
+				IP_START="192.168.201.92"
+				IP_END="192.168.201.101"
+			elif [ "${IP_RANGE_NAME}" == "IP_RANGE6" ]; then
+				MANAGEMENT_IP_START="192.168.201.102"
+				MANAGEMENT_IP_END="192.168.201.111"
+				IP_START="192.168.201.112"
+				IP_END="192.168.201.121"
+			elif [ "${IP_RANGE_NAME}" == "IP_RANGE7" ]; then
+				MANAGEMENT_IP_START="192.168.201.122"
+				MANAGEMENT_IP_END="192.168.201.131"
+				IP_START="192.168.201.132"
+				IP_END="192.168.201.141"
+			elif [ "${IP_RANGE_NAME}" == "IP_RANGE8" ]; then
+				MANAGEMENT_IP_START="192.168.201.142"
+				MANAGEMENT_IP_END="192.168.201.151"
+				IP_START="192.168.201.152"
+				IP_END="192.168.201.161"
+			elif [ "${IP_RANGE_NAME}" == "IP_RANGE9" ]; then
+				MANAGEMENT_IP_START="192.168.202.2"
+				MANAGEMENT_IP_END="192.168.202.11"
+				IP_START="192.168.202.12"
+				IP_END="192.168.202.21"
+			elif [ "${IP_RANGE_NAME}" == "IP_RANGE10" ]; then
+				MANAGEMENT_IP_START="192.168.202.22"
+				MANAGEMENT_IP_END="192.168.202.31"
+				IP_START="192.168.202.32"
+				IP_END="192.168.202.41"
+			elif [ "${IP_RANGE_NAME}" == "IP_RANGE11" ]; then
+				MANAGEMENT_IP_START="192.168.202.42"
+				MANAGEMENT_IP_END="192.168.202.51"
+				IP_START="192.168.202.52"
+				IP_END="192.168.202.61"
+			elif [ "${IP_RANGE_NAME}" == "IP_RANGE12" ]; then
+				MANAGEMENT_IP_START="192.168.202.62"
+				MANAGEMENT_IP_END="192.168.202.71"
+				IP_START="192.168.202.72"
+				IP_END="192.168.202.81"
+			elif [ "${IP_RANGE_NAME}" == "IP_RANGE13" ]; then
+				MANAGEMENT_IP_START="192.168.202.82"
+				MANAGEMENT_IP_END="192.168.202.91"
+				IP_START="192.168.202.92"
+				IP_END="192.168.202.101"
+			elif [ "${IP_RANGE_NAME}" == "IP_RANGE14" ]; then
+				MANAGEMENT_IP_START="192.168.202.102"
+				MANAGEMENT_IP_END="192.168.202.111"
+				IP_START="192.168.202.112"
+				IP_END="192.168.202.121"
+			elif [ "${IP_RANGE_NAME}" == "IP_RANGE15" ]; then
+				MANAGEMENT_IP_START="192.168.202.122"
+				MANAGEMENT_IP_END="192.168.202.131"
+				IP_START="192.168.202.132"
+				IP_END="192.168.202.141"
+			elif [ "${IP_RANGE_NAME}" == "IP_RANGE16" ]; then
+				MANAGEMENT_IP_START="192.168.202.142"
+				MANAGEMENT_IP_END="192.168.202.151"
+				IP_START="192.168.202.152"
+				IP_END="192.168.202.161"
 			fi
+
 			sed -i "s/MANAGEMENT_IP_START/${MANAGEMENT_IP_START}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
 			sed -i "s/MANAGEMENT_IP_END/${MANAGEMENT_IP_END}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
 			sed -i "s/IP_START/${IP_START}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt

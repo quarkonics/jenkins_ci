@@ -13,8 +13,14 @@ BUILD_TYPE=$1
 TEST_TYPE=$2
 OVERALL_BUILD_NUMBER=$3
 IP_RANGE_NAME=$4
+TESTSUITES=$5
 SESSION_UUID=$(zstack_login)
-VM_UUID=$(zstack_create_vm ${SESSION_UUID} jenkins_${TEST_TYPE}_${BUILD_TYPE})
+if [ "${TESTSUITES}" == "" ]; then
+	VM_NAME=jenkins_${TEST_TYPE}_${BUILD_TYPE}
+else
+	VM_NAME=jenkins_${TEST_TYPE}_${BUILD_TYPE}_`echo ${TESTSUITES} | sed 's/\ /_/g'`
+fi
+VM_UUID=$(zstack_create_vm ${SESSION_UUID} ${VM_NAME})
 VM_IP=$(zstack_query_vm ${SESSION_UUID} ${VM_UUID} '["inventories"][0]["vmNics"][0]["ip"]')
 
 START_TIME=${SECONDS}
@@ -47,7 +53,7 @@ elif [ "${TEST_TYPE}" == "nightly" ]; then
 	scp /var/lib/jenkins/test_script/run_nightly_test.sh root@${VM_IP}:/home/${VM_IP}/
 
 	ssh root@${VM_IP} bash -ex /home/${VM_IP}/prepare_nightly.sh ${BUILD_TYPE} ${VM_IP}
-	ssh root@${VM_IP} bash -ex /home/${VM_IP}/run_nightly_test.sh ${VM_IP} ${BUILD_TYPE} ${OVERALL_BUILD_NUMBER} ${IP_RANGE_NAME}
+	ssh root@${VM_IP} bash -ex /home/${VM_IP}/run_nightly_test.sh ${VM_IP} ${BUILD_TYPE} ${OVERALL_BUILD_NUMBER} ${IP_RANGE_NAME} "${TESTSUITES}"
 fi
 zstack_destroy_vm ${SESSION_UUID} ${VM_UUID}
 zstack_logout ${SESSION_UUID}
