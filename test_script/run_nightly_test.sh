@@ -116,87 +116,132 @@ for TS in ${TESTSUITES}; do
 				MANAGEMENT_IP_END="192.168.201.11"
 				IP_START="192.168.201.12"
 				IP_END="192.168.201.21"
+				NOVLAN_ID1=200
+				VID_START=21
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE2" ]; then
 				MANAGEMENT_IP_START="192.168.201.22"
 				MANAGEMENT_IP_END="192.168.201.31"
 				IP_START="192.168.201.32"
 				IP_END="192.168.201.41"
+				NOVLAN_ID1=202
+				VID_START=27
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE3" ]; then
 				MANAGEMENT_IP_START="192.168.201.42"
 				MANAGEMENT_IP_END="192.168.201.51"
 				IP_START="192.168.201.52"
 				IP_END="192.168.201.61"
+				NOVLAN_ID1=204
+				VID_START=33
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE4" ]; then
 				MANAGEMENT_IP_START="192.168.201.62"
 				MANAGEMENT_IP_END="192.168.201.71"
 				IP_START="192.168.201.72"
 				IP_END="192.168.201.81"
+				NOVLAN_ID1=206
+				VID_START=39
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE5" ]; then
 				MANAGEMENT_IP_START="192.168.201.82"
 				MANAGEMENT_IP_END="192.168.201.91"
 				IP_START="192.168.201.92"
 				IP_END="192.168.201.101"
+				NOVLAN_ID1=208
+				VID_START=45
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE6" ]; then
 				MANAGEMENT_IP_START="192.168.201.102"
 				MANAGEMENT_IP_END="192.168.201.111"
 				IP_START="192.168.201.112"
 				IP_END="192.168.201.121"
+				NOVLAN_ID1=210
+				VID_START=51
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE7" ]; then
 				MANAGEMENT_IP_START="192.168.201.122"
 				MANAGEMENT_IP_END="192.168.201.131"
 				IP_START="192.168.201.132"
 				IP_END="192.168.201.141"
+				NOVLAN_ID1=212
+				VID_START=57
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE8" ]; then
 				MANAGEMENT_IP_START="192.168.201.142"
 				MANAGEMENT_IP_END="192.168.201.151"
 				IP_START="192.168.201.152"
 				IP_END="192.168.201.161"
+				NOVLAN_ID1=214
+				VID_START=63
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE9" ]; then
 				MANAGEMENT_IP_START="192.168.202.2"
 				MANAGEMENT_IP_END="192.168.202.11"
 				IP_START="192.168.202.12"
 				IP_END="192.168.202.21"
+				NOVLAN_ID1=216
+				VID_START=69
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE10" ]; then
 				MANAGEMENT_IP_START="192.168.202.22"
 				MANAGEMENT_IP_END="192.168.202.31"
 				IP_START="192.168.202.32"
 				IP_END="192.168.202.41"
+				NOVLAN_ID1=218
+				VID_START=75
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE11" ]; then
 				MANAGEMENT_IP_START="192.168.202.42"
 				MANAGEMENT_IP_END="192.168.202.51"
 				IP_START="192.168.202.52"
 				IP_END="192.168.202.61"
+				NOVLAN_ID1=220
+				VID_START=81
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE12" ]; then
 				MANAGEMENT_IP_START="192.168.202.62"
 				MANAGEMENT_IP_END="192.168.202.71"
 				IP_START="192.168.202.72"
 				IP_END="192.168.202.81"
+				NOVLAN_ID1=222
+				VID_START=87
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE13" ]; then
 				MANAGEMENT_IP_START="192.168.202.82"
 				MANAGEMENT_IP_END="192.168.202.91"
 				IP_START="192.168.202.92"
 				IP_END="192.168.202.101"
+				NOVLAN_ID1=224
+				VID_START=93
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE14" ]; then
 				MANAGEMENT_IP_START="192.168.202.102"
 				MANAGEMENT_IP_END="192.168.202.111"
 				IP_START="192.168.202.112"
 				IP_END="192.168.202.121"
+				NOVLAN_ID1=226
+				VID_START=99
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE15" ]; then
 				MANAGEMENT_IP_START="192.168.202.122"
 				MANAGEMENT_IP_END="192.168.202.131"
 				IP_START="192.168.202.132"
 				IP_END="192.168.202.141"
+				NOVLAN_ID1=228
+				VID_START=105
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE16" ]; then
 				MANAGEMENT_IP_START="192.168.202.142"
 				MANAGEMENT_IP_END="192.168.202.151"
 				IP_START="192.168.202.152"
 				IP_END="192.168.202.161"
+				NOVLAN_ID1=230
+				VID_START=111
 			fi
 
 			sed -i "s/MANAGEMENT_IP_START/${MANAGEMENT_IP_START}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
 			sed -i "s/MANAGEMENT_IP_END/${MANAGEMENT_IP_END}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
 			sed -i "s/IP_START/${IP_START}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
 			sed -i "s/IP_END/${IP_END}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
+			NOVLAN_ID2=`echo ${NOVLAN_ID2}+1 | bc`
+			vconfig add eth0 ${NOVLAN_ID1} || echo ignore
+			vconfig add eth0 ${NOVLAN_ID2} || echo ignore
+			sed -i "s/l2NoVlanNetworkName1 = .*$/l2NoVlanNetworkName1 = vlan${NOVLAN_ID1}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
+			sed -i "s/l2NoVlanNetworkName2 = .*$/l2NoVlanNetworkName2 = vlan${NOVLAN_ID2}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
+			sed -i "s/l2NoVlanNetworkInterface1 = .*$/l2NoVlanNetworkInterface1 = eth0.${NOVLAN_ID1}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
+			sed -i "s/l2NoVlanNetworkInterface2 = .*$/l2NoVlanNetworkInterface2 = eth0.${NOVLAN_ID2}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
+			COUNT=1
+			VID_END=`echo ${VID_START}+5 | bc`
+			for VID in `seq ${VID_START} ${VID_END}`; do
+				sed -i "s/l2Vlan${COUNT} = .*$/l2Vlan${COUNT} = ${VID}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
+				COUNT=`echo ${COUNT}+1 | bc`
+			done
 
 			scp /home/${IP}/deploy.xml /root/.zstackwoodpecker/integrationtest/vm/virtualrouter/deploy.xml
 			scp /home/${IP}/deploy-local-ps.xml /root/.zstackwoodpecker/integrationtest/vm/virtualrouter/deploy-local-ps.xml

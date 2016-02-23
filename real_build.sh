@@ -1,10 +1,11 @@
 BUILD_TYPE=$1
-NEXT_PROMOTION_NUM=`cat /var/lib/jenkins/jobs/mevoco_ci/promotions/mevoco_ci_bat_pass/nextBuildNumber`
-DELETE_UNTIL=`echo ${NEXT_PROMOTION_NUM}-5 | bc`
-rm -rf /var/lib/jenkins/jobs/mevoco_ci/promotions/mevoco_ci_bat_pass/builds/`seq ${DELETE_UNTIL}`
-NEXT_PROMOTION_NUM=`cat /var/lib/jenkins/jobs/zstack_ci/promotions/zstack_ci_bat_pass/nextBuildNumber`
-DELETE_UNTIL=`echo ${NEXT_PROMOTION_NUM}-5 | bc`
-rm -rf /var/lib/jenkins/jobs/zstack_ci/promotions/zstack_ci_bat_pass/builds/`seq ${DELETE_UNTIL}`
+if [ -d ../promotions/${BUILD_TYPE}_bat_pass/builds/ ]; then
+	cd ../promotions/${BUILD_TYPE}_bat_pass/builds/
+	NEXT_PROMOTION_NUM=`cat ../nextBuildNumber`
+	DELETE_UNTIL=`echo ${NEXT_PROMOTION_NUM}-5 | bc`
+	rm -rf `seq ${DELETE_UNTIL}`
+fi
+cd ${WORKSPACE}/
 
 rm -rf ${BUILD_TYPE} ${BUILD_TYPE}_build_number.txt
 echo ${BUILD_NUMBER} > ${BUILD_TYPE}_build_number.txt

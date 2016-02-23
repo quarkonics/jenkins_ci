@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <project>
   <actions/>
-  <description>mevoco bat test</description>
+  <description>mevoco nightly basic test</description>
   <keepDependencies>false</keepDependencies>
   <properties>
     <org.jenkins.plugins.lockableresources.RequiredResourcesProperty plugin="lockable-resources@1.7">
@@ -99,7 +99,7 @@
 	OVERALL_MEVOCO_BUILD_NUMBER=`cat mevoco_ci_build_number.txt`
 fi
 bash -ex ${JENKINS_HOME}/test_script/build.sh build_mevoco &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot; mevoco_ci/latest/mevoco-installer.bin
-bash -ex ${JENKINS_HOME}/test_script/run_remote_test.sh mevoco_ci nightly &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot; ${IP_RANGE_NAME}</command>
+bash -ex ${JENKINS_HOME}/test_script/run_remote_test.sh mevoco_ci nightly &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot; ${IP_RANGE_NAME} ${WORKSPACE} &quot;virtualrouter_localstorage&quot;</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>
