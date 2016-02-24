@@ -2,7 +2,7 @@ BUILD_TYPE=$1
 if [ -d ../promotions/${BUILD_TYPE}_bat_pass/builds/ ]; then
 	cd ../promotions/${BUILD_TYPE}_bat_pass/builds/
 	NEXT_PROMOTION_NUM=`cat ../nextBuildNumber`
-	DELETE_UNTIL=`echo ${NEXT_PROMOTION_NUM}-5 | bc`
+	DELETE_UNTIL=`echo ${NEXT_PROMOTION_NUM}-3 | bc`
 	rm -rf `seq ${DELETE_UNTIL}`
 fi
 cd ${WORKSPACE}/
@@ -10,7 +10,7 @@ cd ${WORKSPACE}/
 rm -rf ${BUILD_TYPE} ${BUILD_TYPE}_build_number.txt
 echo ${BUILD_NUMBER} > ${BUILD_TYPE}_build_number.txt
 cd ${WORKSPACE}/../builds/
-DELETE_UNTIL=`echo ${BUILD_NUMBER}-5 | bc`
+DELETE_UNTIL=`echo ${BUILD_NUMBER}-3 | bc`
 rm -rf `seq ${DELETE_UNTIL}`
 cd ${WORKSPACE}/
 mkdir -p ${BUILD_TYPE}/${BUILD_NUMBER}
