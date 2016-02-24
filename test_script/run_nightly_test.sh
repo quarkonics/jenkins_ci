@@ -229,7 +229,7 @@ for TS in ${TESTSUITES}; do
 			sed -i "s/MANAGEMENT_IP_END/${MANAGEMENT_IP_END}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
 			sed -i "s/IP_START/${IP_START}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
 			sed -i "s/IP_END/${IP_END}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
-			NOVLAN_ID2=`echo ${NOVLAN_ID2}+1 | bc`
+			NOVLAN_ID2=`echo ${NOVLAN_ID1}+1 | bc`
 			vconfig add eth0 ${NOVLAN_ID1} || echo ignore
 			vconfig add eth0 ${NOVLAN_ID2} || echo ignore
 			sed -i "s/l2NoVlanNetworkName1 = .*$/l2NoVlanNetworkName1 = vlan${NOVLAN_ID1}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
