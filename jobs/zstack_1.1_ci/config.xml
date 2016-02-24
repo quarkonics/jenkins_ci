@@ -122,26 +122,6 @@
       <defaultExcludes>true</defaultExcludes>
       <caseSensitive>true</caseSensitive>
     </hudson.tasks.ArtifactArchiver>
-    <be.certipost.hudson.plugin.SCPRepositoryPublisher plugin="scp@1.8">
-      <siteName>192.168.200.1</siteName>
-      <entries>
-        <be.certipost.hudson.plugin.Entry>
-          <filePath></filePath>
-          <sourceFile>zstack_1.1_ci/*/*</sourceFile>
-          <keepHierarchy>true</keepHierarchy>
-        </be.certipost.hudson.plugin.Entry>
-        <be.certipost.hudson.plugin.Entry>
-          <filePath></filePath>
-          <sourceFile>zstack_1.1_ci/*/versions.txt</sourceFile>
-          <keepHierarchy>true</keepHierarchy>
-        </be.certipost.hudson.plugin.Entry>
-        <be.certipost.hudson.plugin.Entry>
-          <filePath></filePath>
-          <sourceFile>zstack_1.1_ci/*/index.html</sourceFile>
-          <keepHierarchy>true</keepHierarchy>
-        </be.certipost.hudson.plugin.Entry>
-      </entries>
-    </be.certipost.hudson.plugin.SCPRepositoryPublisher>
     <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@2.30">
       <configs>
         <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>

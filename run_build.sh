@@ -9,3 +9,4 @@ if [ ${RET} -ne 0 ]; then
 else
 	bash -ex ${JENKINS_HOME}/build_report.sh ${BUILD_TYPE} ${DURATION} success
 fi
+exit ${RET}

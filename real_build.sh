@@ -135,3 +135,4 @@ if [ "${BUILD_TYPE}" == "mevoco_ci" -o "${BUILD_TYPE}" == "mevoco_ui_dev" ]; the
 elif [ "${BUILD_TYPE}" == "zstack_ci" ]; then
 	ln -s ${BIN_NAME} ${BUILD_TYPE}/latest/zstack-installer.bin
 fi
+rsync -avz --copy-links ${BUILD_TYPE}/ root@192.168.200.1:/httpd/${BUILD_TYPE}
