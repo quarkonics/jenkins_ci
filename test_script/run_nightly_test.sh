@@ -251,7 +251,7 @@ for TS in ${TESTSUITES}; do
 			RUN_BASIC=success
 			if [ "${BASIC_TS_CONF}" == "" ]; then
 				./zstest.py -s ${BASIC_TS} | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
-				#./zstest.py -c 236 | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
+#				./zstest.py -c 236 | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
 			else
 				if [ "${BASIC_TS_CONF}" == "localstorage" ]; then
 					./zstest.py -s ${BASIC_TS} -C /root/.zstackwoodpecker/integrationtest/vm/${BASIC_TS}/test-config-local-ps.xml | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
@@ -289,5 +289,10 @@ for TS in ${TESTSUITES}; do
 	scp /home/${IP}/result_${IP}.summary 192.168.200.1:/httpd/${CI_TARGET}/${OVERALL_BUILD_NUMBER}
 	scp /home/${IP}/result_${IP}.summary 192.168.200.1:/httpd/${CI_TARGET}/${E_TS}.ref
 done
+
 #curl -X POST --data-urlencode "payload={\"text\" : \"Nightly result(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/log.tgz|Log>) against ${TEST_TARGET} - #${OVERALL_BUILD_NUMBER}(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/|Open>)PASS/TOTAL=${PASS_NUMBER}/${TOTAL_NUMBER}\", \"username\" : \"jenkins\", \"attachments\" : [`cat /home/${IP}/report.${IP}.json`{}]}" https://hooks.slack.com/services/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
 curl -X POST --data-urlencode "payload={\"text\" : \"Nightly result(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/log.tgz|Log>) against ${TEST_TARGET} - #${OVERALL_BUILD_NUMBER}(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/|Open>)PASS/TOTAL=${PASS_NUMBER}/${TOTAL_NUMBER}\", \"username\" : \"jenkins\", \"attachments\" : [`cat /home/${IP}/report.${IP}.json`{}]}" https://hooks.slack.com/services/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
+if [ "${SUITE_SETUP}" == "failure" ]; then
+	exit 1
+fi
+

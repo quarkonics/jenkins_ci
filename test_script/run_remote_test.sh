@@ -56,5 +56,7 @@ elif [ "${TEST_TYPE}" == "nightly" ]; then
 	ssh root@${VM_IP} bash -ex /home/${VM_IP}/prepare_nightly.sh ${BUILD_TYPE} ${VM_IP} ${WORKSPACE}
 	ssh root@${VM_IP} bash -ex /home/${VM_IP}/run_nightly_test.sh ${VM_IP} ${BUILD_TYPE} ${OVERALL_BUILD_NUMBER} ${IP_RANGE_NAME} "${TESTSUITES}"
 fi
-zstack_destroy_vm ${SESSION_UUID} ${VM_UUID}
+#if [ "${TEST_TYPE}" == "bat" ]; then
+	zstack_destroy_vm ${SESSION_UUID} ${VM_UUID}
+#fi
 zstack_logout ${SESSION_UUID}
