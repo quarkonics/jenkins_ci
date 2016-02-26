@@ -13,6 +13,8 @@ rm -rf /home/${TARGET_IP}/
 mkdir -p /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/jobs/${TEST_TYPE}/workspace/${BUILD_TYPE}_build_number.txt /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/test_script/run_test.sh /home/${TARGET_IP}/
+scp ${SERVER_IP}:/var/lib/jenkins/aliyun.repo /etc/yum.repos.d/
+scp ${SERVER_IP}:/var/lib/jenkins/163.repo /etc/yum.repos.d/
 scp ${SERVER_IP}:/var/lib/jenkins/jobs/${TEST_TYPE}/workspace/zstack-utility/zstackbuild/zstack-all-in-one.tar /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/jobs/${TEST_TYPE}/workspace/zstack-utility.tar /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/jobs/${TEST_TYPE}/workspace/zstack-woodpecker.tar /home/${TARGET_IP}/

@@ -95,3 +95,7 @@ for CR in ${CENTOS_REPO}; do
 		fi
 	done
 done
+
+if [ "${SUITE_SETUP}" == "failure" ]; then
+	exit 1
+fi
