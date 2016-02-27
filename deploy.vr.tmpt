@@ -135,13 +135,13 @@ DNSServer = 172.20.0.1
 ipRangeManagementName = host IP range
 ipRangeManagementStartIp = MANAGEMENT_IP_START
 ipRangeManagementEndIp = MANAGEMENT_IP_END
-ipRangeManagementNetmask = 255.255.252.0
+ipRangeManagementNetmask = 255.255.0.0
 ipRangeManagementGateway = 172.20.0.1
 
 ipRangeName = host IP range
 ipRangeStartIp = IP_START
 ipRangeEndIp = IP_END
-ipRangeNetmask = 255.255.252.0
+ipRangeNetmask = 255.255.0.0
 ipRangeGateway = 172.20.0.1
 
 noVlanIpRangeName1 = guest novlan range 1
