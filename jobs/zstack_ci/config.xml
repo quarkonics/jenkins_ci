@@ -6,7 +6,7 @@
   <properties>
     <hudson.plugins.promoted__builds.JobPropertyImpl plugin="promoted-builds@2.25">
       <activeProcessNames>
-        <string>stack_ci_bat_pass</string>
+        <string>zstack_ci_bat_pass</string>
       </activeProcessNames>
     </hudson.plugins.promoted__builds.JobPropertyImpl>
     <jenkins.plugins.slack.SlackNotifier_-SlackJobProperty plugin="slack@1.8.1">
