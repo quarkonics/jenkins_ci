@@ -11,6 +11,8 @@ elif [ "${BUILD_TYPE}" == "mevoco_ui_dev" ]; then
 fi
 rm -rf /home/${TARGET_IP}/
 mkdir -p /home/${TARGET_IP}/
+hostnamectl set-hostname ${TEST_TYPE}
+echo "127.0.0.1 ${TEST_TYPE}" >>/etc/hosts
 scp ${SERVER_IP}:/var/lib/jenkins/jobs/${TEST_TYPE}/workspace/${BUILD_TYPE}_build_number.txt /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/test_script/run_test.sh /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/aliyun.repo /etc/yum.repos.d/
