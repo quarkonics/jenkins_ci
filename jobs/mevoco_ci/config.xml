@@ -4,7 +4,7 @@
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <hudson.plugins.promoted__builds.JobPropertyImpl plugin="promoted-builds@2.24.1">
+    <hudson.plugins.promoted__builds.JobPropertyImpl plugin="promoted-builds@2.25">
       <activeProcessNames>
         <string>mevoco_ci_bat_pass</string>
       </activeProcessNames>
@@ -29,12 +29,12 @@
   </properties>
   <scm class="org.jenkinsci.plugins.multiplescms.MultiSCM" plugin="multiple-scms@0.5">
     <scms>
-      <hudson.plugins.git.GitSCM plugin="git@2.4.1">
+      <hudson.plugins.git.GitSCM plugin="git@2.4.2">
         <configVersion>2</configVersion>
         <userRemoteConfigs>
           <hudson.plugins.git.UserRemoteConfig>
             <url>https://github.com/zxwing/mevoco-ui.git</url>
-            <credentialsId>3844e645-ee1b-429d-afc4-aa3ce9866ee2</credentialsId>
+            <credentialsId>d8059f42-6f49-4861-be7d-2efefffab029</credentialsId>
           </hudson.plugins.git.UserRemoteConfig>
         </userRemoteConfigs>
         <branches>
@@ -50,12 +50,12 @@
           </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
         </extensions>
       </hudson.plugins.git.GitSCM>
-      <hudson.plugins.git.GitSCM plugin="git@2.4.1">
+      <hudson.plugins.git.GitSCM plugin="git@2.4.2">
         <configVersion>2</configVersion>
         <userRemoteConfigs>
           <hudson.plugins.git.UserRemoteConfig>
             <url>https://github.com/zxwing/premium</url>
-            <credentialsId>3844e645-ee1b-429d-afc4-aa3ce9866ee2</credentialsId>
+            <credentialsId>d8059f42-6f49-4861-be7d-2efefffab029</credentialsId>
           </hudson.plugins.git.UserRemoteConfig>
         </userRemoteConfigs>
         <branches>
@@ -71,12 +71,12 @@
           </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
         </extensions>
       </hudson.plugins.git.GitSCM>
-      <hudson.plugins.git.GitSCM plugin="git@2.4.1">
+      <hudson.plugins.git.GitSCM plugin="git@2.4.2">
         <configVersion>2</configVersion>
         <userRemoteConfigs>
           <hudson.plugins.git.UserRemoteConfig>
             <url>https://github.com/zstackorg/zstack-utility.git</url>
-            <credentialsId>3844e645-ee1b-429d-afc4-aa3ce9866ee2</credentialsId>
+            <credentialsId>d8059f42-6f49-4861-be7d-2efefffab029</credentialsId>
           </hudson.plugins.git.UserRemoteConfig>
         </userRemoteConfigs>
         <branches>
@@ -92,12 +92,12 @@
           </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
         </extensions>
       </hudson.plugins.git.GitSCM>
-      <hudson.plugins.git.GitSCM plugin="git@2.4.1">
+      <hudson.plugins.git.GitSCM plugin="git@2.4.2">
         <configVersion>2</configVersion>
         <userRemoteConfigs>
           <hudson.plugins.git.UserRemoteConfig>
             <url>https://github.com/zxwing/zstack-agent.git</url>
-            <credentialsId>3844e645-ee1b-429d-afc4-aa3ce9866ee2</credentialsId>
+            <credentialsId>d8059f42-6f49-4861-be7d-2efefffab029</credentialsId>
           </hudson.plugins.git.UserRemoteConfig>
         </userRemoteConfigs>
         <branches>
@@ -113,12 +113,12 @@
           </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
         </extensions>
       </hudson.plugins.git.GitSCM>
-      <hudson.plugins.git.GitSCM plugin="git@2.4.1">
+      <hudson.plugins.git.GitSCM plugin="git@2.4.2">
         <configVersion>2</configVersion>
         <userRemoteConfigs>
           <hudson.plugins.git.UserRemoteConfig>
             <url>https://github.com/zstackorg/zstack.git</url>
-            <credentialsId>3844e645-ee1b-429d-afc4-aa3ce9866ee2</credentialsId>
+            <credentialsId>d8059f42-6f49-4861-be7d-2efefffab029</credentialsId>
           </hudson.plugins.git.UserRemoteConfig>
         </userRemoteConfigs>
         <branches>
@@ -141,7 +141,7 @@
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
   <triggers>
-    <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.15.0">
+    <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.17.1">
       <spec></spec>
     </com.cloudbees.jenkins.GitHubPushTrigger>
     <hudson.triggers.SCMTrigger>

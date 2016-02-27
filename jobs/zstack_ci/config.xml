@@ -4,9 +4,9 @@
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <hudson.plugins.promoted__builds.JobPropertyImpl plugin="promoted-builds@2.24.1">
+    <hudson.plugins.promoted__builds.JobPropertyImpl plugin="promoted-builds@2.25">
       <activeProcessNames>
-        <string>zstack_ci_bat_pass</string>
+        <string>stack_ci_bat_pass</string>
       </activeProcessNames>
     </hudson.plugins.promoted__builds.JobPropertyImpl>
     <jenkins.plugins.slack.SlackNotifier_-SlackJobProperty plugin="slack@1.8.1">
@@ -29,7 +29,7 @@
   </properties>
   <scm class="org.jenkinsci.plugins.multiplescms.MultiSCM" plugin="multiple-scms@0.5">
     <scms>
-      <hudson.plugins.git.GitSCM plugin="git@2.4.1">
+      <hudson.plugins.git.GitSCM plugin="git@2.4.2">
         <configVersion>2</configVersion>
         <userRemoteConfigs>
           <hudson.plugins.git.UserRemoteConfig>
@@ -50,7 +50,7 @@
           </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
         </extensions>
       </hudson.plugins.git.GitSCM>
-      <hudson.plugins.git.GitSCM plugin="git@2.4.1">
+      <hudson.plugins.git.GitSCM plugin="git@2.4.2">
         <configVersion>2</configVersion>
         <userRemoteConfigs>
           <hudson.plugins.git.UserRemoteConfig>
@@ -71,7 +71,7 @@
           </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
         </extensions>
       </hudson.plugins.git.GitSCM>
-      <hudson.plugins.git.GitSCM plugin="git@2.4.1">
+      <hudson.plugins.git.GitSCM plugin="git@2.4.2">
         <configVersion>2</configVersion>
         <userRemoteConfigs>
           <hudson.plugins.git.UserRemoteConfig>
@@ -99,7 +99,7 @@
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
   <triggers>
-    <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.15.0">
+    <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.17.1">
       <spec></spec>
     </com.cloudbees.jenkins.GitHubPushTrigger>
     <hudson.triggers.SCMTrigger>
