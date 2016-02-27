@@ -1,6 +1,6 @@
 set -x
 . /var/lib/jenkins/test_script/zstack_http_api.sh
-SERVER_IP=192.168.200.127
+SERVER_IP=172.20.11.87
 
 setup_no_password()
 {

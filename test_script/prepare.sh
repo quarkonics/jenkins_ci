@@ -1,6 +1,6 @@
 BUILD_TYPE=$1
 TARGET_IP=$2
-SERVER_IP=192.168.200.127
+SERVER_IP=172.20.11.87
 
 if [ "${BUILD_TYPE}" == "mevoco_ci" ]; then
 	TEST_TYPE=mevoco_bat
