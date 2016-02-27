@@ -50,13 +50,13 @@ nfsPrimaryStorageUrl = TARGET_IP:/home/nfs
 imageName_s = ttylinux
 rootImageFormat = raw
 rootMediaType = RootVolumeTemplate
-imageUrl_s = http://192.168.200.1/mirror/diskimages/f18_200m.img
+imageUrl_s = http://172.20.0.1/mirror/diskimages/f18_200m.img
 #imageUrl = http://zstack.yyk.net/image/centos.img
 imageUsername = root
 imagePassword = password
 
 imageName_net = image_for_sg_test
-imageUrl_net = http://192.168.200.1/mirror/diskimages/centos7-test.qcow2
+imageUrl_net = http://172.20.0.1/mirror/diskimages/centos7-test.qcow2
 
 rootDiskOfferingName = root-disk
 rootDiskOfferingSize = 1G
@@ -130,19 +130,19 @@ L3VlanNetworkDomainName4 = zstest-test4.org
 L3VlanNetworkDomainName5 = zstest-test5.org
 L3VlanNetworkDomainName6 = zstest-test6.org
 
-DNSServer = 192.168.200.1
+DNSServer = 172.20.0.1
 
 ipRangeManagementName = host IP range
 ipRangeManagementStartIp = MANAGEMENT_IP_START
 ipRangeManagementEndIp = MANAGEMENT_IP_END
 ipRangeManagementNetmask = 255.255.252.0
-ipRangeManagementGateway = 192.168.200.1
+ipRangeManagementGateway = 172.20.0.1
 
 ipRangeName = host IP range
 ipRangeStartIp = IP_START
 ipRangeEndIp = IP_END
 ipRangeNetmask = 255.255.252.0
-ipRangeGateway = 192.168.200.1
+ipRangeGateway = 172.20.0.1
 
 noVlanIpRangeName1 = guest novlan range 1
 noVlanIpRangeStart1 = 10.250.0.2
@@ -200,7 +200,7 @@ virtualRouterImageName = vr
 #virtualRouterImageUrl = http://zstack.yyk.net/image/vr-centos_700m_140603.img
 #virtualRouterImageUrl = http://zstack.yyk.net/image/debian-vr.img
 #virtualRouterImageUrl = http://zstack.yyk.net/image/zstack-vr.img
-virtualRouterImageUrl = http://192.168.200.1/mirror/diskimages/zstack-vr.qcow2
+virtualRouterImageUrl = http://172.20.0.1/mirror/diskimages/zstack-vr.qcow2
 #virtualRouterImageUrl = http://zstack.yyk.net/image/vr-centos_600m_140318.img
 #virtualRouterImageUrl = http://zstack.yyk.net/image/vr-centos_500m.img
 vrImageUsername = root
