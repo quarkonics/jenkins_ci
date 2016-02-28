@@ -40,7 +40,7 @@ zstack_create_vm()
 {
 	SESSION_UUID=$1
 	VM_NAME=$2
-	JOB_UUID=`zstack_do_job ${SESSION_UUID} "{\"org.zstack.header.vm.APICreateVmInstanceMsg\": {\"name\":\"${VM_NAME}\", \"instanceOfferingUuid\": \"57ae5a7dc4da405baf64790c9908c8f7\",\"imageUuid\": \"87194d47d3bb41bf9992f114687a16ab\", \"l3NetworkUuids\": [\"4c0d4225e5b64a5bbce300d989508f32\"], \"session\": {\"uuid\": \"${SESSION_UUID}\"}}}"`
+	JOB_UUID=`zstack_do_job ${SESSION_UUID} "{\"org.zstack.header.vm.APICreateVmInstanceMsg\": {\"name\":\"${VM_NAME}\", \"instanceOfferingUuid\": \"6149392d2efd42bdbe4a9c18bdb8c9ff\",\"imageUuid\": \"87194d47d3bb41bf9992f114687a16ab\", \"l3NetworkUuids\": [\"4c0d4225e5b64a5bbce300d989508f32\"], \"session\": {\"uuid\": \"${SESSION_UUID}\"}}}"`
 	RESULT=`curl http://192.168.200.1:8080/zstack/api/result/${JOB_UUID} 2>/dev/null | ${JQ} -r '.["result"]'`
 	echo ${RESULT} | ${JQ} -r '.["org.zstack.header.vm.APICreateVmInstanceEvent"]["inventory"]["uuid"]'
 }
