@@ -62,7 +62,7 @@ rootDiskOfferingName = root-disk
 rootDiskOfferingSize = 1G
 
 smallDiskOfferingName = smallDiskOffering
-smallDiskOfferingSize = 10M
+smallDiskOfferingSize = 1M
 
 zoneName = zone1
 
