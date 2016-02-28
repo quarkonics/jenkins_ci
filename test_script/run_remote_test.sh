@@ -23,6 +23,20 @@ else
 fi
 VM_UUID=$(zstack_create_vm ${SESSION_UUID} ${VM_NAME})
 VM_IP=$(zstack_query_vm ${SESSION_UUID} ${VM_UUID} '["inventories"][0]["vmNics"][0]["ip"]')
+HOST_UUID=$(zstack_query_vm ${SESSION_UUID} ${VM_UUID} '["inventories"][0]["hostUuid"]')
+HOST_IP=$(zstack_query_host ${SESSION_UUID} ${HOST_UUID} '["inventories"][0]["managementIp"]')
+
+keep_stop_raid_check()
+{
+	HOST_IP=$1
+	while [ 1 -eq 1 ]; do
+		sshpass -p password ssh root@${HOST_IP} cat /proc/mdstat |grep check
+		if [ $? -ne 0 ]; then
+			sshpass -p password ssh root@${HOST_IP} 'echo 1 > /sys/block/md0/md/sync_action'
+		fi
+		sleep 60
+	done
+}
 
 START_TIME=${SECONDS}
 while [ 1 -eq 1 ]; do
@@ -43,18 +57,28 @@ setup_no_password ${VM_IP}
 ssh root@${VM_IP} date
 ssh root@${VM_IP} rm -rf /home/${VM_IP}/
 ssh root@${VM_IP} mkdir -p /home/${VM_IP}/
+RUN_TEST=success
 if [ "${TEST_TYPE}" == "bat" ]; then
 	scp /var/lib/jenkins/test_script/prepare.sh root@${VM_IP}:/home/${VM_IP}/
 	scp /var/lib/jenkins/test_script/run_test.sh root@${VM_IP}:/home/${VM_IP}/
 
 	ssh root@${VM_IP} bash -ex /home/${VM_IP}/prepare.sh ${BUILD_TYPE} ${VM_IP}
-	ssh root@${VM_IP} bash -ex /home/${VM_IP}/run_test.sh ${VM_IP} ${BUILD_TYPE} ${OVERALL_BUILD_NUMBER}
+	keep_stop_raid_check ${HOST_IP} &
+	CHECKER_PID=$!
+	ssh root@${VM_IP} bash -ex /home/${VM_IP}/run_test.sh ${VM_IP} ${BUILD_TYPE} ${OVERALL_BUILD_NUMBER} || RUN_TEST=fail 
 elif [ "${TEST_TYPE}" == "nightly" ]; then
 	scp /var/lib/jenkins/test_script/prepare_nightly.sh root@${VM_IP}:/home/${VM_IP}/
 	scp /var/lib/jenkins/test_script/run_nightly_test.sh root@${VM_IP}:/home/${VM_IP}/
 
 	ssh root@${VM_IP} bash -ex /home/${VM_IP}/prepare_nightly.sh ${BUILD_TYPE} ${VM_IP} ${WORKSPACE}
-	ssh root@${VM_IP} bash -ex /home/${VM_IP}/run_nightly_test.sh ${VM_IP} ${BUILD_TYPE} ${OVERALL_BUILD_NUMBER} ${IP_RANGE_NAME} "${TESTSUITES}"
+	keep_stop_raid_check ${HOST_IP} &
+	CHECKER_PID=$!
+	ssh root@${VM_IP} bash -ex /home/${VM_IP}/run_nightly_test.sh ${VM_IP} ${BUILD_TYPE} ${OVERALL_BUILD_NUMBER} ${IP_RANGE_NAME} "${TESTSUITES}" || RUN_TEST=fail
+fi
+
+if [ "${RUN_TEST}" == "fail" ]; then
+	kill -9 ${CHECKER_PID}
+	exit 1
 fi
 #if [ "${TEST_TYPE}" == "bat" ]; then
 	zstack_destroy_vm ${SESSION_UUID} ${VM_UUID}
