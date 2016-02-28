@@ -30,9 +30,11 @@ keep_stop_raid_check()
 {
 	HOST_IP=$1
 	while [ 1 -eq 1 ]; do
-		sshpass -p password ssh root@${HOST_IP} cat /proc/mdstat |grep check
-		if [ $? -ne 0 ]; then
-			sshpass -p password ssh root@${HOST_IP} 'echo 1 > /sys/block/md0/md/sync_action'
+		IS_CHECKING=1
+		sshpass -p password ssh root@${HOST_IP} cat /proc/mdstat |grep check || IS_CHECKING=0
+		if [ ${IS_CHECKING} -eq 1 ]; then
+			MD_NAME=`sshpass -p password ssh root@${HOST_IP} 'cat /proc/mdstat' | grep active | awk '{print $1}'`
+			sshpass -p password ssh root@${HOST_IP} "echo idle > /sys/block/${MD_NAME}/md/sync_action"
 		fi
 		sleep 60
 	done
