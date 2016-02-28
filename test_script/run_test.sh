@@ -59,6 +59,7 @@ for CR in ${CENTOS_REPO}; do
 		fi
 		
 		cd ../tools/
+		rm -rf /root/.zstackwoodpecker/
 		sh copy_test_config_to_local.sh
 		scp /home/${IP}/deploy.template.tmpt /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
 		sed -i "s/TARGET_IP/${IP}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt

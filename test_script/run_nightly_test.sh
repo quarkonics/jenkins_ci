@@ -108,6 +108,7 @@ for TS in ${TESTSUITES}; do
 			fi
 			
 			cd ../tools/
+			rm -rf /root/.zstackwoodpecker/
 			sh copy_test_config_to_local.sh
 			scp /home/${IP}/deploy.vr.tmpt /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
 			sed -i "s/TARGET_IP/${IP}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
@@ -250,13 +251,13 @@ for TS in ${TESTSUITES}; do
 			rm -rf /home/${IP}/result_${IP}.log /home/${IP}/log_${IP}.tgz
 			RUN_BASIC=success
 			if [ "${BASIC_TS_CONF}" == "" ]; then
-				./zstest.py -s ${BASIC_TS} | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
+				./zstest.py -s ${BASIC_TS} -t 3600 | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
 #				./zstest.py -c 236 | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
 			else
 				if [ "${BASIC_TS_CONF}" == "localstorage" ]; then
-					./zstest.py -s ${BASIC_TS} -C /root/.zstackwoodpecker/integrationtest/vm/${BASIC_TS}/test-config-local-ps.xml | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
+					./zstest.py -s ${BASIC_TS} -t 3600 -C /root/.zstackwoodpecker/integrationtest/vm/${BASIC_TS}/test-config-local-ps.xml | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
 				elif [ "${BASIC_TS_CONF}" == "local+nfs" ]; then
-					./zstest.py -s ${BASIC_TS} -C /root/.zstackwoodpecker/integrationtest/vm/${BASIC_TS}/test-config-local-nfs.xml | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
+					./zstest.py -s ${BASIC_TS} -t 3600 -C /root/.zstackwoodpecker/integrationtest/vm/${BASIC_TS}/test-config-local-nfs.xml | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
 				fi
 			fi
 			cat /home/${IP}/result_${IP}.log | sed -n '/--*$/{:1;N;/--*$/{p;b};N;b1}' | grep -v '\-\-' | awk '{if ($1~/:/) {tttt=$1;gsub(":","", tttt)} else {if ($2==1) {printf("%s/%s PASS\n", tttt, $1, $2, $3, $4, $5)} else {if ($3==1) {printf("%s/%s FAIL\n", tttt, $1, $2, $3, $4, $5)} else {if ($4==1) {printf("%s/%s SKIP\n", tttt, $1, $2, $3, $4, $5)} else {if ($5==1) {printf("%s/%s TIMEOUT\n", tttt, $1, $2, $3, $4, $5)}}}}}}' > /home/${IP}/result_${IP}.summary
