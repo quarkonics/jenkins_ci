@@ -17,9 +17,9 @@ WORKSPACE=$5
 TESTSUITES=$6
 SESSION_UUID=$(zstack_login)
 if [ "${TESTSUITES}" == "" ]; then
-	VM_NAME=jenkins_${TEST_TYPE}_${BUILD_TYPE}
+	VM_NAME=jenkins_${TEST_TYPE}_${BUILD_TYPE}_${OVERALL_BUILD_NUMBER}
 else
-	VM_NAME=jenkins_${TEST_TYPE}_${BUILD_TYPE}_`echo ${TESTSUITES} | sed 's/\ /_/g'`
+	VM_NAME=jenkins_${TEST_TYPE}_${BUILD_TYPE}_${OVERALL_BUILD_NUMBER}_`echo ${TESTSUITES} | sed 's/\ /_/g'`
 fi
 VM_UUID=$(zstack_create_vm ${SESSION_UUID} ${VM_NAME})
 VM_IP=$(zstack_query_vm ${SESSION_UUID} ${VM_UUID} '["inventories"][0]["vmNics"][0]["ip"]')
