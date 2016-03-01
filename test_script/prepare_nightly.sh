@@ -27,5 +27,5 @@ scp ${SERVER_IP}:/var/lib/jenkins/zstack-internal-yum.repo /etc/yum.repos.d/
 TESTSUITES="basic virtualrouter virtualrouter_localstorage virtualrouter_local+nfs"
 for TS in ${TESTSUITES}; do
 	E_TS=`echo ${TS} | sed 's/(/_/' | sed 's/)//' | sed 's/+/_/'`
-	scp 192.168.200.1:/httpd/${BUILD_TYPE}/${E_TS}.ref /home/${TARGET_IP}/
+	scp 192.168.200.1:/httpd/${BUILD_TYPE}/${E_TS}.ref /home/${TARGET_IP}/ || echo ignore
 done

@@ -87,7 +87,7 @@ for CR in ${CENTOS_REPO}; do
 		curl -X POST --data-urlencode "payload={\"text\" : \"BAT result(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/log.tgz|Log>) against ${TEST_TARGET} - #${OVERALL_BUILD_NUMBER}(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/|Open>)PASS/TOTAL=${PASS_NUMBER}/${TOTAL_NUMBER}\", \"username\" : \"jenkins\", \"attachments\" : [`cat /home/${IP}/report.${IP}.json`]}" https://hooks.slack.com/services/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
 #		curl -X POST --data-urlencode "payload={\"text\" : \"BAT result(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/log.tgz|Log>) against ${TEST_TARGET} - #${OVERALL_BUILD_NUMBER}(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/|Open>)PASS/TOTAL=${PASS_NUMBER}/${TOTAL_NUMBER}\", \"username\" : \"jenkins\", \"attachments\" : [`cat /home/${IP}/report.${IP}.json`]}" https://hooks.slack.com/services/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
 		mkdir -p ${CI_TARGET}/${OVERALL_BUILD_NUMBER}/
-		cp /home/${IP}/log_${IP}.tgz ${CI_TARGET}/${OVERALL_BUILD_NUMBER}/log.tgz
+		cp /home/${IP}/log_${IP}.tgz ${CI_TARGET}/${OVERALL_BUILD_NUMBER}/bat_log_${IP}.tgz
 		tar czh /usr/local/zstacktest/apache-tomcat/logs/management-server.log > /home/${IP}/bat_management-server_${IP}.log.tgz
 		scp -r ${CI_TARGET}/${OVERALL_BUILD_NUMBER} 192.168.200.1:/httpd/${CI_TARGET}/
 		scp /home/${IP}/bat_management-server_${IP}.log.tgz 192.168.200.1:/httpd/${CI_TARGET}/${OVERALL_BUILD_NUMBER}
