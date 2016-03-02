@@ -11,7 +11,7 @@ DURATION_SEC=`echo "${DURATION}%60" | bc`
 rm -rf /tmp/${BUILD_TYPE}_report.json
 BIN_NAME=$(basename `ls zstack-utility/zstackbuild/target/*.bin`) || echo "fail to find bin"
 echo "{\"fallback\":\"${BUILD_TYPE} - #${BUILD_NUMBER}(<http://192.168.200.1/mirror/${BUILD_TYPE}/${BUILD_NUMBER}/|Open>|<http://192.168.200.1/mirror/${BUILD_TYPE}/${BUILD_NUMBER}/${BIN_NAME}|Download>) ${BUILD_RESULT} after ${DURATION_MIN} min ${DURATION_MIN} sec (<http://192.168.200.1/mirror/${BUILD_TYPE}/${BUILD_NUMBER}/${BUILD_TYPE}.log|Log>)\",\"fields\":[{\"value\":\"${BUILD_TYPE} - #${BUILD_NUMBER}(<http://192.168.200.1/mirror/${BUILD_TYPE}/${BUILD_NUMBER}/|Open>|<http://192.168.200.1/mirror/${BUILD_TYPE}/${BUILD_NUMBER}/${BIN_NAME}|Download>)\",\"short\":true},{\"value\":\"${BUILD_RESULT} after ${DURATION_MIN} min ${DURATION_MIN} sec (<http://192.168.200.1/mirror/${BUILD_TYPE}/${BUILD_NUMBER}/${BUILD_TYPE}.log|Log>)\",\"short\":true}],\"color\":\"${RESULT_COLOR}\"}," >> /tmp/${BUILD_TYPE}_report.json
-BUILD_VERSIONS_FILE=${BUILD_TYPE}/latest/versions.txt
+BUILD_VERSIONS_FILE=${BUILD_TYPE}/${BUILD_NUMBER}/versions.txt
 
 if [ ! -f ${BUILD_VERSIONS_FILE} ]; then
 	exit 1

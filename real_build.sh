@@ -72,7 +72,7 @@ CHECKSUM=`md5sum ${BUILD_TYPE}/${BUILD_NUMBER}/versions.txt | awk '{print $1}'`
 OLD_CHECKSUM=`md5sum versions.txt | awk '{print $1}'`
 if [ "${CHECKSUM}" == "${OLD_CHECKSUM}" ]; then
 	echo Already build before
-	exit 1
+	exit 127
 fi
 scp versions.txt versions.txt.old || echo ignore failure
 scp ${BUILD_TYPE}/${BUILD_NUMBER}/versions.txt versions.txt
