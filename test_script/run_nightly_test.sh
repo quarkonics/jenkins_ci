@@ -290,7 +290,7 @@ for TS in ${TESTSUITES}; do
 	scp -r ${CI_TARGET}/${OVERALL_BUILD_NUMBER} 192.168.200.1:/httpd/${CI_TARGET}/
 	scp /home/${IP}/result_${IP}.summary 192.168.200.1:/httpd/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/result_${E_TS}_${IP}.summary
 	scp /home/${IP}/result_${IP}.summary 192.168.200.1:/httpd/${CI_TARGET}/${E_TS}.ref
-	scp /home/${IP}/management-server_${IP}.log.tgz 192.168.200.1:/httpd/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/management-server_${E_TS}_${IP}.log.tgz
+	scp /home/${IP}/management-server_${E_TS}_${IP}.log.tgz 192.168.200.1:/httpd/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/management-server_${E_TS}_${IP}.log.tgz
 done
 
 #curl -X POST --data-urlencode "payload={\"text\" : \"Nightly result(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/log.tgz|Log>) against ${TEST_TARGET} - #${OVERALL_BUILD_NUMBER}(<http://192.168.200.1/mirror/${CI_TARGET}/${OVERALL_BUILD_NUMBER}/|Open>)PASS/TOTAL=${PASS_NUMBER}/${TOTAL_NUMBER}\", \"username\" : \"jenkins\", \"attachments\" : [`cat /home/${IP}/report.${IP}.json`{}]}" https://hooks.slack.com/services/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
