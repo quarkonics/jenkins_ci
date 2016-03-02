@@ -21,7 +21,28 @@ if [ "${TESTSUITES}" == "" ]; then
 else
 	VM_NAME=jenkins_${TEST_TYPE}_${BUILD_TYPE}_${OVERALL_BUILD_NUMBER}_`echo ${TESTSUITES} | sed 's/\ /_/g'`
 fi
-VM_UUID=$(zstack_create_vm ${SESSION_UUID} ${VM_NAME})
+if [ "${IP_RANGE_NAME}" == "IP_RANGE1" ]; then
+	CANDIDATE_HOST_IP=192.168.200.2
+elif [ "${IP_RANGE_NAME}" == "IP_RANGE2" ]; then
+	CANDIDATE_HOST_IP=192.168.200.3
+elif [ "${IP_RANGE_NAME}" == "IP_RANGE3" ]; then
+	CANDIDATE_HOST_IP=192.168.200.4
+elif [ "${IP_RANGE_NAME}" == "IP_RANGE4" ]; then
+	CANDIDATE_HOST_IP=192.168.200.5
+elif [ "${IP_RANGE_NAME}" == "IP_RANGE5" ]; then
+	CANDIDATE_HOST_IP=192.168.200.6
+elif [ "${IP_RANGE_NAME}" == "IP_RANGE6" ]; then
+	CANDIDATE_HOST_IP=192.168.200.7
+elif [ "${IP_RANGE_NAME}" == "IP_RANGE7" ]; then
+	CANDIDATE_HOST_IP=192.168.200.8
+elif [ "${IP_RANGE_NAME}" == "IP_RANGE8" ]; then
+	CANDIDATE_HOST_IP=192.168.200.9
+elif [ "${IP_RANGE_NAME}" == "IP_RANGE9" ]; then
+	CANDIDATE_HOST_IP=192.168.200.10
+fi
+
+CANDIDATE_HOST_UUID=$(zstack_query_host_by_ip ${SESSION_UUID} ${CANDIDATE_HOST_IP} '["inventories"][0]["uuid"]')
+VM_UUID=$(zstack_create_vm_host ${SESSION_UUID} ${VM_NAME} ${CANDIDATE_HOST_UUID})
 VM_IP=$(zstack_query_vm ${SESSION_UUID} ${VM_UUID} '["inventories"][0]["vmNics"][0]["ip"]')
 HOST_UUID=$(zstack_query_vm ${SESSION_UUID} ${VM_UUID} '["inventories"][0]["hostUuid"]')
 HOST_IP=$(zstack_query_host ${SESSION_UUID} ${HOST_UUID} '["inventories"][0]["managementIp"]')

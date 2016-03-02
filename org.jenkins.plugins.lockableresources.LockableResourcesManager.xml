@@ -46,40 +46,5 @@
       <description></description>
       <labels>IP_RANGE</labels>
     </org.jenkins.plugins.lockableresources.LockableResource>
-    <org.jenkins.plugins.lockableresources.LockableResource>
-      <name>IP_RANGE10</name>
-      <description></description>
-      <labels>IP_RANGE</labels>
-    </org.jenkins.plugins.lockableresources.LockableResource>
-    <org.jenkins.plugins.lockableresources.LockableResource>
-      <name>IP_RANGE11</name>
-      <description></description>
-      <labels>IP_RANGE</labels>
-    </org.jenkins.plugins.lockableresources.LockableResource>
-    <org.jenkins.plugins.lockableresources.LockableResource>
-      <name>IP_RANGE12</name>
-      <description></description>
-      <labels>IP_RANGE</labels>
-    </org.jenkins.plugins.lockableresources.LockableResource>
-    <org.jenkins.plugins.lockableresources.LockableResource>
-      <name>IP_RANGE13</name>
-      <description></description>
-      <labels>IP_RANGE</labels>
-    </org.jenkins.plugins.lockableresources.LockableResource>
-    <org.jenkins.plugins.lockableresources.LockableResource>
-      <name>IP_RANGE14</name>
-      <description></description>
-      <labels>IP_RANGE</labels>
-    </org.jenkins.plugins.lockableresources.LockableResource>
-    <org.jenkins.plugins.lockableresources.LockableResource>
-      <name>IP_RANGE15</name>
-      <description></description>
-      <labels>IP_RANGE</labels>
-    </org.jenkins.plugins.lockableresources.LockableResource>
-    <org.jenkins.plugins.lockableresources.LockableResource>
-      <name>IP_RANGE16</name>
-      <description></description>
-      <labels>IP_RANGE</labels>
-    </org.jenkins.plugins.lockableresources.LockableResource>
   </resources>
 </org.jenkins.plugins.lockableresources.LockableResourcesManager>

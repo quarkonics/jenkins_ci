@@ -4,6 +4,11 @@
   <description>mevoco bat test</description>
   <keepDependencies>false</keepDependencies>
   <properties>
+    <org.jenkins.plugins.lockableresources.RequiredResourcesProperty plugin="lockable-resources@1.7">
+      <resourceNamesVar>IP_RANGE_NAME</resourceNamesVar>
+      <resourceNumber>1</resourceNumber>
+      <labelName>IP_RANGE</labelName>
+    </org.jenkins.plugins.lockableresources.RequiredResourcesProperty>
     <jenkins.plugins.slack.SlackNotifier_-SlackJobProperty plugin="slack@1.8.1">
       <teamDomain></teamDomain>
       <token></token>
@@ -86,7 +91,7 @@
 	OVERALL_MEVOCO_BUILD_NUMBER=`cat mevoco_ci_build_number.txt`
 fi
 bash -ex ${JENKINS_HOME}/test_script/build.sh build_mevoco &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot; mevoco_ci/latest/mevoco-installer.bin
-bash -ex ${JENKINS_HOME}/test_script/run_remote_test.sh mevoco_ci bat &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot;</command>
+bash -ex ${JENKINS_HOME}/test_script/run_remote_test.sh mevoco_ci bat &quot;${OVERALL_MEVOCO_BUILD_NUMBER}&quot; ${IP_RANGE_NAME}</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>

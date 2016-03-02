@@ -1,4 +1,4 @@
-#set -x
+set -x
 ZSTACK_SERVER_IP=192.168.200.1
 JQ=/var/lib/jenkins/jq-linux64
 
@@ -45,6 +45,16 @@ zstack_create_vm()
 	echo ${RESULT} | ${JQ} -r '.["org.zstack.header.vm.APICreateVmInstanceEvent"]["inventory"]["uuid"]'
 }
 
+zstack_create_vm_host()
+{
+	SESSION_UUID=$1
+	VM_NAME=$2
+	HOST_UUID=$3
+	JOB_UUID=`zstack_do_job ${SESSION_UUID} "{\"org.zstack.header.vm.APICreateVmInstanceMsg\": {\"name\":\"${VM_NAME}\", \"instanceOfferingUuid\": \"e17f4e126ce94b6496cad6c4fcae9743\",\"imageUuid\": \"87194d47d3bb41bf9992f114687a16ab\", \"l3NetworkUuids\": [\"4c0d4225e5b64a5bbce300d989508f32\"], \"hostUuid\": \"${HOST_UUID}\", \"session\": {\"uuid\": \"${SESSION_UUID}\"}}}"`
+	RESULT=`curl http://192.168.200.1:8080/zstack/api/result/${JOB_UUID} 2>/dev/null | ${JQ} -r '.["result"]'`
+	echo ${RESULT} | ${JQ} -r '.["org.zstack.header.vm.APICreateVmInstanceEvent"]["inventory"]["uuid"]'
+}
+
 zstack_destroy_vm()
 {
 	SESSION_UUID=$1
@@ -85,10 +95,11 @@ zstack_query_host_by_ip()
 }
 
 #SESSION_UUID=$(zstack_login)
+#HOST_UUID=$(zstack_query_host_by_ip ${SESSION_UUID} 192.168.200.2 '["inventories"][0]["uuid"]')
+#VM_UUID=$(zstack_create_vm_host ${SESSION_UUID} jenkins_try_create_vm ${HOST_UUID})
 #VM_UUID=$(zstack_create_vm ${SESSION_UUID} jenkins_try_create_vm2)
 #VM_UUID=48f805cb86164e2a8ac692dbe16762ab
 #HOST_UUID=$(zstack_query_vm ${SESSION_UUID} ${VM_UUID} '["inventories"][0]["hostUuid"]')
 #zstack_query_host ${SESSION_UUID} ${HOST_UUID} '["inventories"][0]["managementIp"]'
 #zstack_destroy_vm ${SESSION_UUID} ${VM_UUID}
-#zstack_query_host_by_ip ${SESSION_UUID} 192.168.200.2 '["inventories"][0]["uuid"]'
 #zstack_logout ${SESSION_UUID}
