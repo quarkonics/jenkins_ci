@@ -74,10 +74,21 @@ zstack_query_host()
 	echo ${RESULT} | ${JQ} -r ".[\"org.zstack.header.host.APIQueryHostReply\"]${FIELD}"
 }
 
+zstack_query_host_by_ip()
+{
+	SESSION_UUID=$1
+	HOST_IP=$2
+	FIELD=$3
+
+	RESULT=`curl -H "Content-Type: application/json" -d "{\"org.zstack.header.host.APIQueryHostMsg\": {\"conditions\": [{\"name\": \"managementIp\", \"value\": \"${HOST_IP}\", \"op\": \"=\"}], \"session\": {\"uuid\": \"${SESSION_UUID}\"}}}" http://192.168.200.1:8080/zstack/api/ 2>/dev/null | ${JQ} -r '.["result"]'`
+	echo ${RESULT} | ${JQ} -r ".[\"org.zstack.header.host.APIQueryHostReply\"]${FIELD}"
+}
+
 #SESSION_UUID=$(zstack_login)
 #VM_UUID=$(zstack_create_vm ${SESSION_UUID} jenkins_try_create_vm2)
 #VM_UUID=48f805cb86164e2a8ac692dbe16762ab
 #HOST_UUID=$(zstack_query_vm ${SESSION_UUID} ${VM_UUID} '["inventories"][0]["hostUuid"]')
 #zstack_query_host ${SESSION_UUID} ${HOST_UUID} '["inventories"][0]["managementIp"]'
 #zstack_destroy_vm ${SESSION_UUID} ${VM_UUID}
+#zstack_query_host_by_ip ${SESSION_UUID} 192.168.200.2 '["inventories"][0]["uuid"]'
 #zstack_logout ${SESSION_UUID}
