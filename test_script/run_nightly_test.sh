@@ -3,6 +3,10 @@ TEST_TARGET=$2
 OVERALL_BUILD_NUMBER=$3
 IP_RANGE_NAME=$4
 TESTSUITES=$5
+IP2=$6
+IP3=$7
+IP4=$8
+IP5=$9
 
 compare_result()
 {
@@ -110,6 +114,7 @@ for TS in ${TESTSUITES}; do
 			cd ../tools/
 			rm -rf /root/.zstackwoodpecker/
 			sh copy_test_config_to_local.sh
+			scp /home/${IP}/deploy.multihosts.tmpt /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
 			scp /home/${IP}/deploy.vr.tmpt /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
 			sed -i "s/TARGET_IP/${IP}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
 			if [ "${IP_RANGE_NAME}" == "IP_RANGE1" ]; then
@@ -119,6 +124,7 @@ for TS in ${TESTSUITES}; do
 				IP_END="172.20.100.63"
 				NOVLAN_ID1=200
 				VID_START=300
+				VID_START2=400
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE2" ]; then
 				MANAGEMENT_IP_START="172.20.100.64"
 				MANAGEMENT_IP_END="172.20.100.95"
@@ -126,6 +132,7 @@ for TS in ${TESTSUITES}; do
 				IP_END="172.20.100.127"
 				NOVLAN_ID1=202
 				VID_START=306
+				VID_START2=420
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE3" ]; then
 				MANAGEMENT_IP_START="172.20.100.128"
 				MANAGEMENT_IP_END="172.20.100.159"
@@ -133,6 +140,7 @@ for TS in ${TESTSUITES}; do
 				IP_END="172.20.100.191"
 				NOVLAN_ID1=204
 				VID_START=312
+				VID_START2=440
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE4" ]; then
 				MANAGEMENT_IP_START="172.20.100.192"
 				MANAGEMENT_IP_END="172.20.100.223"
@@ -140,6 +148,7 @@ for TS in ${TESTSUITES}; do
 				IP_END="172.20.100.255"
 				NOVLAN_ID1=206
 				VID_START=318
+				VID_START2=460
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE5" ]; then
 				MANAGEMENT_IP_START="172.20.101.0"
 				MANAGEMENT_IP_END="172.20.101.31"
@@ -147,6 +156,7 @@ for TS in ${TESTSUITES}; do
 				IP_END="172.20.101.63"
 				NOVLAN_ID1=200
 				VID_START=300
+				VID_START2=480
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE6" ]; then
 				MANAGEMENT_IP_START="172.20.101.64"
 				MANAGEMENT_IP_END="172.20.101.95"
@@ -154,6 +164,7 @@ for TS in ${TESTSUITES}; do
 				IP_END="172.20.101.127"
 				NOVLAN_ID1=202
 				VID_START=306
+				VID_START2=500
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE7" ]; then
 				MANAGEMENT_IP_START="172.20.101.128"
 				MANAGEMENT_IP_END="172.20.101.159"
@@ -161,6 +172,7 @@ for TS in ${TESTSUITES}; do
 				IP_END="172.20.101.191"
 				NOVLAN_ID1=204
 				VID_START=312
+				VID_START2=520
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE8" ]; then
 				MANAGEMENT_IP_START="172.20.101.192"
 				MANAGEMENT_IP_END="172.20.101.223"
@@ -168,6 +180,7 @@ for TS in ${TESTSUITES}; do
 				IP_END="172.20.101.255"
 				NOVLAN_ID1=206
 				VID_START=318
+				VID_START2=540
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE9" ]; then
 				MANAGEMENT_IP_START="172.20.102.0"
 				MANAGEMENT_IP_END="172.20.102.31"
@@ -175,6 +188,7 @@ for TS in ${TESTSUITES}; do
 				IP_END="172.20.102.63"
 				NOVLAN_ID1=200
 				VID_START=300
+				VID_START2=560
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE10" ]; then
 				MANAGEMENT_IP_START="172.20.102.64"
 				MANAGEMENT_IP_END="172.20.102.95"
@@ -182,6 +196,7 @@ for TS in ${TESTSUITES}; do
 				IP_END="172.20.102.127"
 				NOVLAN_ID1=202
 				VID_START=306
+				VID_START2=580
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE11" ]; then
 				MANAGEMENT_IP_START="172.20.102.128"
 				MANAGEMENT_IP_END="172.20.102.159"
@@ -189,6 +204,7 @@ for TS in ${TESTSUITES}; do
 				IP_END="172.20.102.191"
 				NOVLAN_ID1=204
 				VID_START=312
+				VID_START2=600
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE12" ]; then
 				MANAGEMENT_IP_START="172.20.102.192"
 				MANAGEMENT_IP_END="172.20.102.223"
@@ -196,6 +212,7 @@ for TS in ${TESTSUITES}; do
 				IP_END="172.20.102.255"
 				NOVLAN_ID1=206
 				VID_START=318
+				VID_START2=620
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE13" ]; then
 				MANAGEMENT_IP_START="172.20.103.0"
 				MANAGEMENT_IP_END="172.20.103.31"
@@ -203,6 +220,7 @@ for TS in ${TESTSUITES}; do
 				IP_END="172.20.103.63"
 				NOVLAN_ID1=200
 				VID_START=300
+				VID_START2=640
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE14" ]; then
 				MANAGEMENT_IP_START="172.20.103.64"
 				MANAGEMENT_IP_END="172.20.103.95"
@@ -210,6 +228,7 @@ for TS in ${TESTSUITES}; do
 				IP_END="172.20.103.127"
 				NOVLAN_ID1=202
 				VID_START=306
+				VID_START2=660
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE15" ]; then
 				MANAGEMENT_IP_START="172.20.103.128"
 				MANAGEMENT_IP_END="172.20.103.159"
@@ -217,6 +236,7 @@ for TS in ${TESTSUITES}; do
 				IP_END="172.20.103.191"
 				NOVLAN_ID1=204
 				VID_START=312
+				VID_START2=680
 			elif [ "${IP_RANGE_NAME}" == "IP_RANGE16" ]; then
 				MANAGEMENT_IP_START="172.20.103.192"
 				MANAGEMENT_IP_END="172.20.103.223"
@@ -224,6 +244,7 @@ for TS in ${TESTSUITES}; do
 				IP_END="172.20.103.255"
 				NOVLAN_ID1=206
 				VID_START=318
+				VID_START2=700
 			fi
 
 			sed -i "s/MANAGEMENT_IP_START/${MANAGEMENT_IP_START}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
@@ -244,15 +265,32 @@ for TS in ${TESTSUITES}; do
 				COUNT=`echo ${COUNT}+1 | bc`
 			done
 
+			COUNT=4
+			VID_END2=`echo ${VID_START2}+16 | bc`
+			for VID in `seq ${VID_START2} ${VID_END2}`; do
+				sed -i "s/l2Vlan${COUNT} = .*$/l2Vlan${COUNT} = ${VID}/g" /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
+				COUNT=`echo ${COUNT}+1 | bc`
+			done
+			if [ "${TESTSUITES}" == "multihosts" ]; then
+				sed -i "s/vm_ip/${IP}/g" /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
+				sed -i "s/hostIp = .*$/hostIp = ${IP}/g" /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
+				sed -i "s/hostIp2 = .*$/hostIp2 = ${IP2}/g" /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
+				sed -i "s/hostIp3 = .*$/hostIp3 = ${IP3}/g" /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
+				sed -i "s/hostIp4 = .*$/hostIp4 = ${IP4}/g" /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
+				sed -i "s/hostIp5 = .*$/hostIp5 = ${IP5}/g" /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
+			fi
+
 			scp /home/${IP}/deploy.xml /root/.zstackwoodpecker/integrationtest/vm/virtualrouter/deploy.xml
 			scp /home/${IP}/deploy-local-ps.xml /root/.zstackwoodpecker/integrationtest/vm/virtualrouter/deploy-local-ps.xml
 			scp /home/${IP}/deploy-local-nfs.xml /root/.zstackwoodpecker/integrationtest/vm/virtualrouter/deploy-local-nfs.xml
+			#scp /home/${IP}/integration.xml /root/.zstackwoodpecker/integrationtest/vm/virtualrouter/integration.xml
+			#scp /home/${IP}/integration.xml /home/${IP}/zstack-woodpecker/integrationtest/vm/virtualrouter/integration.xml
 			cd /home/${IP}/zstack-woodpecker/dailytest/
 			rm -rf /home/${IP}/result_${IP}.log /home/${IP}/log_${IP}.tgz
 			RUN_BASIC=success
 			if [ "${BASIC_TS_CONF}" == "" ]; then
 				./zstest.py -s ${BASIC_TS} -t 3600 | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
-#				./zstest.py -c 236 | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
+#				./zstest.py -c 236,243,247 -S -n | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
 			else
 				if [ "${BASIC_TS_CONF}" == "localstorage" ]; then
 					./zstest.py -s ${BASIC_TS} -t 3600 -C /root/.zstackwoodpecker/integrationtest/vm/${BASIC_TS}/test-config-local-ps.xml | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
@@ -260,7 +298,7 @@ for TS in ${TESTSUITES}; do
 					./zstest.py -s ${BASIC_TS} -t 3600 -C /root/.zstackwoodpecker/integrationtest/vm/${BASIC_TS}/test-config-local-nfs.xml | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
 				fi
 			fi
-			cat /home/${IP}/result_${IP}.log | sed -n '/--*$/{:1;N;/--*$/{p;b};N;b1}' | grep -v '\-\-' | awk '{if ($1~/:/) {tttt=$1;gsub(":","", tttt)} else {if ($2==1) {printf("%s/%s PASS\n", tttt, $1, $2, $3, $4, $5)} else {if ($3==1) {printf("%s/%s FAIL\n", tttt, $1, $2, $3, $4, $5)} else {if ($4==1) {printf("%s/%s SKIP\n", tttt, $1, $2, $3, $4, $5)} else {if ($5==1) {printf("%s/%s TIMEOUT\n", tttt, $1, $2, $3, $4, $5)}}}}}}' > /home/${IP}/result_${IP}.summary
+			cat /home/${IP}/result_${IP}.log | grep '[[:digit:]][[:space:]]*[[:digit:]][[:space:]]*[[:digit:]][[:space:]]*[[:digit:]]$' | awk '{if ($2==1) {printf("%s PASS\n", $1, $2, $3, $4, $5)} else {if ($3==1) {printf("%s FAIL\n", $1, $2, $3, $4, $5)} else {if ($4==1) {printf("%s SKIP\n", $1, $2, $3, $4, $5)} else {if ($5==1) {printf("%s TIMEOUT\n", $1, $2, $3, $4, $5)}}}}}' > /home/${IP}/result_${IP}.summary
 			SUITE_SETUP=success
 			grep suite_setup /home/${IP}/result_${IP}.summary | grep PASS || SUITE_SETUP=failure
 			if [ ${SUITE_SETUP} == "failure" ]; then
