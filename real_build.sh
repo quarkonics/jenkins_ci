@@ -92,9 +92,13 @@ export GOROOT=/usr/lib/golang
 ORIGINAL_PRODUCT_VERSION=`cat build.properties|grep product.version|awk -F '=' '{print $2}'`
 TIME_STAMP=`date +"%y%m%d"`
 #ant -Dzstack_build_root=${WORKSPACE} -Dzstackdashboard.build_version=master offline-centos7
-if [ "${BUILD_TYPE}" == "mevoco_ci" -o "${BUILD_TYPE}" == "mevoco_ui_dev" ]; then
+if [ "${BUILD_TYPE}" == "mevoco_ci" -o "${BUILD_TYPE}" == "mevoco_ui_dev" -o "${BUILD_TYPE}" == "mevoco_1.0.2_hami" -o "${BUILD_TYPE}" == "mevoco_1.0.x" ]; then
 	if [ "${BUILD_TYPE}" == "mevoco_ui_dev" ]; then
 		ORIGINAL_PRODUCT_VERSION="mevoco-ui-dev"
+	elif [ "${BUILD_TYPE}" == "mevoco_1.0.2_hami" ]; then
+		ORIGINAL_PRODUCT_VERSION="mevoco-1.0.2-hami"
+	elif [ "${BUILD_TYPE}" == "mevoco_1.0.x" ]; then
+		ORIGINAL_PRODUCT_VERSION="mevoco-1.0.x"
 	fi
 	ant -Dzstack_build_root=${WORKSPACE} -Dbuild_war_flag=premium -Dproduct.version=${ORIGINAL_PRODUCT_VERSION}-${TIME_STAMP}-${BUILD_NUMBER} -Dzstackdashboard.build_version=master -Dproduct.name=MEVOCO -Dproduct.bin.name=mevoco-installer all-in-one
 elif [ "${BUILD_TYPE}" == "zstack_ci" -o "${BUILD_TYPE}" == "zstack_1.1_ci" ]; then
@@ -131,7 +135,7 @@ echo "</html>" >> ${BUILD_TYPE}/${BUILD_NUMBER}/index.html
 
 rm -rf ${BUILD_TYPE}/latest
 ln -s ${BUILD_NUMBER} ${BUILD_TYPE}/latest
-if [ "${BUILD_TYPE}" == "mevoco_ci" -o "${BUILD_TYPE}" == "mevoco_ui_dev" ]; then
+if [ "${BUILD_TYPE}" == "mevoco_ci" -o "${BUILD_TYPE}" == "mevoco_ui_dev" -o "${BUILD_TYPE}" == "mevoco_1.0.2_hami" -o "${BUILD_TYPE}" == "mevoco_1.0.x" ]; then
 	ln -s ${BIN_NAME} ${BUILD_TYPE}/latest/mevoco-installer.bin
 elif [ "${BUILD_TYPE}" == "zstack_ci" ]; then
 	ln -s ${BIN_NAME} ${BUILD_TYPE}/latest/zstack-installer.bin

@@ -8,6 +8,10 @@ elif [ ${TEST_TARGET} == "build_mevoco" -o ${TEST_TARGET} == "mevoco_ci" ]; then
 	CI_TARGET=mevoco_ci
 elif [ ${TEST_TARGET} == "build_mevoco_1.1" -o ${TEST_TARGET} == "mevoco_ui_dev" ]; then
 	CI_TARGET=mevoco_ui_dev
+elif [ ${TEST_TARGET} == "mevoco_1.0.2_hami" ]; then
+	CI_TARGET=mevoco_1.0.2_hami
+elif [ ${TEST_TARGET} == "mevoco_1.0.x" ]; then
+	CI_TARGET=mevoco_1.0.x
 fi
 
 CENTOS_REPO="alibase 163base"
