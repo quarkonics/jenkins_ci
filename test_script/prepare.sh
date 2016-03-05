@@ -15,7 +15,7 @@ elif [ "${BUILD_TYPE}" == "mevoco_1.0.x" ]; then
 fi
 rm -rf /home/${TARGET_IP}/
 mkdir -p /home/${TARGET_IP}/
-NEW_HOSTNAME=$(echo ${TEST_TYPE} | sed 's/./_/g')
+NEW_HOSTNAME=$(echo ${TEST_TYPE} | sed 's/\./_/g')
 hostnamectl set-hostname ${NEW_HOSTNAME}
 echo "127.0.0.1 ${NEW_HOSTNAME}" >>/etc/hosts
 scp ${SERVER_IP}:/var/lib/jenkins/jobs/${TEST_TYPE}/workspace/${BUILD_TYPE}_build_number.txt /home/${TARGET_IP}/

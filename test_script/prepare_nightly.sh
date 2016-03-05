@@ -6,7 +6,7 @@ SERVER_IP=172.20.11.87
 rm -rf /home/${TARGET_IP}/
 mkdir -p /home/${TARGET_IP}/
 
-NEW_HOSTNAME=$(basename `dirname ${WORKSPACE}` | sed 's/./_/g')
+NEW_HOSTNAME=$(basename `dirname ${WORKSPACE}` | sed 's/\./_/g')
 hostnamectl set-hostname ${NEW_HOSTNAME}
 echo "127.0.0.1 ${NEW_HOSTNAME}" >>/etc/hosts
 scp ${SERVER_IP}:${WORKSPACE}/${BUILD_TYPE}_build_number.txt /home/${TARGET_IP}/
