@@ -1,0 +1,27 @@
+import ../deploy.tmpt
+
+localPrimaryStorageName = local-ps
+localPrimaryStorageUrl = /home/local-ps
+
+largeDiskOfferingName = largeDiskOffering
+largeDiskOfferingSize = 1G
+
+mediumDiskOfferingName = mediumDiskOffering
+mediumDiskOfferingSize = 100M
+
+clusterName2 = cluster2
+
+hostName = centos5
+hostIp = TARGET_IP
+
+hostName2 = centos2
+hostIp2 = 10.0.101.21
+
+hostName3 = centos3
+hostIp3 = 10.0.101.22
+
+hostName4 = centos4
+hostIp4 = 10.0.101.23
+
+l2PublicNetworkName = l2-public
+l2PublicNetworkInterface = eth0
