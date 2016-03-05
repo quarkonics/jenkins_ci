@@ -56,8 +56,13 @@ for TS in ${TESTSUITES}; do
 	rm -rf /home/local-ps/*
 	rm -rf /home/sftpBackupStorage/*
 	rm -rf /home/${IP}/result_${IP}.summary
-	BASIC_TS=`echo ${TS} | awk -F '_' '{print $1}'`
-	BASIC_TS_CONF=`echo ${TS} | awk -F '_' '{print $2}'`
+	if [ "${TS}" == "virt_plus" ]; then
+		BASIC_TS=virt_plus
+		BASIC_TS_CONF=	
+	else
+		BASIC_TS=`echo ${TS} | awk -F '_' '{print $1}'`
+		BASIC_TS_CONF=`echo ${TS} | awk -F '_' '{print $2}'`
+	fi
 	TESTSUITE_DONE=0
 	for CR in ${CENTOS_REPO}; do
 		for ER in ${EPEL_REPO}; do
@@ -120,6 +125,7 @@ for TS in ${TESTSUITES}; do
 			rm -rf /root/.zstackwoodpecker/
 			sh copy_test_config_to_local.sh
 			scp /home/${IP}/deploy.multihosts.tmpt /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
+			scp /home/${IP}/deploy.virt_plus.tmpt /root/.zstackwoodpecker/integrationtest/vm/virt_plus/deploy.tmpt
 			scp /home/${IP}/deploy.vr.tmpt /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
 			sed -i "s/TARGET_IP/${IP}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
 			if [ "${IP_RANGE_NAME}" == "IP_RANGE1" ]; then
@@ -287,6 +293,10 @@ for TS in ${TESTSUITES}; do
 				sed -i "s/hostIp3 = .*$/hostIp3 = ${IP3}/g" /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
 				sed -i "s/hostIp4 = .*$/hostIp4 = ${IP4}/g" /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
 				sed -i "s/hostIp5 = .*$/hostIp5 = ${IP5}/g" /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
+			fi
+			if [ "${TESTSUITES}" == "virt_plus" ]; then
+				
+				sed -i "s/TARGET_IP/${IP}/g" /root/.zstackwoodpecker/integrationtest/vm/virt_plus/deploy.tmpt
 			fi
 
 			scp /home/${IP}/deploy.xml /root/.zstackwoodpecker/integrationtest/vm/virtualrouter/deploy.xml

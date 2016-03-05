@@ -19,6 +19,7 @@ scp ${SERVER_IP}:${WORKSPACE}/zstack-woodpecker.tar /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/build_zstack.template.sh /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/deploy.vr.tmpt /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/deploy.multihosts.tmpt /home/${TARGET_IP}/
+scp ${SERVER_IP}:/var/lib/jenkins/deploy.virt_plus.tmpt /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/deploy.xml /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/deploy-local-ps.xml /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/deploy-local-nfs.xml /home/${TARGET_IP}/
