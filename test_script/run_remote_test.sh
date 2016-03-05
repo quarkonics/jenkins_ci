@@ -101,6 +101,13 @@ if [ "${TESTSUITES}" == "multihosts" ]; then
 fi
 
 setup_no_password ${VM_IP}
+if [ "${TESTSUITES}" == "multihosts" ]; then
+	setup_no_password ${VM_IP2}
+	setup_no_password ${VM_IP3}
+	setup_no_password ${VM_IP4}
+	setup_no_password ${VM_IP5}
+fi
+
 ssh root@${VM_IP} date
 ssh root@${VM_IP} rm -rf /home/${VM_IP}/
 ssh root@${VM_IP} mkdir -p /home/${VM_IP}/

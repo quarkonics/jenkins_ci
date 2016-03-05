@@ -17,8 +17,8 @@ fi
 CENTOS_REPO="alibase internalbase 163base"
 EPEL_REPO="aliepel internalepel epel"
 
-for ER in ${EPEL_REPO}; do
-	for CR in ${CENTOS_REPO}; do
+for CR in ${CENTOS_REPO}; do
+	for ER in ${EPEL_REPO}; do
 		echo "try use ${CR} ${ER} repo"
 		yum-config-manager --disable alibase > /dev/null
 		yum-config-manager --disable 163base > /dev/null

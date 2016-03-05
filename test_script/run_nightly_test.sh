@@ -49,6 +49,7 @@ rm -rf /home/${IP}/config_xml/
 mkdir -p /home/${IP}/config_xml/
 rm -rf /home/${IP}/log_${IP}.tgz
 echo "{\"fields\":[{\"value\":\"zstack-woodpecker:\",\"short\":true},{\"value\":\"`cat /home/${IP}/zstack_woodpecker_version.txt`\",\"short\":true}],\"color\":\"${COLOR}\"}," >> /home/${IP}/report.${IP}.json
+
 for TS in ${TESTSUITES}; do
 	E_TS=`echo ${TS} | sed 's/(/_/' | sed 's/)//' | sed 's/+/_/'`
 	rm -rf /home/nfs/*
@@ -58,22 +59,25 @@ for TS in ${TESTSUITES}; do
 	BASIC_TS=`echo ${TS} | awk -F '_' '{print $1}'`
 	BASIC_TS_CONF=`echo ${TS} | awk -F '_' '{print $2}'`
 	TESTSUITE_DONE=0
-	for ER in ${EPEL_REPO}; do
-		for CR in ${CENTOS_REPO}; do
+	for CR in ${CENTOS_REPO}; do
+		for ER in ${EPEL_REPO}; do
 			rsync -a /home/${IP}/zstack-woodpecker/dailytest/config_xml/ /home/${IP}/config_xml/ || echo "no log yet"
 			if [ ${TESTSUITE_DONE} -eq 1 ]; then
 				continue || echo continue
 			fi
 			echo "try use ${CR} ${ER} repo"
-			yum-config-manager --disable alibase > /dev/null
-			yum-config-manager --disable 163base > /dev/null
-			yum-config-manager --disable internalbase > /dev/null
-			yum-config-manager --disable internalepel > /dev/null
-			yum-config-manager --disable epel > /dev/null
-			yum-config-manager --disable aliepel > /dev/null
-			yum-config-manager --enable ${CR} > /dev/null
-			yum-config-manager --enable ${ER} > /dev/null
-			yum clean metadata
+			for IP_TMP in `echo "${IP} ${IP2} ${IP3} ${IP4} ${IP5}"`; do
+				scp /etc/yum.repos.d/zstack-internal-yum.repo ${IP_TMP}:/etc/yum.repos.d/zstack-internal-yum.repo
+				ssh ${IP_TMP} yum-config-manager --disable alibase > /dev/null
+				ssh ${IP_TMP} yum-config-manager --disable 163base > /dev/null
+				ssh ${IP_TMP} yum-config-manager --disable internalbase > /dev/null
+				ssh ${IP_TMP} yum-config-manager --disable internalepel > /dev/null
+				ssh ${IP_TMP} yum-config-manager --disable epel > /dev/null
+				ssh ${IP_TMP} yum-config-manager --disable aliepel > /dev/null
+				ssh ${IP_TMP} yum-config-manager --enable ${CR} > /dev/null
+				ssh ${IP_TMP} yum-config-manager --enable ${ER} > /dev/null
+				ssh ${IP_TMP} yum clean metadata
+			done
 			INSTALL_VIM=success
 			yum --nogpgcheck install -y vim || INSTALL_VIM=failure
 			if [ ${INSTALL_VIM} == "failure" ]; then
@@ -253,8 +257,12 @@ for TS in ${TESTSUITES}; do
 			sed -i "s/IP_START/${IP_START}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
 			sed -i "s/IP_END/${IP_END}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
 			NOVLAN_ID2=`echo ${NOVLAN_ID1}+1 | bc`
-			vconfig add eth0 ${NOVLAN_ID1} || echo ignore
-			vconfig add eth0 ${NOVLAN_ID2} || echo ignore
+
+			for IP_TMP in `echo "${IP} ${IP2} ${IP3} ${IP4} ${IP5}"`; do
+				ssh ${IP_TMP} vconfig add eth0 ${NOVLAN_ID1} || echo ignore
+				ssh ${IP_TMP} vconfig add eth0 ${NOVLAN_ID2} || echo ignore
+			done
+
 			sed -i "s/l2NoVlanNetworkName1 = .*$/l2NoVlanNetworkName1 = vlan${NOVLAN_ID1}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
 			sed -i "s/l2NoVlanNetworkName2 = .*$/l2NoVlanNetworkName2 = vlan${NOVLAN_ID2}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
 			sed -i "s/l2NoVlanNetworkInterface1 = .*$/l2NoVlanNetworkInterface1 = eth0.${NOVLAN_ID1}/g" /root/.zstackwoodpecker/integrationtest/vm/deploy.tmpt
