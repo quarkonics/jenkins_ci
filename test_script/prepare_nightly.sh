@@ -11,8 +11,10 @@ hostnamectl set-hostname ${NEW_HOSTNAME}
 echo "127.0.0.1 ${NEW_HOSTNAME}" >>/etc/hosts
 scp ${SERVER_IP}:${WORKSPACE}/${BUILD_TYPE}_build_number.txt /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/test_script/run_nightly_test.sh /home/${TARGET_IP}/
-scp ${SERVER_IP}:/var/lib/jenkins/aliyun.repo /etc/yum.repos.d/
-scp ${SERVER_IP}:/var/lib/jenkins/163.repo /etc/yum.repos.d/
+#scp ${SERVER_IP}:/var/lib/jenkins/aliyun.repo /etc/yum.repos.d/
+#scp ${SERVER_IP}:/var/lib/jenkins/163.repo /etc/yum.repos.d/
+rm -rf /etc/yum.repos.d/*
+scp ${SERVER_IP}:/var/lib/jenkins/zstack-internal-yum.repo /etc/yum.repos.d/
 scp ${SERVER_IP}:${WORKSPACE}/zstack-utility/zstackbuild/zstack-all-in-one.tar /home/${TARGET_IP}/
 scp ${SERVER_IP}:${WORKSPACE}/zstack-utility.tar /home/${TARGET_IP}/
 scp ${SERVER_IP}:${WORKSPACE}/zstack-woodpecker.tar /home/${TARGET_IP}/
@@ -25,7 +27,6 @@ scp ${SERVER_IP}:/var/lib/jenkins/deploy-local-ps.xml /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/deploy-local-nfs.xml /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/integration.xml /home/${TARGET_IP}/
 scp ${SERVER_IP}:${WORKSPACE}/zstack_woodpecker_version.txt /home/${TARGET_IP}/
-scp ${SERVER_IP}:/var/lib/jenkins/zstack-internal-yum.repo /etc/yum.repos.d/
 
 TESTSUITES="basic virtualrouter virtualrouter_localstorage virtualrouter_local+nfs"
 for TS in ${TESTSUITES}; do
