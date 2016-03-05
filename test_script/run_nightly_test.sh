@@ -74,7 +74,9 @@ for TS in ${TESTSUITES}; do
 			fi
 			echo "try use ${CR} ${ER} repo"
 			for IP_TMP in `echo "${IP} ${IP2} ${IP3} ${IP4} ${IP5}"`; do
-				ssh ${IP_TMP} "rm -rf /etc/yum.repos.d/*" 
+				if [ "${IP_TMP}" != "${IP}" ]; then
+					ssh ${IP_TMP} "rm -rf /etc/yum.repos.d/*" 
+				fi
 				scp /etc/yum.repos.d/epel.repo ${IP_TMP}:/etc/yum.repos.d/epel.repo
 				scp /etc/yum.repos.d/zstack-internal-yum.repo ${IP_TMP}:/etc/yum.repos.d/zstack-internal-yum.repo
 				#ssh ${IP_TMP} yum-config-manager --disable alibase > /dev/null
