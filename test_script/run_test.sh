@@ -14,20 +14,20 @@ elif [ ${TEST_TARGET} == "mevoco_1.0.x" ]; then
 	CI_TARGET=mevoco_1.0.x
 fi
 
-CENTOS_REPO="alibase internalbase 163base"
-EPEL_REPO="aliepel internalepel epel"
+CENTOS_REPO="internalbase"
+EPEL_REPO="internalepel"
 
 for CR in ${CENTOS_REPO}; do
 	for ER in ${EPEL_REPO}; do
 		echo "try use ${CR} ${ER} repo"
-		yum-config-manager --disable alibase > /dev/null
-		yum-config-manager --disable 163base > /dev/null
-		yum-config-manager --disable epel > /dev/null
-		yum-config-manager --disable aliepel > /dev/null
-		yum-config-manager --disable internalbase > /dev/null
-		yum-config-manager --disable internalepel > /dev/null
-		yum-config-manager --enable ${CR} > /dev/null
-		yum-config-manager --enable ${ER} > /dev/null
+		#yum-config-manager --disable alibase > /dev/null
+		#yum-config-manager --disable 163base > /dev/null
+		#yum-config-manager --disable epel > /dev/null
+		#yum-config-manager --disable aliepel > /dev/null
+		yum-config-manager --enable internalbase > /dev/null
+		yum-config-manager --enable internalepel > /dev/null
+		#yum-config-manager --enable ${CR} > /dev/null
+		#yum-config-manager --enable ${ER} > /dev/null
 		yum clean metadata
 		INSTALL_VIM=success
 		yum --nogpgcheck install -y vim || INSTALL_VIM=failure
@@ -53,7 +53,7 @@ for CR in ${CENTOS_REPO}; do
 		elif [ ${CR} == "163base" ]; then
 			CR1=163
 		fi
-		sed -i "s/aliyun/${CR1}/g" /home/${IP}/zstack-woodpecker/zstackwoodpecker/zstackwoodpecker/setup_actions.py
+		sed -i "s/-R aliyun//g" /home/${IP}/zstack-woodpecker/zstackwoodpecker/zstackwoodpecker/setup_actions.py
 		cd /home/${IP}/zstack-woodpecker/dailytest/
 		scp /home/${IP}/build_zstack.template.sh /home/${IP}/zstack-woodpecker/dailytest/build_zstack.sh
 		sed -i "s/TARGET_IP/${IP}/g" /home/${IP}/zstack-woodpecker/dailytest/build_zstack.sh

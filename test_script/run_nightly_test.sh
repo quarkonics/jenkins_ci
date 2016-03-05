@@ -38,8 +38,10 @@ fi
 if [ "${TESTSUITES}" == "" ]; then
 	TESTSUITES="basic virtualrouter virtualrouter_localstorage virtualrouter_local+nfs"
 fi
-CENTOS_REPO="alibase internalbase 163base"
-EPEL_REPO="aliepel internalepel epel"
+#CENTOS_REPO="alibase internalbase 163base"
+CENTOS_REPO="internalbase"
+#EPEL_REPO="aliepel internalepel epel"
+EPEL_REPO="internalepel"
 PASS_NUMBER=0
 TOTAL_NUMBER=0
 
@@ -72,13 +74,15 @@ for TS in ${TESTSUITES}; do
 			fi
 			echo "try use ${CR} ${ER} repo"
 			for IP_TMP in `echo "${IP} ${IP2} ${IP3} ${IP4} ${IP5}"`; do
+				ssh ${IP_TMP} "rm -rf /etc/yum.repos.d/*" 
+				scp /etc/yum.repos.d/epel.repo ${IP_TMP}:/etc/yum.repos.d/epel.repo
 				scp /etc/yum.repos.d/zstack-internal-yum.repo ${IP_TMP}:/etc/yum.repos.d/zstack-internal-yum.repo
-				ssh ${IP_TMP} yum-config-manager --disable alibase > /dev/null
-				ssh ${IP_TMP} yum-config-manager --disable 163base > /dev/null
-				ssh ${IP_TMP} yum-config-manager --disable internalbase > /dev/null
-				ssh ${IP_TMP} yum-config-manager --disable internalepel > /dev/null
-				ssh ${IP_TMP} yum-config-manager --disable epel > /dev/null
-				ssh ${IP_TMP} yum-config-manager --disable aliepel > /dev/null
+				#ssh ${IP_TMP} yum-config-manager --disable alibase > /dev/null
+				#ssh ${IP_TMP} yum-config-manager --disable 163base > /dev/null
+				#ssh ${IP_TMP} yum-config-manager --disable internalbase > /dev/null
+				#ssh ${IP_TMP} yum-config-manager --disable internalepel > /dev/null
+				#ssh ${IP_TMP} yum-config-manager --disable epel > /dev/null
+				#ssh ${IP_TMP} yum-config-manager --disable aliepel > /dev/null
 				ssh ${IP_TMP} yum-config-manager --enable ${CR} > /dev/null
 				ssh ${IP_TMP} yum-config-manager --enable ${ER} > /dev/null
 				ssh ${IP_TMP} yum clean metadata
@@ -109,7 +113,8 @@ for TS in ${TESTSUITES}; do
 			elif [ ${CR} == "163base" ]; then
 				CR1=163
 			fi
-			sed -i "s/aliyun/${CR1}/g" /home/${IP}/zstack-woodpecker/zstackwoodpecker/zstackwoodpecker/setup_actions.py
+			#sed -i "s/aliyun/${CR1}/g" /home/${IP}/zstack-woodpecker/zstackwoodpecker/zstackwoodpecker/setup_actions.py
+			sed -i "s/-R aliyun//g" /home/${IP}/zstack-woodpecker/zstackwoodpecker/zstackwoodpecker/setup_actions.py
 			cd /home/${IP}/zstack-woodpecker/dailytest/
 			scp /home/${IP}/build_zstack.template.sh /home/${IP}/zstack-woodpecker/dailytest/build_zstack.sh
 			sed -i "s/TARGET_IP/${IP}/g" /home/${IP}/zstack-woodpecker/dailytest/build_zstack.sh
@@ -310,6 +315,7 @@ for TS in ${TESTSUITES}; do
 			if [ "${BASIC_TS_CONF}" == "" ]; then
 				./zstest.py -s ${BASIC_TS} -t 3600 | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
 #				./zstest.py -c 236,243,247 -S -n | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
+#				./zstest.py -c 52 | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
 			else
 				if [ "${BASIC_TS_CONF}" == "localstorage" ]; then
 					./zstest.py -s ${BASIC_TS} -t 3600 -C /root/.zstackwoodpecker/integrationtest/vm/${BASIC_TS}/test-config-local-ps.xml | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure

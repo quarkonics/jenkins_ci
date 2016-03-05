@@ -1,0 +1,7 @@
+[epel]
+enabled = 1
+gpgcheck = 1
+name = epel
+skip_if_unavailable = 1
+keepcache = 0
+
