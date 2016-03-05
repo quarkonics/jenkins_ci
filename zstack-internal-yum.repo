@@ -2,7 +2,7 @@
 [internalbase]
 name=CentOS-$releasever - Base - 192.168.200.1
 failovermethod=priority
-baseurl=http://192.168.200.1/mirror/centos/$releasever/os/$basearch/
+baseurl=http://192.168.200.1/mirror/alibase/$releasever/os/$basearch/
 gpgcheck=0
 enabled=0
  
@@ -18,5 +18,12 @@ gpgcheck=0
 name=CentOS-$releasever - Extras - 192.168.200.1
 failovermethod=priority
 baseurl=http://192.168.200.1/mirror/centos/$releasever/extras/$basearch/
+enabled=0
+gpgcheck=0
+
+[internalepel]
+name=Extra Packages for Enterprise Linux $releasever - $basearce - 192.168.200.1
+failovermethod=priority
+baseurl=http://192.168.200.1/mirror/aliepel/$releasever/$basearch/
 enabled=0
 gpgcheck=0

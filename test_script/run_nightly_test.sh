@@ -38,8 +38,8 @@ fi
 if [ "${TESTSUITES}" == "" ]; then
 	TESTSUITES="basic virtualrouter virtualrouter_localstorage virtualrouter_local+nfs"
 fi
-CENTOS_REPO="alibase 163base internalbase"
-EPEL_REPO="aliepel epel"
+CENTOS_REPO="alibase internalbase 163base"
+EPEL_REPO="aliepel internalepel epel"
 PASS_NUMBER=0
 TOTAL_NUMBER=0
 
@@ -58,8 +58,8 @@ for TS in ${TESTSUITES}; do
 	BASIC_TS=`echo ${TS} | awk -F '_' '{print $1}'`
 	BASIC_TS_CONF=`echo ${TS} | awk -F '_' '{print $2}'`
 	TESTSUITE_DONE=0
-	for CR in ${CENTOS_REPO}; do
-		for ER in ${EPEL_REPO}; do
+	for ER in ${EPEL_REPO}; do
+		for CR in ${CENTOS_REPO}; do
 			rsync -a /home/${IP}/zstack-woodpecker/dailytest/config_xml/ /home/${IP}/config_xml/ || echo "no log yet"
 			if [ ${TESTSUITE_DONE} -eq 1 ]; then
 				continue || echo continue
@@ -68,6 +68,7 @@ for TS in ${TESTSUITES}; do
 			yum-config-manager --disable alibase > /dev/null
 			yum-config-manager --disable 163base > /dev/null
 			yum-config-manager --disable internalbase > /dev/null
+			yum-config-manager --disable internalepel > /dev/null
 			yum-config-manager --disable epel > /dev/null
 			yum-config-manager --disable aliepel > /dev/null
 			yum-config-manager --enable ${CR} > /dev/null
@@ -300,6 +301,9 @@ for TS in ${TESTSUITES}; do
 			fi
 			cat /home/${IP}/result_${IP}.log | grep '[[:digit:]][[:space:]]*[[:digit:]][[:space:]]*[[:digit:]][[:space:]]*[[:digit:]]$' | awk '{if ($2==1) {printf("%s PASS\n", $1, $2, $3, $4, $5)} else {if ($3==1) {printf("%s FAIL\n", $1, $2, $3, $4, $5)} else {if ($4==1) {printf("%s SKIP\n", $1, $2, $3, $4, $5)} else {if ($5==1) {printf("%s TIMEOUT\n", $1, $2, $3, $4, $5)}}}}}' > /home/${IP}/result_${IP}.summary
 			SUITE_SETUP=success
+
+			cp -r /home/${IP}/zstack-woodpecker/dailytest/config_xml /home/${IP}/${CR}_${ER}_config_xml || echo ignore
+			cp /usr/local/zstacktest/apache-tomcat/logs/management-server.log /home/${IP}/${CR}_${ER}_management-server.log || echo ignore
 			grep suite_setup /home/${IP}/result_${IP}.summary | grep PASS || SUITE_SETUP=failure
 			if [ ${SUITE_SETUP} == "failure" ]; then
 				echo "{\"fields\":[{\"value\":\"fail to setup testsuite ${TS} with yum repo:\",\"short\":true},{\"value\":\"${CR} and ${ER}\",\"short\":true}],\"color\":\"${COLOR}\"}," >> /home/${IP}/report.${IP}.json

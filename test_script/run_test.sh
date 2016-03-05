@@ -14,16 +14,18 @@ elif [ ${TEST_TARGET} == "mevoco_1.0.x" ]; then
 	CI_TARGET=mevoco_1.0.x
 fi
 
-CENTOS_REPO="alibase 163base"
-EPEL_REPO="aliepel epel"
+CENTOS_REPO="alibase internalbase 163base"
+EPEL_REPO="aliepel internalepel epel"
 
-for CR in ${CENTOS_REPO}; do
-	for ER in ${EPEL_REPO}; do
+for ER in ${EPEL_REPO}; do
+	for CR in ${CENTOS_REPO}; do
 		echo "try use ${CR} ${ER} repo"
 		yum-config-manager --disable alibase > /dev/null
 		yum-config-manager --disable 163base > /dev/null
 		yum-config-manager --disable epel > /dev/null
 		yum-config-manager --disable aliepel > /dev/null
+		yum-config-manager --disable internalbase > /dev/null
+		yum-config-manager --disable internalepel > /dev/null
 		yum-config-manager --enable ${CR} > /dev/null
 		yum-config-manager --enable ${ER} > /dev/null
 		yum clean metadata
