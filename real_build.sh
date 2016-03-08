@@ -49,8 +49,11 @@ if [ -d mevoco-ui ]; then
 	echo -n "mevoco-ui: " >> ../${BUILD_TYPE}/${BUILD_NUMBER}/versions.txt
 	git log -1 --format="%H %ci %an: %s" >> ../${BUILD_TYPE}/${BUILD_NUMBER}/versions.txt
 	git branch -f master
-	ssh root@localhost "`pwd`/install_build_env_on_centos.sh"
-	PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin bash build.sh
+	if [ "${BUILD_TYPE}" == "mevoco_ci" ]; then
+		rm -rf zstack_dashboard/static
+		ssh root@localhost "`pwd`/install_build_env_on_centos.sh"
+		PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin bash build.sh
+	fi
 	cd ..
 fi
 
