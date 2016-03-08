@@ -49,6 +49,8 @@ if [ -d mevoco-ui ]; then
 	echo -n "mevoco-ui: " >> ../${BUILD_TYPE}/${BUILD_NUMBER}/versions.txt
 	git log -1 --format="%H %ci %an: %s" >> ../${BUILD_TYPE}/${BUILD_NUMBER}/versions.txt
 	git branch -f master
+	ssh root@localhost "`pwd`/install_build_env_on_centos.sh"
+	PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin bash build.sh
 	cd ..
 fi
 
@@ -94,11 +96,15 @@ TIME_STAMP=`date +"%y%m%d"`
 #ant -Dzstack_build_root=${WORKSPACE} -Dzstackdashboard.build_version=master offline-centos7
 if [ "${BUILD_TYPE}" == "mevoco_ci" -o "${BUILD_TYPE}" == "mevoco_ui_dev" -o "${BUILD_TYPE}" == "mevoco_1.0.2_hami" -o "${BUILD_TYPE}" == "mevoco_1.0.x" ]; then
 	if [ "${BUILD_TYPE}" == "mevoco_ui_dev" ]; then
-		ORIGINAL_PRODUCT_VERSION="mevoco-ui-dev"
+		ORIGINAL_PRODUCT_VERSION="ui-dev"
 	elif [ "${BUILD_TYPE}" == "mevoco_1.0.2_hami" ]; then
-		ORIGINAL_PRODUCT_VERSION="mevoco-1.0.2-hami"
+		ORIGINAL_PRODUCT_VERSION="1.0.2-hami"
 	elif [ "${BUILD_TYPE}" == "mevoco_1.0.x" ]; then
-		ORIGINAL_PRODUCT_VERSION="mevoco-1.0.x"
+		ORIGINAL_PRODUCT_VERSION="1.0.x"
+	elif [ "${BUILD_TYPE}" == "mevoco_ci" ]; then
+		ORIGINAL_PRODUCT_VERSION="master"
+	elif [ "${BUILD_TYPE}" == "zstack_ci" ]; then
+		ORIGINAL_PRODUCT_VERSION="master"
 	fi
 	ant -Dzstack_build_root=${WORKSPACE} -Dbuild_war_flag=premium -Dproduct.version=${ORIGINAL_PRODUCT_VERSION}-${TIME_STAMP}-${BUILD_NUMBER} -Dzstackdashboard.build_version=master -Dproduct.name=MEVOCO -Dproduct.bin.name=mevoco-installer all-in-one
 elif [ "${BUILD_TYPE}" == "zstack_ci" -o "${BUILD_TYPE}" == "zstack_1.1_ci" ]; then
