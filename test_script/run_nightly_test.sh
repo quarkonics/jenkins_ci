@@ -300,15 +300,22 @@ for TS in ${TESTSUITES}; do
 				sed -i "s/hostIp3 = .*$/hostIp3 = ${IP3}/g" /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
 				sed -i "s/hostIp4 = .*$/hostIp4 = ${IP4}/g" /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
 				sed -i "s/hostIp5 = .*$/hostIp5 = ${IP5}/g" /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
+				sed -i "s/hostName = .*$/hostName = ${IP}/g" /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
+				sed -i "s/hostName2 = .*$/hostName2 = ${IP2}/g" /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
+				sed -i "s/hostName3 = .*$/hostName3 = ${IP3}/g" /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
+				sed -i "s/hostName4 = .*$/hostName4 = ${IP4}/g" /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
+				sed -i "s/hostName5 = .*$/hostName5 = ${IP5}/g" /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.tmpt
 			fi
+
 			if [ "${TESTSUITES}" == "virt_plus" ]; then
-				
 				sed -i "s/TARGET_IP/${IP}/g" /root/.zstackwoodpecker/integrationtest/vm/virt_plus/deploy.tmpt
+				sed -i "s/hostName = .*$/hostName = ${IP}/g" /root/.zstackwoodpecker/integrationtest/vm/virt_plus/deploy.tmpt
 			fi
 
 			scp /home/${IP}/deploy.xml /root/.zstackwoodpecker/integrationtest/vm/virtualrouter/deploy.xml
 			scp /home/${IP}/deploy-local-ps.xml /root/.zstackwoodpecker/integrationtest/vm/virtualrouter/deploy-local-ps.xml
 			scp /home/${IP}/deploy-local-nfs.xml /root/.zstackwoodpecker/integrationtest/vm/virtualrouter/deploy-local-nfs.xml
+			scp /home/${IP}/deploy.multihosts.xml /root/.zstackwoodpecker/integrationtest/vm/vm/multihosts/deploy.xml
 			#scp /home/${IP}/integration.xml /root/.zstackwoodpecker/integrationtest/vm/virtualrouter/integration.xml
 			#scp /home/${IP}/integration.xml /home/${IP}/zstack-woodpecker/integrationtest/vm/virtualrouter/integration.xml
 			cd /home/${IP}/zstack-woodpecker/dailytest/
@@ -316,8 +323,10 @@ for TS in ${TESTSUITES}; do
 			RUN_BASIC=success
 			if [ "${BASIC_TS_CONF}" == "" ]; then
 				./zstest.py -s ${BASIC_TS} -t 3600 | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
+#				./zstest.py -c 236 -S -n | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
 #				./zstest.py -c 236,243,247 -S -n | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
 #				./zstest.py -c 52 | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
+#				./zstest.py -c 152 | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure
 			else
 				if [ "${BASIC_TS_CONF}" == "localstorage" ]; then
 					./zstest.py -s ${BASIC_TS} -t 3600 -C /root/.zstackwoodpecker/integrationtest/vm/${BASIC_TS}/test-config-local-ps.xml | tee /home/${IP}/result_${IP}.log || RUN_BASIC=failure

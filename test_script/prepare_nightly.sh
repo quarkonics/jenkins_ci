@@ -26,6 +26,7 @@ scp ${SERVER_IP}:/var/lib/jenkins/deploy.virt_plus.tmpt /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/deploy.xml /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/deploy-local-ps.xml /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/deploy-local-nfs.xml /home/${TARGET_IP}/
+scp ${SERVER_IP}:/var/lib/jenkins/deploy.multihosts.xml /home/${TARGET_IP}/
 scp ${SERVER_IP}:/var/lib/jenkins/integration.xml /home/${TARGET_IP}/
 scp ${SERVER_IP}:${WORKSPACE}/zstack_woodpecker_version.txt /home/${TARGET_IP}/
 

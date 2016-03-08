@@ -41,20 +41,26 @@ elif [ "${IP_RANGE_NAME}" == "IP_RANGE9" ]; then
 	CANDIDATE_HOST_IP=192.168.200.10
 fi
 
+if [ "${TESTSUITES}" == "multihosts" ]; then
+	INS_OFFERING_UUID=400736acb9274721949cfcaea793f5c6
+else
+	INS_OFFERING_UUID=e17f4e126ce94b6496cad6c4fcae9743
+fi
+
 CANDIDATE_HOST_UUID=$(zstack_query_host_by_ip ${SESSION_UUID} ${CANDIDATE_HOST_IP} '["inventories"][0]["uuid"]')
-VM_UUID=$(zstack_create_vm_host ${SESSION_UUID} ${VM_NAME} ${CANDIDATE_HOST_UUID})
+VM_UUID=$(zstack_create_vm_host ${SESSION_UUID} ${VM_NAME} ${CANDIDATE_HOST_UUID} ${INS_OFFERING_UUID})
 VM_IP=$(zstack_query_vm ${SESSION_UUID} ${VM_UUID} '["inventories"][0]["vmNics"][0]["ip"]')
 HOST_UUID=$(zstack_query_vm ${SESSION_UUID} ${VM_UUID} '["inventories"][0]["hostUuid"]')
 HOST_IP=$(zstack_query_host ${SESSION_UUID} ${HOST_UUID} '["inventories"][0]["managementIp"]')
 
 if [ "${TESTSUITES}" == "multihosts" ]; then
-	VM_UUID2=$(zstack_create_vm_host ${SESSION_UUID} ${VM_NAME}2 ${CANDIDATE_HOST_UUID})
+	VM_UUID2=$(zstack_create_vm_host ${SESSION_UUID} ${VM_NAME}2 ${CANDIDATE_HOST_UUID} ${INS_OFFERING_UUID})
 	VM_IP2=$(zstack_query_vm ${SESSION_UUID} ${VM_UUID2} '["inventories"][0]["vmNics"][0]["ip"]')
-	VM_UUID3=$(zstack_create_vm_host ${SESSION_UUID} ${VM_NAME}3 ${CANDIDATE_HOST_UUID})
+	VM_UUID3=$(zstack_create_vm_host ${SESSION_UUID} ${VM_NAME}3 ${CANDIDATE_HOST_UUID} ${INS_OFFERING_UUID})
 	VM_IP3=$(zstack_query_vm ${SESSION_UUID} ${VM_UUID3} '["inventories"][0]["vmNics"][0]["ip"]')
-	VM_UUID4=$(zstack_create_vm_host ${SESSION_UUID} ${VM_NAME}4 ${CANDIDATE_HOST_UUID})
+	VM_UUID4=$(zstack_create_vm_host ${SESSION_UUID} ${VM_NAME}4 ${CANDIDATE_HOST_UUID} ${INS_OFFERING_UUID})
 	VM_IP4=$(zstack_query_vm ${SESSION_UUID} ${VM_UUID4} '["inventories"][0]["vmNics"][0]["ip"]')
-	VM_UUID5=$(zstack_create_vm_host ${SESSION_UUID} ${VM_NAME}5 ${CANDIDATE_HOST_UUID})
+	VM_UUID5=$(zstack_create_vm_host ${SESSION_UUID} ${VM_NAME}5 ${CANDIDATE_HOST_UUID} ${INS_OFFERING_UUID})
 	VM_IP5=$(zstack_query_vm ${SESSION_UUID} ${VM_UUID5} '["inventories"][0]["vmNics"][0]["ip"]')
 fi
 
