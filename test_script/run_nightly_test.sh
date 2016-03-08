@@ -315,7 +315,7 @@ for TS in ${TESTSUITES}; do
 			scp /home/${IP}/deploy.xml /root/.zstackwoodpecker/integrationtest/vm/virtualrouter/deploy.xml
 			scp /home/${IP}/deploy-local-ps.xml /root/.zstackwoodpecker/integrationtest/vm/virtualrouter/deploy-local-ps.xml
 			scp /home/${IP}/deploy-local-nfs.xml /root/.zstackwoodpecker/integrationtest/vm/virtualrouter/deploy-local-nfs.xml
-			scp /home/${IP}/deploy.multihosts.xml /root/.zstackwoodpecker/integrationtest/vm/vm/multihosts/deploy.xml
+			scp /home/${IP}/deploy.multihosts.xml /root/.zstackwoodpecker/integrationtest/vm/multihosts/deploy.xml
 			#scp /home/${IP}/integration.xml /root/.zstackwoodpecker/integrationtest/vm/virtualrouter/integration.xml
 			#scp /home/${IP}/integration.xml /home/${IP}/zstack-woodpecker/integrationtest/vm/virtualrouter/integration.xml
 			cd /home/${IP}/zstack-woodpecker/dailytest/
